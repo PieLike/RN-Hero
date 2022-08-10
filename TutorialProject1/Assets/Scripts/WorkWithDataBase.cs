@@ -1,0 +1,205 @@
+using UnityEngine;
+using System.Data;
+using Mono.Data.Sqlite;
+using System.IO;
+using System;
+
+static class WorkWithDataBase
+{
+    private const string standartFileName = "db.bytes";
+    private static string DBPath;
+    private static SqliteConnection connection;
+    private static SqliteCommand command;
+
+    static WorkWithDataBase()
+    {
+        DBPath = GetDatabasePath();
+    }
+
+    
+    /// <summary> Возвращает путь к БД. Если её нет в нужной папке на Андроиде, то копирует её с исходного apk файла. </summary>
+    private static string GetDatabasePath(string fileName = standartFileName)
+    {
+    #if UNITY_EDITOR
+        return Path.Combine(Application.streamingAssetsPath, fileName);
+    #elif UNITY_STANDALONE
+        string filePath = Path.Combine(Application.dataPath, fileName);
+        if(!File.Exists(filePath)) UnpackDatabase(filePath);
+        return filePath;
+    #elif UNITY_ANDROID
+        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+        if(!File.Exists(filePath)) UnpackDatabase(filePath, fileName);
+        return filePath;
+    #endif
+    }
+
+    /// <summary> Распаковывает базу данных в указанный путь. </summary>
+    /// <param name="toPath"> Путь в который нужно распаковать базу данных. </param>
+    private static void UnpackDatabase(string toPath, string fileName)
+    {
+        string fromPath = Path.Combine(Application.streamingAssetsPath, fileName);
+
+        WWW reader = new WWW(fromPath);
+        while (!reader.isDone) { }
+
+        File.WriteAllBytes(toPath, reader.bytes);
+    }
+
+    /// <summary> Этот метод открывает подключение к БД. </summary>
+    private static void OpenConnection()
+    {
+        connection = new SqliteConnection("Data Source=" + DBPath);
+        command = new SqliteCommand(connection);
+        connection.Open();
+    }
+
+    /// <summary> Этот метод закрывает подключение к БД. </summary>
+    public static void CloseConnection()
+    {
+        connection.Close();
+        command.Dispose();
+    }
+
+    /// <summary> Этот метод выполняет запрос query. </summary>
+    /// <param name="query"> Собственно запрос. </param>
+    public static void ExecuteQueryWithoutAnswer(string query)
+    {
+        OpenConnection();
+        command.CommandText = query;
+        command.ExecuteNonQuery();
+        CloseConnection();
+    }
+
+    public static void ExecuteQueryWithoutAnswer(string query, string dataBaseName)
+    {
+        DBPath = GetDatabasePath(dataBaseName);
+
+        OpenConnection();
+        command.CommandText = query;
+        command.ExecuteNonQuery();
+        CloseConnection();
+    }
+
+    /// <summary> Этот метод выполняет запрос query и возвращает ответ запроса. </summary>
+    /// <param name="query"> Собственно запрос. </param>
+    /// <returns> Возвращает значение 1 строки 1 столбца, если оно имеется. </returns>
+    public static string ExecuteQueryWithAnswer(string query)
+    {
+        OpenConnection();
+        command.CommandText = query;
+        var answer = command.ExecuteScalar();
+        CloseConnection();
+
+        if (answer != null) return answer.ToString();
+        else return null;
+    }
+
+    public static string ExecuteQueryWithAnswer(string query, string dataBaseName)
+    {
+        DBPath = GetDatabasePath(dataBaseName);
+        
+        OpenConnection();
+        command.CommandText = query;
+        var answer = command.ExecuteScalar();
+        CloseConnection();
+
+        if (answer != null) return answer.ToString();
+        else return null;
+    }
+
+    /// <summary> Этот метод возвращает таблицу, которая является результатом выборки запроса query. </summary>
+    /// <param name="query"> Собственно запрос. </param>
+    public static DataTable GetTable(string query)
+    {
+        OpenConnection();
+
+        SqliteDataAdapter adapter = new SqliteDataAdapter(query, connection);
+
+        DataSet DS = new DataSet();
+        adapter.Fill(DS);
+        adapter.Dispose();
+
+        CloseConnection();
+
+        return DS.Tables[0];
+    }
+
+    public static DataTable GetTable(string query, string dataBaseName)
+    {
+        DBPath = GetDatabasePath(dataBaseName);
+        
+        OpenConnection();
+
+        SqliteDataAdapter adapter = new SqliteDataAdapter(query, connection);
+
+        DataSet DS = new DataSet();
+        adapter.Fill(DS);
+        adapter.Dispose();
+
+        CloseConnection();
+
+        return DS.Tables[0];
+    }
+
+    public static void InsertOneRow(string newDateBaseName, DataTable dataRow)
+    {
+        //записать одну строку в базу данных
+
+        //пишем запрос на добавление новой строки в дб новую (активного словаря)
+        //соотносим колонки и их значения строки первой таблицы(общего словаря) с колонками и значениями для запроса во второй (активный словарь)
+        string insertQuery = $"INSERT INTO words(местополей) VALUES (местозначений);", columnsList = "", valuesList = "";
+        for (int column = 0; column < dataRow.Columns.Count; column++)
+        {            
+            if (columnsList == "")
+            {
+                columnsList = dataRow.Columns[column].ToString();
+                valuesList = "'" + dataRow.Rows[0][column].ToString() + "'";
+            }
+            else
+            {
+                columnsList = columnsList + "," + dataRow.Columns[column].ToString();
+                valuesList = valuesList + "," + "'" + dataRow.Rows[0][column].ToString() + "'";
+            }
+        }
+        insertQuery = insertQuery.Replace("местополей", columnsList);        
+        insertQuery = insertQuery.Replace("местозначений", valuesList);
+
+        WorkWithDataBase.ExecuteQueryWithoutAnswer(insertQuery, newDateBaseName);
+    }
+
+    public static void InsertManyRow(string newDateBaseName, DataTable dataRows)
+    {
+        //записать несколько строк в базу данных
+
+        //пишем запрос на добавление новой строки в дб новую (активного словаря)
+        //соотносим колонки и их значения строки первой таблицы(общего словаря) с колонками и значениями для запроса во второй (активный словарь)
+        string insertQuery = $"INSERT INTO words(местополей) VALUES (местозначений);", columnsList = "", valuesList = "";
+
+
+        for (int row = 0; row < dataRows.Rows.Count; row++)
+        {
+            for (int column = 0; column < dataRows.Columns.Count; column++)
+            {            
+                if (columnsList == "")
+                {
+                    columnsList = dataRows.Columns[column].ToString();
+                    valuesList = "'" + dataRows.Rows[row][column].ToString() + "'";
+                }
+                else
+                {
+                    columnsList = columnsList + "," + dataRows.Columns[column].ToString();
+                    valuesList = valuesList + "," + "'" + dataRows.Rows[row][column].ToString() + "'";
+                }                
+            }
+            insertQuery = insertQuery.Replace("местополей", columnsList);        
+            insertQuery = insertQuery.Replace("местозначений", valuesList);
+            
+            WorkWithDataBase.ExecuteQueryWithoutAnswer(insertQuery, newDateBaseName);
+            
+            columnsList = "";
+            valuesList = "";
+            insertQuery = $"INSERT INTO words(местополей) VALUES (местозначений);";
+        }
+    }
+
+}

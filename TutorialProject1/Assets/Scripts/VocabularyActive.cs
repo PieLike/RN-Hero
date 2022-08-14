@@ -8,7 +8,7 @@ public class VocabularyActive : MonoBehaviour
 {
     //public DataTable actualVocabulary, generalVocabulary;
     private string actualDataBaseName = "vocabularyActual.bytes", generalDataBaseName = "vocabularyGeneral.bytes";
-    public GameObject voculabraryInterface;
+    public GameObject voculabraryInterface, wordListInterface;
     
 
     private void Start()
@@ -23,19 +23,30 @@ public class VocabularyActive : MonoBehaviour
         WorkWithDataBase.ExecuteQueryWithoutAnswer(query, actualDataBaseName);        
     }
 
+    public void VoculabraryButton()
+    {
+        if(voculabraryInterface.activeSelf == false)
+        {
+            voculabraryInterface.SetActive(true);
+            FillActiveVoculabraryUI();
+        }
+        else
+        {
+            ClearActiveVoculabraryUI();
+            voculabraryInterface.SetActive(false);
+        }
+    }
+
     public void FillActiveVoculabraryUI()
     {
         //заполнить интерфейс словаря
-        GameObject wordList;          
-        wordList = GameObject.Find("VoculabraryInterfaceWordsList");
-
         DataTable actualVocabulary = GetActiveWordsList();
         for (int row = 0; row < actualVocabulary.Rows.Count; row++)
         {
-            if (wordList.GetComponent<TMP_Text>().text == "Пусто")
-                wordList.GetComponent<TMP_Text>().text = actualVocabulary.Rows[row][0].ToString();
+            if (wordListInterface.GetComponent<TMP_Text>().text == "Пусто")
+                wordListInterface.GetComponent<TMP_Text>().text = actualVocabulary.Rows[row][0].ToString();
             else
-                wordList.GetComponent<TMP_Text>().text = wordList.GetComponent<TMP_Text>().text + "\n" + actualVocabulary.Rows[row][0].ToString();
+                wordListInterface.GetComponent<TMP_Text>().text = wordListInterface.GetComponent<TMP_Text>().text + "\n" + actualVocabulary.Rows[row][0].ToString();
         }       
 
     }
@@ -53,9 +64,7 @@ public class VocabularyActive : MonoBehaviour
     public void ClearActiveVoculabraryUI()
     {
         //очистить интерфейс словаря
-        GameObject wordList;          
-        wordList = GameObject.Find("VoculabraryInterfaceWordsList");
-        wordList.GetComponent<TMP_Text>().text = "Пусто";
+        wordListInterface.GetComponent<TMP_Text>().text = "Пусто";
     }
 
 }

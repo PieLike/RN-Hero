@@ -10,8 +10,7 @@ public class Interaction : MonoBehaviour
     public GameObject supposedInteractionObject;
     private GameObject interactionObject;
     public bool interactionIsActive = false;
-    public GameObject heroObject;  
-    private HeroMove heroMove;
+    public GameObject heroObject;      
     
     private void Update()
     {
@@ -20,14 +19,10 @@ public class Interaction : MonoBehaviour
         {
             InteractionWith();
         }
-    }
 
-    public void LateUpdate()
-    {
-        
         //обрабатываем нажатие мыши (если это не нажатие на интерфейс)
         
-        if (Input.GetMouseButtonDown(0) && UIClick.OnMouseDown() == true)            
+        if (Input.GetMouseButtonDown(0) && UIClick.OnMouseDown() && MainVariables.inSpelling == false && MainVariables.inInterface == false)            
         {
             //если наведенный объект существует то делаем его объектом активного взаимодействия
             //и приступаем к взаимодействию
@@ -42,8 +37,8 @@ public class Interaction : MonoBehaviour
         if (interactionIsActive == false)
             interactionObject = null;
             
-             
-    }    
+    }
+
 
     private void InteractionWith()
     {
@@ -61,13 +56,14 @@ public class Interaction : MonoBehaviour
 
     private void InteractionWithEnemy()
     {
+        HeroMove heroMove;
         //взаимодействие с объектом типа Enemy
         string enemyName = interactionObject.name;
         
         heroMove = heroObject.GetComponent<HeroMove>();
         
         //заставим героя идти к объекту пока не подойдет
-        if (heroMove.CheckReachToPoint(interactionObject.transform.position) != true)
+        if (MyMathCalculations.CheckReachToPoint(interactionObject.transform.position, heroObject.transform.position) != true)
         {
             if (heroMove.finalPoint != interactionObject.transform.position)
             ComeTo(heroMove);
@@ -88,13 +84,14 @@ public class Interaction : MonoBehaviour
 
     private void InteractionWithLoot()
     {
+        HeroMove heroMove;
         //взаимодействие с объектом типа Loot
         string enemyName = interactionObject.name;
         
         heroMove = heroObject.GetComponent<HeroMove>();
         
         //заставим героя идти к объекту пока не подойдет
-        if (heroMove.CheckReachToPoint(interactionObject.transform.position) != true)
+        if (MyMathCalculations.CheckReachToPoint(interactionObject.transform.position, heroObject.transform.position) != true)
         {
             if (heroMove.finalPoint != interactionObject.transform.position)
             ComeTo(heroMove);
@@ -112,14 +109,15 @@ public class Interaction : MonoBehaviour
     private void ComeTo(HeroMove heroMove)
     {        
         //задать точку подхода героя и активировать движение к ней
-        heroMove.inMovement = true;
+        MainVariables.inMovement = true;
         heroMove.finalPoint = interactionObject.transform.position;  
     }
 
     private void TakeUp()
     {
         //сохранить предмет в активный словарь и уничтожить
-        AddInDataBase(interactionObject);       
+        if (CheckExisting(interactionObject) == false)
+            AddInDataBase(interactionObject);       
         Destroy(interactionObject);   
     }
 
@@ -145,14 +143,28 @@ public class Interaction : MonoBehaviour
     {
         //ищем в общей дб словаря слово и записываем его в активный словарь
         string actualDataBaseName = "vocabularyActual.bytes", generalDataBaseName = "vocabularyGeneral.bytes";
-        DataTable generalVocabulary;
         string itemName = interactionObject.GetComponent<TMP_Text>().text.ToLower();
 
-        //делаем запрос на строку с нужным словом в обзем словаре
-        generalVocabulary = WorkWithDataBase.GetTable($"SELECT * FROM words WHERE eng = '{itemName}';", generalDataBaseName);
+        //делаем запрос на строку с нужным словом в общем словаре
+        DataTable generalVocabulary = WorkWithDataBase.GetTable($"SELECT * FROM words WHERE eng = '{itemName}';", generalDataBaseName);
 
         //записываем слово из общего словаря в активный
         WorkWithDataBase.InsertOneRow(actualDataBaseName, generalVocabulary);      
+    }
+
+    private bool CheckExisting(GameObject interactionObject)
+    {
+        string actualDataBaseName = "vocabularyActual.bytes";
+        string itemName = interactionObject.GetComponent<TMP_Text>().text.ToLower();
+
+        //делаем запрос на строку с нужным словом в актуальном словаре
+        DataTable actualVocabulary = WorkWithDataBase.GetTable($"SELECT * FROM words WHERE eng = '{itemName}';", actualDataBaseName);
+
+        foreach(DataRow row in actualVocabulary.Rows)
+        {
+            return true;
+        }
+        return false;
     }
 
     

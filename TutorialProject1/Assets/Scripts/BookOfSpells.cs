@@ -13,7 +13,7 @@ public class BookOfSpells : MonoBehaviour
     public struct spell
     {
         public string name, fullname, type, prefab;
-        public float speed, distance; 
+        public float speed, distance, damage; 
         public int bullets;
     }
 
@@ -32,7 +32,8 @@ public class BookOfSpells : MonoBehaviour
             activeSlot.fullname = row["fullname"].ToString();
             activeSlot.type = row["type"].ToString();
             activeSlot.prefab = row["prefab"].ToString(); 
-            activeSlot.bullets = Convert.ToInt32(row["bullets"]);    
+            activeSlot.bullets = Convert.ToInt32(row["bullets"]); 
+            activeSlot.damage = Convert.ToSingle(row["damage"]);   
         } 
 
         switch (slotNumber)

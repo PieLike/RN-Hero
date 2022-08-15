@@ -7,7 +7,7 @@ using TMPro;
 public class VocabularyActive : MonoBehaviour
 {
     //public DataTable actualVocabulary, generalVocabulary;
-    private string actualDataBaseName = "vocabularyActual.bytes", generalDataBaseName = "vocabularyGeneral.bytes";
+    private string actualDataBaseName = "vocabularyActual.bytes";//, generalDataBaseName = "vocabularyGeneral.bytes";
     public GameObject voculabraryInterface, wordListInterface;
     
 

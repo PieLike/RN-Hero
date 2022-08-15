@@ -7,7 +7,7 @@ using System.Data;
 
 public class Interaction : MonoBehaviour
 {    
-    public GameObject supposedInteractionObject;
+    public static GameObject supposedInteractionObject;
     private GameObject interactionObject;
     public bool interactionIsActive = false;
     public GameObject heroObject;      
@@ -70,11 +70,6 @@ public class Interaction : MonoBehaviour
             //начинаем взаимодействие
             interactionIsActive  = true;
         } else {
-            //вызываем функцию дропа лута у активного объекта (врага)
-            CallLootDrop();
-            //делаем его компоненты неактивными (потом нужно будет исправить чтобы полностью удалять)
-            interactionObject.GetComponent<MeshCollider>().enabled = false;
-            interactionObject.GetComponent<MeshRenderer>().enabled = false;            
             //заканчиваем взаимодействие и очищаем слот активного объект
             interactionIsActive = false;
             interactionObject = null;
@@ -119,15 +114,7 @@ public class Interaction : MonoBehaviour
         if (CheckExisting(interactionObject) == false)
             AddInDataBase(interactionObject);       
         Destroy(interactionObject);   
-    }
-
-    private void CallLootDrop()
-    {
-        //вызвать выпадение лута у активного объекта
-        LootDroping lootDroping;
-        lootDroping = interactionObject.GetComponent<LootDroping>();
-        lootDroping.Drop();
-    }
+    }    
 
     private void OnTriggerStay(Collider other) {
         //заполняем слот наведенного объекта тем, что попал под курсор
@@ -154,6 +141,7 @@ public class Interaction : MonoBehaviour
 
     private bool CheckExisting(GameObject interactionObject)
     {
+        //проверяем есть ли такой объект у героя (в словаре)
         string actualDataBaseName = "vocabularyActual.bytes";
         string itemName = interactionObject.GetComponent<TMP_Text>().text.ToLower();
 

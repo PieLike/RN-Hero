@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MainVariables : MonoBehaviour
 {
-    public static bool inMovement = false;
-    public static bool inSpelling = false;
-    public static bool inInterface = false;
+    [NonSerialized] public static bool inMovement = false;
+    [NonSerialized] public static bool inSpelling = false;
+    [NonSerialized] public static bool inInteraction = false;
+    [NonSerialized] public static bool inInterface = false;
+    [NonSerialized] public static int activeSpellSlot = 1;
 }

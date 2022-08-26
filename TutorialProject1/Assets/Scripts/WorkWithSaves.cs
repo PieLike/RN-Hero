@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+//using System.Collections;
+//using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
 
 public class WorkWithSaves : MonoBehaviour
 {
-    private string actualDataBaseName = "vocabularyActual.bytes"; 
-    private string saveDataBaseName = "vocabularySave.bytes";
+    private static string actualDataBaseName = "vocabularyActual.bytes"; 
+    private static string saveDataBaseName = "vocabularySave.bytes";
     
-    public void CreateSave()
+    static public void CreateSave()
     {
         //сначала очищаем старые данные в сохраненном словаре, затем записываем новыеиз актуального словаря
         ClearDataBase(saveDataBaseName);
@@ -20,7 +20,7 @@ public class WorkWithSaves : MonoBehaviour
         WorkWithDataBase.InsertManyRow(saveDataBaseName, actualVocabulary);    
     }
 
-    private void ClearDataBase(string dataBaseName)
+    static private void ClearDataBase(string dataBaseName)
     {
         //очищаем дб сохраненного словаря
         string query = ("DELETE FROM words;");

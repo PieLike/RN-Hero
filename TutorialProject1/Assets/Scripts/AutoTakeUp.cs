@@ -1,21 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
+//using System.Collections;
+//using System.Collections.Generic;
+using System;
 using UnityEngine;
+//using System.Data;
 
 public class AutoTakeUp : MonoBehaviour
 {
-    public GameObject lootItem;
+    [SerializeField] private GameObject lootItem;
     private GameObject heroObject;
     private Rigidbody lootItemRigidBody; 
     private bool inDragging = false;  
-    public float speed;
-    private Vector3 finalPoint; 
+    [NonSerialized] public float speed;
+    private Vector3 finalPoint;  
 
     private void OnTriggerEnter(Collider other) 
     {
         if(other.gameObject.tag == "Hero")
         {
-            TakeUpTo(other.gameObject);            
+            if (lootItem.tag == "Word")
+            {
+                if (Interaction.CheckExisting(lootItem) == true)
+                {
+                    TakeUpTo(other.gameObject); 
+                }
+            }
+            else if(lootItem.tag != "Untagged")
+            {
+                TakeUpTo(other.gameObject);
+            }            
         }    
     }
 
@@ -30,15 +42,19 @@ public class AutoTakeUp : MonoBehaviour
     {
         if (inDragging == true)
         {
+            //проверяем притянули ли объект к герою
             if (MyMathCalculations.CheckReachToPoint(lootItem.transform.position, finalPoint))
             {
                 inDragging = false;
-                TakeUp();
+                //TakeUp();
+                if (lootItem.tag == "Word")
+                    Interaction.TakeUpWord(lootItem);
 
             }
+            //если нет то задаем точку притяжения (каждый раз новую потмоу что герой может двигаться) и двигаем объект
             else if (heroObject != null)
             {
-                finalPoint = heroObject.transform.position;//heroObject.GetComponent<Transform>().position;
+                finalPoint = heroObject.transform.position;
             
                 Vector3 direction = MyMathCalculations.CalculateDirectionSpeeds(lootItem.transform.position, finalPoint, speed);
                 lootItemRigidBody.MovePosition(lootItem.transform.position + direction * Time.deltaTime);      
@@ -46,8 +62,5 @@ public class AutoTakeUp : MonoBehaviour
         }
     }
 
-    private void TakeUp()
-    {
-        Destroy(lootItem);
-    }
+
 }

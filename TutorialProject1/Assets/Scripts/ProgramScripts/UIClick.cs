@@ -1,14 +1,11 @@
 using UnityEngine;
-using System.Data;
-using System.IO;
+//using System.Data;
+//using System.IO;
 using UnityEngine.EventSystems;
 
 static class UIClick
 {
-    static UIClick()
-    {
-
-    }
+    //static UIClick() { }
 
     public static bool OnMouseDown()
     {        

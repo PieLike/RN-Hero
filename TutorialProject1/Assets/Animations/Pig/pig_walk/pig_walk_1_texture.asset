@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!28 &2800000
+Texture2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: pig_walk_1_texture
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 2
+  m_Width: 1
+  m_Height: 37
+  m_CompleteImageSize: 284
+  m_MipsStripped: 0
+  m_TextureFormat: 4
+  m_MipCount: 6
+  m_IsReadable: 1
+  m_IsPreProcessed: 0
+  m_IgnoreMasterTextureLimit: 0
+  m_StreamingMipmaps: 0
+  m_StreamingMipmapsPriority: 0
+  m_VTOnly: 0
+  m_AlphaIsTransparency: 0
+  m_ImageCount: 1
+  m_TextureDimension: 2
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 0
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_LightmapFormat: 0
+  m_ColorSpace: 0
+  m_PlatformBlob: 
+  image data: 284
+  _typelessdata: 000000ff8e3858ffd65584ff080000ff8c3858ffce5584ff913858ffce5984ff8c3b58ff893858ffa5345affbd597bffc6597bff100000ff863b52ff893b52ff943858ffde5584ff963858ffc05a7eff210008ff8f3b54ffc05b89ffa23d65ff9c305affc26096ffa2365dffef518cffde79adffd679b5ff842042ffac597effff86bdffff82bdffaf567eff843b52ff893b58ff4a1d2eff5e2337ffb64a74ffbb4e76ff893858ffb85174ff290c11ff883b52ffdb5482ffbb577aff933d58ffa13b63ffbb578bffea5a94ffbd5d91ffc96994ffdd6fa2ff863b54ff542032ffb84c75ffa04466ff582331ffcb557eff9a3c5dffd2588fffc36392ffb1557bff923b5bff612737ffa13f63ffbc5d89ff793149ffae4e76ff933f5fff
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 

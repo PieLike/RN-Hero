@@ -1,30 +1,42 @@
 using System.Collections;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using UnityEngine;
 using System;
-//[RequireComponent(typeof(Outline))]
+[RequireComponent(typeof(Outline))]
 
 public class EnemyBehavior : MonoBehaviour
 {
     private Vector3 finalPoint;
-    private bool inMovement = false, isDead = false;
-    public float speed;
-    public GameObject shield;
-    private float currentHP, currentSP; 
-    public float generalHP, generalSP;
-    public Texture2D spTexture, emptyTexture;  
+    private bool inMovement = false, isDead = false, inWaiting = false;
+    public float speed = 50f;
+    private GameObject shield;
+    [NonSerialized] public float currentHP, currentSP; 
+    public float generalHP = 1f, generalSP = 5f;
+    private Texture2D spTexture, emptyTexture;  
     private Outline outline; 
+    private Animator animator;
+    private Rigidbody rigidBody;
+    private bool isRotate = false;
 
     private void Start() 
     {
+        //находим дочерние объекты
+        shield = transform.Find("Shield").gameObject;
+        //находим префабы в resourses
+        spTexture = Resources.Load<Texture2D>("Textures/SP_texture");
+        emptyTexture = Resources.Load<Texture2D>("Textures/empty_texture");
+
         currentSP = generalSP;
         currentHP = generalHP;  
 
         outline = GetComponent<Outline>(); 
-        outline.OutlineWidth = 0; 
+        outline.OutlineWidth = 0;
+
+        animator = GetComponent<Animator>();
+        rigidBody = GetComponent<Rigidbody>();  
     } 
     
-    private void OnCollisionEnter(Collision other) 
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Spell")
         {
@@ -36,7 +48,9 @@ public class EnemyBehavior : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (currentSP <= 0)
-            currentHP -= damage;
+        {
+            //currentHP -= damage;
+        }
         else
         {
             currentSP -= damage;
@@ -45,57 +59,136 @@ public class EnemyBehavior : MonoBehaviour
             else
             {
                 //shield.SetActive(false);
-                shield.GetComponent<Animator>().SetBool("isDestroying", true);
+                //shield.GetComponent<Animator>().SetBool("isDestroying", true);
                 Destroy(shield, 5);//anim.clip.length);
             }
         }           
     }
 
-    private void moveTo(GameObject objectToMoveTo)
+    private void MoveTo(GameObject objectToMoveTo)
     {
-        inMovement = true;
-
         finalPoint.x = objectToMoveTo.transform.position.x;
         finalPoint.y = transform.position.y;
         finalPoint.z = objectToMoveTo.transform.position.z;
+
+        inMovement = true;
+        animator.SetBool("Walking", true);
     }
 
-    private void move(Vector3 direction, float seconds)    {   }
+    private void MoveRandom()
+    {
+        float directionX = UnityEngine.Random.Range(-2.0f, 2.0f);
+        float directionZ = UnityEngine.Random.Range(-0.5f, 0.5f);
+
+        finalPoint.x = transform.position.x + directionX;
+        finalPoint.y = transform.position.y;
+        finalPoint.z = transform.position.z + directionZ; 
+
+        if(finalPoint.x > transform.position.x)
+        {
+            if (isRotate == false)
+            {
+                transform.Rotate(0,180f,0);
+                isRotate = true;
+            }
+        }
+        else if(isRotate == true)
+            {
+                transform.Rotate(0,-180f,0);  
+                isRotate = false;  
+            }
+
+        inMovement = true;
+        animator.SetBool("Walking", true);
+    }
+
+    private void WaitRandom()
+    {
+        inWaiting = true;
+        float duration = UnityEngine.Random.Range(1.0f,10.0f);
+        StartCoroutine(WaitCoroutine(duration));
+    }
     
     void Update()
     {
-        if (isDead == false){
-            if (currentHP <= 0.0f){
+        if (isDead == false)
+        {
+            if (currentHP <= 0.0f)
+            {
                 //вызываем функцию дропа лута у активного объекта (врага)
                 CallLootDrop();                
                 //делаем его компоненты неактивными (потом нужно будет исправить чтобы полностью удалять)
                 CallDead();
 
-                isDead = true;                 
-            }
-            if (inMovement)
-            { 
-                if (MyMathCalculations.CheckReachToPoint(transform.position, finalPoint))
-                    inMovement = false;
-                else
-                {
-                    Vector3 direction = MyMathCalculations.CalculateDirectionSpeeds(transform.position, finalPoint, speed);   
-                    transform.Translate(direction * Time.deltaTime);        
-                }
-            }
+            }            
         } 
+        //если движение прекращено
+        if (inMovement == false)
+        {
+            if (animator.GetBool("Walking") == true)
+                animator.SetBool("Walking", false);
+            if (finalPoint != transform.position)
+                finalPoint = transform.position;
+
+        }
         //добавляем или скрываем обводку в зависимости от того наведен ли крусор на объект
         if (Interaction.supposedInteractionObject == gameObject)
         {
             outline.OutlineWidth = 3;
         }    
         else if (outline.OutlineWidth != 0)
-            outline.OutlineWidth = 0;  
+            outline.OutlineWidth = 0;        
     }  
-    private void CallDead()
+
+    private void FixedUpdate() 
     {
-        gameObject.GetComponent<MeshCollider>().enabled = false;
-        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        if (isDead == false && inWaiting == false)
+        {
+            if (inMovement && finalPoint != null)
+            {
+                if (MyMathCalculations.CheckReachToPoint(transform.position, finalPoint))
+                {
+                    inMovement = false;
+                    //animator.SetBool("Walking", false);
+                    //finalPoint = null;
+                }
+                else
+                {
+                    Vector3 direction = MyMathCalculations.CalculateDirectionSpeeds(transform.position, finalPoint, speed);
+                    if (isRotate == false)
+                    {
+                        rigidBody.velocity = transform.TransformDirection(direction * Time.fixedDeltaTime);
+                    }
+                    else
+                    {
+                        rigidBody.velocity = transform.TransformDirection(direction * Time.fixedDeltaTime * (-1));
+                    }
+                    //transform.Translate(direction * Time.deltaTime);                                
+                }
+            }
+            else
+            {
+                //придаём случайное движение если стоит
+                //if (Input.GetKeyUp(KeyCode.H))  
+                System.Random randomThing = new System.Random();              
+                switch(randomThing.Next(2))
+                {
+                    case(0): 
+                    MoveRandom(); break;
+                    case(1):
+                    WaitRandom(); break;
+
+                }                
+            }
+        }        
+    }
+    public void CallDead()
+    {
+        isDead = true;
+        if (gameObject.GetComponent<MeshRenderer>() != null)
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        else
+            gameObject.GetComponent<BoxCollider>().enabled = false;
         StartCoroutine(DeadCoroutine());
     }
 
@@ -130,6 +223,18 @@ public class EnemyBehavior : MonoBehaviour
         float duration = 5.0f;
         yield return new WaitForSeconds(duration); 
         Destroy(gameObject);       
+    }
+
+    private void OnCollisionEnter(Collision other) 
+    {
+        inMovement = false; 
+        //finalPoint = null;   
+    }
+
+    private IEnumerator WaitCoroutine(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        inWaiting = false;   
     }
 
 }

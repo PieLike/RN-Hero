@@ -1,15 +1,18 @@
 using UnityEngine;
-using System.Collections;
+//using System.Collections;
 
 public class FollowCamera : MonoBehaviour 
 {
 
-    public GameObject target;
+    private GameObject target;
     private Vector3 offset; 
-    public float smooth= 5.0f; 
+    [SerializeField] private float smooth = 100f; 
 
     void Start () 
-    {        
+    {       
+        //находим объекты на сцене
+        target = GameObject.Find("Hero");
+
         offset = transform.position - target.transform.position;
     }
 
@@ -21,5 +24,6 @@ public class FollowCamera : MonoBehaviour
     void  Update ()
     {
         transform.position = Vector3.Lerp (transform.position, target.transform.position + offset, Time.deltaTime * smooth);
+        transform.LookAt(target.transform);
     } 
 }

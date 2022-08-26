@@ -2,7 +2,9 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 using System.IO;
-using System;
+//using System;
+using UnityEngine.Networking;
+using System.Collections;
 
 static class WorkWithDataBase
 {
@@ -15,7 +17,6 @@ static class WorkWithDataBase
     {
         DBPath = GetDatabasePath();
     }
-
     
     /// <summary> Возвращает путь к БД. Если её нет в нужной папке на Андроиде, то копирует её с исходного apk файла. </summary>
     private static string GetDatabasePath(string fileName = standartFileName)
@@ -35,14 +36,18 @@ static class WorkWithDataBase
 
     /// <summary> Распаковывает базу данных в указанный путь. </summary>
     /// <param name="toPath"> Путь в который нужно распаковать базу данных. </param>
-    private static void UnpackDatabase(string toPath, string fileName)
+    //private static void UnpackDatabase(string toPath, string fileName)
+    private static IEnumerator UnpackDatabase(string toPath, string fileName)
     {
         string fromPath = Path.Combine(Application.streamingAssetsPath, fileName);
 
-        WWW reader = new WWW(fromPath);
-        while (!reader.isDone) { }
+        UnityWebRequest reader = new UnityWebRequest(fromPath);
+        //WWW reader = new WWW(fromPath);
+        //while (!reader.isDone) { }
+        yield return reader.SendWebRequest();
 
-        File.WriteAllBytes(toPath, reader.bytes);
+        //File.WriteAllBytes(toPath, reader.bytes);
+        File.WriteAllBytes(toPath, reader.downloadHandler.data);
     }
 
     /// <summary> Этот метод открывает подключение к БД. </summary>

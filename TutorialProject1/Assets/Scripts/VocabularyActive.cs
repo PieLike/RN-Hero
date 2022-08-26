@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using TMPro;
@@ -8,12 +6,13 @@ public class VocabularyActive : MonoBehaviour
 {
     //public DataTable actualVocabulary, generalVocabulary;
     private string actualDataBaseName = "vocabularyActual.bytes";//, generalDataBaseName = "vocabularyGeneral.bytes";
-    public GameObject voculabraryInterface, wordListInterface;
-    
+    private GameObject VIWordsList, VIPanel;
 
-    private void Start()
+    private void Start() 
     {
-        
+        //находим дочерние объекты
+        VIPanel = transform.Find("VoculabraryInterfacePanel").gameObject;
+        VIWordsList = transform.Find("VoculabraryInterfacePanel/VIWordsList").gameObject;
     }
 
     void OnApplicationQuit()
@@ -25,15 +24,15 @@ public class VocabularyActive : MonoBehaviour
 
     public void VoculabraryButton()
     {
-        if(voculabraryInterface.activeSelf == false)
+        if(VIPanel.activeSelf == false)
         {
-            voculabraryInterface.SetActive(true);
+            VIPanel.SetActive(true);
             FillActiveVoculabraryUI();
         }
         else
         {
             ClearActiveVoculabraryUI();
-            voculabraryInterface.SetActive(false);
+            VIPanel.SetActive(false);
         }
     }
 
@@ -43,12 +42,11 @@ public class VocabularyActive : MonoBehaviour
         DataTable actualVocabulary = GetActiveWordsList();
         for (int row = 0; row < actualVocabulary.Rows.Count; row++)
         {
-            if (wordListInterface.GetComponent<TMP_Text>().text == "Пусто")
-                wordListInterface.GetComponent<TMP_Text>().text = actualVocabulary.Rows[row][0].ToString();
+            if (VIWordsList.GetComponent<TMP_Text>().text == "Пусто")
+                VIWordsList.GetComponent<TMP_Text>().text = actualVocabulary.Rows[row][0].ToString();
             else
-                wordListInterface.GetComponent<TMP_Text>().text = wordListInterface.GetComponent<TMP_Text>().text + "\n" + actualVocabulary.Rows[row][0].ToString();
+                VIWordsList.GetComponent<TMP_Text>().text = VIWordsList.GetComponent<TMP_Text>().text + "\n" + actualVocabulary.Rows[row][0].ToString();
         }       
-
     }
 
     private DataTable GetActiveWordsList()
@@ -64,7 +62,12 @@ public class VocabularyActive : MonoBehaviour
     public void ClearActiveVoculabraryUI()
     {
         //очистить интерфейс словаря
-        wordListInterface.GetComponent<TMP_Text>().text = "Пусто";
+        VIWordsList.GetComponent<TMP_Text>().text = "Пусто";
     }
 
+    public void Close()
+    {
+        ClearActiveVoculabraryUI();
+        VIPanel.SetActive(false);    
+    }
 }

@@ -1,16 +1,13 @@
 using UnityEngine;
-using System.Data;
-using System.IO;
-using UnityEngine.EventSystems;
+//using System.Data;
+//using System.IO;
+//using UnityEngine.EventSystems;
 using System;
 
 static class MyMathCalculations
 {
 
-    static MyMathCalculations()
-    {
-
-    }
+    /*static MyMathCalculations() { } */
 
     public static Vector3 CalculateDirectionSpeeds(Vector3 MoovingObjectPosition, Vector3 finalPoint, float speed)
     {
@@ -51,8 +48,7 @@ static class MyMathCalculations
             && Math.Round(PointA.z) == Math.Round(PointB.z))
             return true;
         else
-            return false;        
-
+            return false;   
     }
 
     public static float CalculateAngle(Vector3 pointFrom, Vector3 pointTo, Vector3 vectorOne)

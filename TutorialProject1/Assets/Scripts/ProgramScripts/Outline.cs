@@ -137,6 +137,15 @@ public class Outline : MonoBehaviour {
 
       UpdateMaterialProperties();
     }
+
+    if (outlineWidth > 0 && needsUpdate == false)
+    {
+      // Generate smooth normals when baking is enabled
+      if (precomputeOutline) 
+      {
+        Bake();
+      }
+    }
   }
 
   void OnDisable() {

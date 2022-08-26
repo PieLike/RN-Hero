@@ -8,6 +8,9 @@ TagManager:
   - Loot
   - Hero
   - Spell
+  - Chest
+  - Word
+  - FinalPoint
   layers:
   - Default
   - TransparentFX

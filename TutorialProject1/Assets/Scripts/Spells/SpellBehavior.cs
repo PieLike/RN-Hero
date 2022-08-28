@@ -49,7 +49,8 @@ public class SpellBehavior : MonoBehaviour
     {
         if (other.gameObject.tag != "Hero" && other.gameObject.tag != "Loot" && other.gameObject.tag != "Spell")
         {
-            Destroy(gameObject);
+            if(other.gameObject.GetComponent<MeshRenderer>() != null)
+                Destroy(gameObject);
 
         }
     }

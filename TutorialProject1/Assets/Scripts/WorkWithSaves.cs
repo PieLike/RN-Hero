@@ -27,7 +27,7 @@ public class WorkWithSaves : MonoBehaviour
         WorkWithDataBase.ExecuteQueryWithoutAnswer(query, dataBaseName);        
     }  
 
-    public void LoadSave()
+    static public void LoadSave()
     {
         ClearDataBase(actualDataBaseName);
 

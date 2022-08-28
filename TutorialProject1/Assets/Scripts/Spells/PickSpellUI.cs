@@ -14,6 +14,14 @@ public class PickSpellUI : MonoBehaviour
 
     private void Start() 
     {
+        PickSpellUI pickSpellUI = gameObject.GetComponent<PickSpellUI>();
+        BookOfSpells.FillSlot(1, "frostspell"); //потом убрать
+        //pickSpellUI.FillSpellSlotIcon(1);
+        BookOfSpells.FillSlot(2, "recognizespell"); //потом убрать
+        //pickSpellUI.FillSpellSlotIcon(2);
+        BookOfSpells.FillSlot(3, "fireballspell"); //потом убрать
+        //pickSpellUI.FillSpellSlotIcon(3);
+
         //находим объекты на сцене
         PickSpell = GameObject.Find("Interface/MainInterface/PickSpell");
         //находим дочерние объекты
@@ -30,7 +38,9 @@ public class PickSpellUI : MonoBehaviour
 
         //заполняем все слоты заклинаний
         for (int i = 1; i <= 9; i++)
+        {
             FillSpellSlotIcon(i);
+        }
 
         //получаем трансофрм квадратика выбора зкалинания чтобы потом двигать
         //и один раз меняем
@@ -79,7 +89,7 @@ public class PickSpellUI : MonoBehaviour
 
     public void FillSpellSlotIcon(int slotNumber)
     {
-        SetActiveSpell(slotNumber);        
+        SetActiveSpell(slotNumber); 
         
         //если заклинание есть
         if(String.IsNullOrEmpty(activeSpell.name) == false)
@@ -95,7 +105,7 @@ public class PickSpellUI : MonoBehaviour
                 {
                     Debug.Log("программа не может найти иконки для заклинаний");
                 }
-            }
+            }            
             
             Image image;
 

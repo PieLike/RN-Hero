@@ -2,11 +2,13 @@ using UnityEngine;
 using System;
 using System.Data;
 using TMPro;
+using UnityEngine.UI;
+
 [RequireComponent(typeof(EnglishGameInput))]
 
 public class EnglishGame : MonoBehaviour
 {
-    private GameObject EGOriginalWord, EGCheckmark, EGPanel;
+    private GameObject EGOriginalWord, EGCheckmark, EGPanel, EGExit;
     //private TMP_InputField tmp_Text;
     private string previousInput = "";
     private string translate = "";//, originalWord;
@@ -21,6 +23,8 @@ public class EnglishGame : MonoBehaviour
         EGPanel = transform.Find("EnglishGamePanel").gameObject;
         EGCheckmark = transform.Find("EnglishGamePanel/EGCheckmark").gameObject;
         EGOriginalWord = transform.Find("EnglishGamePanel/EGOriginalWord").gameObject;
+        EGExit = transform.Find("EnglishGamePanel/EGExit").gameObject;
+            EGExit.GetComponent<Button>().onClick.AddListener(CloseEnglishGame);  
 
         EGinput = gameObject.GetComponent<EnglishGameInput>();   
     }

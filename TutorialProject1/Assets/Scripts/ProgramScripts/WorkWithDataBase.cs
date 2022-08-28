@@ -21,12 +21,14 @@ static class WorkWithDataBase
     /// <summary> Возвращает путь к БД. Если её нет в нужной папке на Андроиде, то копирует её с исходного apk файла. </summary>
     private static string GetDatabasePath(string fileName = standartFileName)
     {
-    #if UNITY_EDITOR
+    //#if UNITY_EDITOR
+    //    return Path.Combine(Application.streamingAssetsPath, fileName);
+    //#elif UNITY_STANDALONE
+    #if UNITY_STANDALONE
+        /*string filePath = Path.Combine(Application.dataPath, fileName);
+        if(!File.Exists(filePath)) UnpackDatabase(filePath, fileName);
+        return filePath;*/
         return Path.Combine(Application.streamingAssetsPath, fileName);
-    #elif UNITY_STANDALONE
-        string filePath = Path.Combine(Application.dataPath, fileName);
-        if(!File.Exists(filePath)) UnpackDatabase(filePath);
-        return filePath;
     #elif UNITY_ANDROID
         string filePath = Path.Combine(Application.persistentDataPath, fileName);
         if(!File.Exists(filePath)) UnpackDatabase(filePath, fileName);

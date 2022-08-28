@@ -15,7 +15,7 @@ public class MousePosition3D : MonoBehaviour
     private void Start() 
     {
         //находим объекты на сцене
-        cam = GameObject.Find("MainCamera").GetComponent<Camera>();
+        cam = Camera.main;//GameObject.Find("MainCamera").GetComponent<Camera>();
         //находим префабы в ресурсах
         prefabFinalPoint = Resources.Load<GameObject>("3d_prefabs/FinalPoint");
 

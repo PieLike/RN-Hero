@@ -84,6 +84,14 @@ public class EnemyBehavior : MonoBehaviour
         finalPoint.y = transform.position.y;
         finalPoint.z = transform.position.z + directionZ; 
 
+        RotateObject(); //поворачивем если необходимо
+
+        inMovement = true;
+        animator.SetBool("Walking", true);
+    }
+
+    private void RotateObject()
+    {
         if(finalPoint.x > transform.position.x)
         {
             if (isRotate == false)
@@ -96,10 +104,7 @@ public class EnemyBehavior : MonoBehaviour
             {
                 transform.Rotate(0,-180f,0);  
                 isRotate = false;  
-            }
-
-        inMovement = true;
-        animator.SetBool("Walking", true);
+            }    
     }
 
     private void WaitRandom()
@@ -227,8 +232,9 @@ public class EnemyBehavior : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) 
     {
-        inMovement = false; 
-        //finalPoint = null;   
+        //inMovement = false; 
+        finalPoint = transform.position - finalPoint;
+        RotateObject(); //поворачивем если необходимо   
     }
 
     private IEnumerator WaitCoroutine(float duration)

@@ -78,6 +78,10 @@ public class EnglishGameInput : MonoBehaviour
             //если ошибка конвертации (KeyCode больше одного символа) то вызываем ошибку
             string keyChar = kc.ConvertToString(symbol);
             char letter = Convert.ToChar(keyChar);
+
+            if(Char.IsLetter(letter) == false)
+                return;
+
             Sprite spriteSymbol = SetSprite(letter);
 
             //останавливаем и заканчиваем если нужно прошлые куротины

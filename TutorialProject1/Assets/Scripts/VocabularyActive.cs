@@ -1,18 +1,21 @@
 using System.Data;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class VocabularyActive : MonoBehaviour
 {
     //public DataTable actualVocabulary, generalVocabulary;
     private string actualDataBaseName = "vocabularyActual.bytes";//, generalDataBaseName = "vocabularyGeneral.bytes";
-    private GameObject VIWordsList, VIPanel;
+    private GameObject VIWordsList, VIPanel, VIExit;
 
     private void Start() 
     {
         //находим дочерние объекты
         VIPanel = transform.Find("VoculabraryInterfacePanel").gameObject;
         VIWordsList = transform.Find("VoculabraryInterfacePanel/VIWordsList").gameObject;
+        VIExit = transform.Find("VoculabraryInterfacePanel/VIExit").gameObject;
+            VIExit.GetComponent<Button>().onClick.AddListener(Close); 
     }
 
     void OnApplicationQuit()

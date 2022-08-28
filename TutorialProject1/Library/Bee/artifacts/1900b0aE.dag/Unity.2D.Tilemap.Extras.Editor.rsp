@@ -346,18 +346,18 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.TestRunner.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Brushes/GameObjectBrush/GameObjectBrush.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Brushes/GroupBrush/GroupBrush.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Brushes/LineBrush/LineBrush.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Brushes/RandomBrush/RandomBrush.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Menu/CustomRuleTileMenu.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Menu/MenuItemOrder.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/HexagonalRuleTile/HexagonalRuleTileEditor.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/IsometricRuleTile/IsometricRuleTileEditor.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/RuleOverrideTile/AdvancedRuleOverrideTileEditor.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/RuleOverrideTile/PopulateRuleOverrideTileWizard.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/RuleOverrideTile/RuleOverrideTileEditor.cs"
-"Library/PackageCache/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/RuleTile/RuleTileEditor.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Brushes/GameObjectBrush/GameObjectBrush.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Brushes/GroupBrush/GroupBrush.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Brushes/LineBrush/LineBrush.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Brushes/RandomBrush/RandomBrush.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Menu/CustomRuleTileMenu.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Menu/MenuItemOrder.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/HexagonalRuleTile/HexagonalRuleTileEditor.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/IsometricRuleTile/IsometricRuleTileEditor.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/RuleOverrideTile/AdvancedRuleOverrideTileEditor.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/RuleOverrideTile/PopulateRuleOverrideTileWizard.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/RuleOverrideTile/RuleOverrideTileEditor.cs"
+"Assets/TilePackage/com.unity.2d.tilemap.extras@2.2.3/Editor/Tiles/RuleTile/RuleTileEditor.cs"
 -langversion:9.0
 
 /deterministic
@@ -372,6 +372,6 @@
 /nowarn:1702
 /utf8output
 /preferreduilang:en-US
--warn:0
+
 
 /additionalfile:"Library/Bee/artifacts/1900b0aE.dag/Unity.2D.Tilemap.Extras.Editor.AdditionalFile.txt"

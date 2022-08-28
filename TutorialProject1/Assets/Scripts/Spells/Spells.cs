@@ -30,15 +30,7 @@ public class Spells : MonoBehaviour
             directionPlane.SetActive(false); 
 
         //находим активный спелл по номеру активного слота заклинания 
-        SetActiveSpell(MainVariables.activeSpellSlot);
-        
-        PickSpellUI pickSpellUI = gameObject.GetComponent<PickSpellUI>();
-        BookOfSpells.FillSlot(1, "frostspell"); //потом убрать
-        //pickSpellUI.FillSpellSlotIcon(1);
-        BookOfSpells.FillSlot(2, "recognizespell"); //потом убрать
-        //pickSpellUI.FillSpellSlotIcon(2);
-        BookOfSpells.FillSlot(3, "fireballspell"); //потом убрать
-        //pickSpellUI.FillSpellSlotIcon(3);
+        SetActiveSpell(MainVariables.activeSpellSlot);       
     }    
     private void Update() 
     {

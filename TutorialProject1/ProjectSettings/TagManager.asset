@@ -14,6 +14,9 @@ TagManager:
   - Wall
   - Area
   - SubArea
+  - Floor
+  - Quest
+  - Npc
   layers:
   - Default
   - TransparentFX

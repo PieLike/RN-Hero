@@ -1,5 +1,3 @@
-//using System.Collections;
-//using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
@@ -7,11 +5,12 @@ using System.Data;
 
 public class Interaction : MonoBehaviour
 {    
-    [NonSerialized] public static GameObject supposedInteractionObject;
+    public static GameObject supposedInteractionObject;
     private GameObject interactionObject;
     //public bool interactionIsActive = false;
     private GameObject heroObject, objFinalPoint, objEnglishGame;  
     private HeroMove heroMove;
+    private Action<GameObject> DoAfterReach;
 
     private void Start() 
     {
@@ -22,7 +21,7 @@ public class Interaction : MonoBehaviour
         heroMove = heroObject.GetComponent<HeroMove>();
     } 
     
-    private void Update()
+    private void LateUpdate()
     {
         //если существует активный объект, то побуждаем героя взаимодейстовать с ним
         if (interactionObject != null)
@@ -37,7 +36,7 @@ public class Interaction : MonoBehaviour
             //и приступаем к взаимодействию
             if (supposedInteractionObject != null)
             {
-                interactionObject = supposedInteractionObject;
+                interactionObject = supposedInteractionObject;                
                 InteractionWith();
             }
             else
@@ -54,128 +53,105 @@ public class Interaction : MonoBehaviour
     }
 
     private void InteractionWith()
-    {
-        FindFinalPoint();   //на всйкий случай находим FinalPoint (еси она уже найдена то он не будет заного искать)
-        //ищем тип объекта активного взаимодействия
-        if (objFinalPoint != null)
+    {       
+        if (interactionObject == null)
+            return; 
+        //ищем тип объекта активного взаимодействия                    
+        if (DoAfterReach == null)
         {
             switch(interactionObject.tag)
             {
                 case "Enemy":
-                    InteractionWithEnemy(); 
+                    if(interactionObject.GetComponent<EnemyBehavior>().currentSP <= 0)
+                        DoAfterReach += StartEG; 
                     break; 
                 case "Word":
-                    InteractionWithWord(); 
+                        DoAfterReach += TakeUpWord;
                     break;
                 case "Chest":
-                    InteractionWithChest(); 
-                    break;      
-            } 
-        }           
-    }
-
-    private void InteractionWithEnemy()
-    {
-        //взаимодействие с объектом типа Enemy        
-        
-        //разрешаем взаимодейтсвие с врагом когда у него нет щита
-        if(interactionObject.GetComponent<EnemyBehavior>().currentSP <= 0)
-        {
-            //заставим героя идти к объекту пока не подойдет
-            //if (MyMathCalculations.CheckReachToPoint(interactionObject.transform.position, heroObject.transform.position) != true)
-            if (HeroMove.isReached == false)
-            {
-                ComeTo(heroMove);
-                //начинаем взаимодействие
-                if (MainVariables.inInteraction == false)
-                    MainVariables.inInteraction = true;
-            } else {
-
-                objEnglishGame.GetComponent<EnglishGame>().StartGame(interactionObject, true);
-
-                //заканчиваем взаимодействие и очищаем слот активного объект
-                MainVariables.inInteraction = false;
-                interactionObject = null;
-
-                objFinalPoint.SetActive(false);
-            }     
+                    if (interactionObject.GetComponent<ChestBehavior>().looted == false)
+                        DoAfterReach += OpenChest;
+                    break; 
+                case "Npc":
+                        DoAfterReach += InteractWithNpc;
+                    break;       
+            }
         }
-    }
-
-    private void InteractionWithWord()
-    {
-        //взаимодействие с объектом типа Word 
-        
-        //заставим героя идти к объекту пока не подойдет
-        //if (MyMathCalculations.CheckReachToPoint(interactionObject.transform.position, heroObject.transform.position) != true)
-        if (HeroMove.isReached == false)
+        if (DoAfterReach != null)
         {
-            ComeTo(heroMove);
-            //начинаем взаимодействие
-            if (MainVariables.inInteraction == false)
-                MainVariables.inInteraction = true;
-        } else {                  
-            //подбираем лут
-            Interaction.TakeUpWord(interactionObject); 
-            //заканчиваем взаимодействие и очищаем слот активного объект
-            MainVariables.inInteraction = false;
-            interactionObject = null;
-
-            objFinalPoint.SetActive(false);
-        }    
-    }
-
-    private void InteractionWithChest()
-    {
-        if (interactionObject.GetComponent<ChestBehavior>().looted == false)
-        {
-            //взаимодействие с объектом типа Chest            
-            
-            //заставим героя идти к объекту пока не подойдет
-            //if (MyMathCalculations.CheckReachToPoint(interactionObject.transform.position, heroObject.transform.position) != true)
-            if (HeroMove.isReached == false)
-            {
-                ComeTo(heroMove);
-                //начинаем взаимодействие
-                if (MainVariables.inInteraction == false)
-                    MainVariables.inInteraction = true;
-            } else {   
-                //открываем сундук
-                OpenChest(); 
-                //заканчиваем взаимодействие и очищаем слот активного объект
-                MainVariables.inInteraction = false;
+            if (ReachInteractionObject() == true)
+            {         
+                //Debug.Log(DoAfterReach.ToString() + ", " + interactionObject.name);
+                DoAfterReach.Invoke(interactionObject);
+                DoAfterReach = null;
                 interactionObject = null;
-
-                objFinalPoint.SetActive(false);
             } 
-        }      
+        }                   
     }
 
-    private void OpenChest()
+    private void StartEG(GameObject objForEG)
     {
-        interactionObject.GetComponent<ChestBehavior>().Open();
+        objEnglishGame.GetComponent<EnglishGame>().StartGame(objForEG, true);
     }
-
-    private void ComeTo(HeroMove heroMove)
-    {        
-        //задать точку подхода героя и активировать движение к ней
-        if (MainVariables.inMovement == false)
-            MainVariables.inMovement = true;
-        //heroMove.finalPoint = interactionObject.transform.position;  
+    private void OpenChest(GameObject chest)
+    {
+        chest.GetComponent<ChestBehavior>().Open();
     }
-
+    private void InteractWithNpc(GameObject npc)
+    {
+        npc.GetComponent<NpcBehavior>().Interact();
+    }
     public static void TakeUpWord(GameObject takingWord)
-    {
+    { 
+        if (takingWord == null)
+        {
+            Debug.Log("попытка поднять пустой объект слово");
+            return;
+        }
         //сохранить предмет в активный словарь и уничтожить
         if (CheckExisting(takingWord) == false)
             AddInDataBase(takingWord);       
         Destroy(takingWord);   
     }    
 
+
+    private bool ReachInteractionObject()
+    {
+        FindFinalPoint();   //на всйкий случай находим FinalPoint (еси она уже найдена то он не будет заного искать)
+        if (objFinalPoint != null)
+        {
+            //заставим героя идти к объекту пока не подойдет
+            if (HeroMove.isReached == false)
+            {            
+                if (MainVariables.inMovement == false)
+                    MainVariables.inMovement = true;            
+                //начинаем взаимодействие
+                if (MainVariables.inInteraction == false)
+                    MainVariables.inInteraction = true;
+                return false;
+            } else 
+            {                    
+                //заканчиваем взаимодействие и очищаем слот активного объект
+                MainVariables.inInteraction = false;            
+                objFinalPoint.SetActive(false);
+                return true;
+            }   
+        }
+        else
+            return false; 
+    }
+   
     private void OnTriggerStay(Collider other) {
         //заполняем слот наведенного объекта тем, что попал под курсор
-        if(other.gameObject.tag == "Enemy" || other.gameObject.tag == "Word" || other.gameObject.tag == "Chest")
-            supposedInteractionObject = other.gameObject;          
+        foreach(string tag in MainVariables.interactionTags)
+        {
+            if(other.gameObject.tag == tag)
+            {
+                supposedInteractionObject = other.gameObject;
+                //Debug.Log(supposedInteractionObject.ToString());   
+                return;
+            } 
+        }      
     }
     
     private void FixedUpdate() {
@@ -193,7 +169,7 @@ public class Interaction : MonoBehaviour
         DataTable generalVocabulary = WorkWithDataBase.GetTable($"SELECT * FROM words WHERE eng = '{itemName}';", generalDataBaseName);
 
         //записываем слово из общего словаря в активный
-        WorkWithDataBase.InsertOneRow(actualDataBaseName, generalVocabulary);      
+        WorkWithDataBase.InsertOneRow(actualDataBaseName, generalVocabulary, "words");      
     }
 
     public static bool CheckExisting(GameObject interactionObject)
@@ -215,8 +191,9 @@ public class Interaction : MonoBehaviour
     private void FindFinalPoint()
     {
         if (objFinalPoint == null)
-            objFinalPoint = GameObject.Find("FinalPoint(Clone)");
+        {
+            objFinalPoint = GameObject.Find("FinalPoint(Clone)");            
+        }
     }    
-
     
 }

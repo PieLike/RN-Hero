@@ -6,7 +6,7 @@ using System;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    private Vector3 finalPoint;
+    public Vector3 finalPoint;
     private bool inMovement = false, isDead = false, inWaiting = false;
     public float speed = 50f;
     private GameObject shield;
@@ -31,6 +31,7 @@ public class EnemyBehavior : MonoBehaviour
 
         outline = GetComponent<Outline>(); 
         outline.OutlineWidth = 0;
+        outline.OutlineColor = Color.red;
 
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();  
@@ -126,16 +127,7 @@ public class EnemyBehavior : MonoBehaviour
                 CallDead();
 
             }            
-        } 
-        //если движение прекращено
-        if (inMovement == false)
-        {
-            if (animator.GetBool("Walking") == true)
-                animator.SetBool("Walking", false);
-            if (finalPoint != transform.position)
-                finalPoint = transform.position;
-
-        }
+        }         
         //добавляем или скрываем обводку в зависимости от того наведен ли крусор на объект
         if (Interaction.supposedInteractionObject == gameObject)
         {
@@ -147,6 +139,15 @@ public class EnemyBehavior : MonoBehaviour
 
     private void FixedUpdate() 
     {
+        //если движение прекращено
+        if (inMovement == false)
+        {
+            if (animator.GetBool("Walking") == true)
+                animator.SetBool("Walking", false);
+            if (finalPoint != transform.position)
+                finalPoint = transform.position;
+
+        }
         if (isDead == false && inWaiting == false)
         {
             if (inMovement && finalPoint != null)
@@ -195,6 +196,23 @@ public class EnemyBehavior : MonoBehaviour
         else
             gameObject.GetComponent<BoxCollider>().enabled = false;
         StartCoroutine(DeadCoroutine());
+
+        //зарегестрировать смерть врага в ивент менеджере
+        EnemyDeadRegistration();
+    }
+
+    private void EnemyDeadRegistration()
+    {
+        //зарегестрировать смерть врага в ивент менеджере
+        string enemyName;
+        if (gameObject.name.Contains('('))
+            enemyName = gameObject.name.Split('(')[0];
+        else
+            enemyName = gameObject.name;
+
+        enemyName = enemyName.Replace(" ", "").ToLower();
+
+        QuestEvents.SendEnemyKilled(enemyName);
     }
 
     private void CallLootDrop()
@@ -232,9 +250,11 @@ public class EnemyBehavior : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) 
     {
-        //inMovement = false; 
-        finalPoint = transform.position - finalPoint;
-        RotateObject(); //поворачивем если необходимо   
+        if (other.gameObject.tag != "Floor")
+        {
+            finalPoint = transform.position - finalPoint;
+            RotateObject(); //поворачивем если необходимо 
+        }  
     }
 
     private IEnumerator WaitCoroutine(float duration)

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d4cb516679f9a14998367367ed60c0f, type: 3}
+  m_Name: quest_1
+  m_EditorClassIdentifier: 
+  id: 12
+  questName: erwr
+  phases: 2
+  listPhases:
+  - task: 123
+    targetName: 23
+    position: 23
+    count: 1
+    taskType: 1
+    showFolder: 1
+  - task: 23
+    targetName: 
+    position: 23
+    count: 1
+    taskType: 0
+    showFolder: 1
+  questTaker: 23
+  questTaker_Position: 23
+  questTaker_Task: 23

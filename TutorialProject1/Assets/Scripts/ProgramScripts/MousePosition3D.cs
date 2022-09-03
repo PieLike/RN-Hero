@@ -1,5 +1,3 @@
-//using System.Collections;
-//using System.Collections.Generic;
 using System;
 using UnityEngine;
 
@@ -33,15 +31,20 @@ public class MousePosition3D : MonoBehaviour
         }
 
         //задаём точку движения "к чему"
-        if (Input.GetMouseButtonDown(0) && UIClick.OnMouseDown() && MainVariables.inSpelling == false && MainVariables.inInterface == false)
+        if (Input.GetMouseButton(0) && UIClick.OnMouseDown() && MainVariables.inSpelling == false && MainVariables.inInterface == false)
         {
+            Vector3 raycast = new Vector3(raycastHit.point.x, 0f ,raycastHit.point.z);
             //либо создаем новую точку либо задем новую позицию настоящей
             if (finalPoint == null)
-                finalPoint = Instantiate(prefabFinalPoint, new Vector3(raycastHit.point.x, 0f ,raycastHit.point.z), Quaternion.Euler(0,0,0));
+                finalPoint = Instantiate(prefabFinalPoint, raycast, Quaternion.Euler(0,0,0));
             else
-                finalPoint.transform.position = new Vector3(raycastHit.point.x, 0f ,raycastHit.point.z);
+            {                
+                if(finalPoint.transform.position != raycast)
+                    finalPoint.transform.position = raycast;
+            }                
 
-            finalPoint.SetActive(true);  
+            if (finalPoint.activeSelf == false)
+                finalPoint.SetActive(true);  
         }
 
     }

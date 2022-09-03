@@ -4,21 +4,25 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 public class EnglishGameInput : MonoBehaviour
 {
     private GameObject EGInputPanel, EGCheckmark, EGPanel;
     private Sprite[] allAlphabet;
-    private GameObject[] letterImages;
     private GameObject objLetterImage;
-    private Vector3[] letterPositions;
-    private char[] letterValue;
     private KeysConverter kc;
-    private int wordLenght = 7, typedLenght = 0; 
+    private int wordLenght = 12, typedLenght = 0; 
     private int actualLetter = 0;
     float lastStep, timeBetweenSteps = 0.1f;
-    private Coroutine[] coroutinesSet, coroutinesErase;
+
     [NonSerialized] public string fullWord = "";
+    private List<LetterImages> letters;
+
+    class LetterImages
+    {
+        public Coroutine coroutinesSet = null, coroutinesErase = null; public GameObject objLetter = null; public Vector3 position = Vector3.zero; public char value = '\0';
+    }
 
     private void Start() 
     {
@@ -32,14 +36,8 @@ public class EnglishGameInput : MonoBehaviour
         
         //создаем конвертер из кейкод в стринг
         kc = new KeysConverter();
-        //описываем массив куротин, а также объектов букв и их позиций, массив позиций заполняем (0,0,0)
-        coroutinesSet = new Coroutine[wordLenght];
-        coroutinesErase = new Coroutine[wordLenght];
-        letterImages = new GameObject[wordLenght];
-        letterPositions = new Vector3[wordLenght];
-        for(int i = 0; i < wordLenght; i++)
-            letterPositions[i] = Vector3.zero;
-        letterValue = new char[wordLenght];    
+
+        letters = new List<LetterImages>();
     }
     public void Update() 
     {
@@ -84,31 +82,37 @@ public class EnglishGameInput : MonoBehaviour
 
             Sprite spriteSymbol = SetSprite(letter);
 
+            while (actualLetter + 1 > letters.Count)
+            {
+                letters.Add(null);
+                letters[letters.Count-1] = new LetterImages();
+            }
+
             //останавливаем и заканчиваем если нужно прошлые куротины
-            if(coroutinesSet[actualLetter] != null)
+            if(letters[actualLetter].coroutinesSet != null)
             {
-                StopCoroutine(coroutinesSet[actualLetter]);
-                coroutinesSet[actualLetter] = null;
-            } else if (coroutinesErase[actualLetter] != null)
+                StopCoroutine(letters[actualLetter].coroutinesSet);
+                letters[actualLetter].coroutinesSet = null;
+            } else if (letters[actualLetter].coroutinesErase  != null)
             {
-                StopCoroutine(coroutinesErase[actualLetter]);
-                Destroy(letterImages[actualLetter]);
-                letterImages[actualLetter] = null;                    
-                coroutinesErase[actualLetter] = null;  
+                StopCoroutine(letters[actualLetter].coroutinesErase );
+                Destroy(letters[actualLetter].objLetter);
+                letters[actualLetter].objLetter = null;                    
+                letters[actualLetter].coroutinesErase  = null;  
             }             
 
             //создать новый объект в панели EG для записи изображения буквы
-            letterImages[actualLetter] = Instantiate(objLetterImage, letterPositions[actualLetter], Quaternion.Euler(0,0,0));
-            letterImages[actualLetter].transform.SetParent(EGInputPanel.transform, false);
-            letterImages[actualLetter].transform.localScale = new Vector3 (1f,1f,1f);
+            letters[actualLetter].objLetter = Instantiate(objLetterImage, letters[actualLetter].position, Quaternion.Euler(0,0,0));
+            letters[actualLetter].objLetter.transform.SetParent(EGInputPanel.transform, false);
+            letters[actualLetter].objLetter.transform.localScale = new Vector3 (1f,1f,1f);
             //задаем ему спрайт символа
-            letterImages[actualLetter].GetComponent<Image>().sprite = spriteSymbol;
+            letters[actualLetter].objLetter.GetComponent<Image>().sprite = spriteSymbol;
 
             PushLettersApart(true); //двигаем картинки символов
 
-            TypeEffect(letterImages[actualLetter], actualLetter);   //красиво опускаем его в его позицию    
+            TypeEffect(letters[actualLetter].objLetter, actualLetter);   //красиво опускаем его в его позицию    
 
-            letterValue[actualLetter] = letter;
+            letters[actualLetter].value = letter;
             RecountLetters();   //пересчет полного слова
 
             typedLenght += 1;
@@ -131,25 +135,25 @@ public class EnglishGameInput : MonoBehaviour
             actualLetter -= 1; 
             typedLenght -= 1; 
 
-            letterValue[actualLetter] = '\0';
+            letters[actualLetter].value = '\0';
             RecountLetters();   //пересчет полного слова
 
             //останавливаем и заканчиваем если нужно прошлые куротины
-            if(coroutinesSet[actualLetter] != null)
+            if(letters[actualLetter].coroutinesSet != null)
             {
-                StopCoroutine(coroutinesSet[actualLetter]);
-                coroutinesSet[actualLetter] = null;
-                letterImages[actualLetter].transform.localPosition = letterPositions[actualLetter];
-                letterImages[actualLetter].transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-            } else if (coroutinesErase[actualLetter] != null)
+                StopCoroutine(letters[actualLetter].coroutinesSet);
+                letters[actualLetter].coroutinesSet = null;
+                letters[actualLetter].objLetter.transform.localPosition = letters[actualLetter].position;
+                letters[actualLetter].objLetter.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            } else if (letters[actualLetter].coroutinesErase  != null)
             {
-                StopCoroutine(coroutinesErase[actualLetter]);
-                coroutinesErase[actualLetter] = null;  
+                StopCoroutine(letters[actualLetter].coroutinesErase );
+                letters[actualLetter].coroutinesErase  = null;  
             } 
             
             PushLettersApart(false);    //двигаем картинки символов
 
-            EraseEffect(letterImages[actualLetter], actualLetter); //красиво поднимаем его и удаляем 
+            EraseEffect(letters[actualLetter].objLetter, actualLetter); //красиво поднимаем его и удаляем 
         }
     }    
 
@@ -159,10 +163,10 @@ public class EnglishGameInput : MonoBehaviour
         //потом смещаем его чтобы потом опустить куротином
         Vector3 positionEffect = new Vector3(5f,15f,0f);
         Vector3 rotationEffect = new Vector3(0f,0f,-20f);
-        objLetter.transform.localPosition = letterPositions[actualcoroutine] + positionEffect;
+        objLetter.transform.localPosition = letters[actualcoroutine].position + positionEffect;
         objLetter.transform.localRotation = Quaternion.Euler(objLetter.transform.localRotation.eulerAngles + rotationEffect);    
               
-        coroutinesSet[actualcoroutine] = StartCoroutine(SetLetterCoroutine(objLetter, positionEffect, rotationEffect, actualcoroutine));  
+        letters[actualcoroutine].coroutinesSet = StartCoroutine(SetLetterCoroutine(objLetter, positionEffect, rotationEffect, actualcoroutine));  
     }
     private void EraseEffect(GameObject objLetter, int actualcoroutine)
     {
@@ -170,11 +174,11 @@ public class EnglishGameInput : MonoBehaviour
         //потом выставляем ему стартовую позицию чтобы потом поднять куротином
         Vector3 positionEffect = new Vector3(5f,15f,0f);
         Vector3 rotationEffect = new Vector3(0f,0f,-20f);
-        objLetter.transform.localPosition = letterPositions[actualcoroutine];
+        objLetter.transform.localPosition = letters[actualcoroutine].position;
         objLetter.transform.localRotation = Quaternion.Euler(objLetter.transform.localRotation.eulerAngles + rotationEffect);           
 
          
-        coroutinesErase[actualcoroutine] = StartCoroutine(EraseLetterCoroutine(objLetter, positionEffect, rotationEffect, actualcoroutine));  
+        letters[actualcoroutine].coroutinesErase = StartCoroutine(EraseLetterCoroutine(objLetter, positionEffect, rotationEffect, actualcoroutine));  
     }
 
     private IEnumerator SetLetterCoroutine(GameObject objLetter, Vector3 positionEffect, Vector3 rotationEffect, int actualcoroutine)
@@ -191,7 +195,7 @@ public class EnglishGameInput : MonoBehaviour
             objLetter.transform.Rotate(rotationEffect * (-1) /factor);
         }
 
-        objLetter.transform.localPosition = letterPositions[actualcoroutine];
+        objLetter.transform.localPosition = letters[actualcoroutine].position;
         objLetter.transform.localRotation = Quaternion.Euler(0f, 0f, 0f); 
     }
     private IEnumerator EraseLetterCoroutine(GameObject objLetter, Vector3 positionEffect, Vector3 rotationEffect, int actualcoroutine)
@@ -208,15 +212,15 @@ public class EnglishGameInput : MonoBehaviour
             objLetter.transform.Rotate(rotationEffect /factor);
         }
         
-        Destroy(letterImages[actualcoroutine]);
-        letterImages[actualcoroutine] = null;
+        Destroy(letters[actualcoroutine].objLetter);
+        letters[actualcoroutine].objLetter = null;
     }
 
     private void PushLettersApart(bool type)
     {
         //двигаем символы при добавлении или удалении одного
         float width = objLetterImage.GetComponent<RectTransform>().sizeDelta.x;
-        float indent = 5f;
+        float indent = 3f;
 
         if (type == true) //добавление нового символа
         {
@@ -226,16 +230,16 @@ public class EnglishGameInput : MonoBehaviour
                 for(int i = 0; i < typedLenght; i++) //(typedLenght)/2
                 {
                     //Debug.Log("going left");
-                    letterPositions[i] = new Vector3(letterPositions[i].x - width/2 - indent/2, letterPositions[i].y, letterPositions[i].z); 
+                    letters[i].position = new Vector3(letters[i].position.x - width/2 - indent/2, letters[i].position.y, letters[i].position.z); 
                 }
                 /*for(int i = typedLenght/2 + 1; i < typedLenght; i++)
                 {
                     Debug.Log("going right");
-                    LetterPositions[i] = new Vector3(LetterPositions[i].x + width/2 + indent/2, LetterPositions[i].y, LetterPositions[i].z); 
+                    letters[i].position = new Vector3(letters[i].position.x + width/2 + indent/2, letters[i].position.y, letters[i].position.z); 
                 }*/
 
                 //позиция последнего символа - на ширину и отступ вправо
-                letterPositions[typedLenght] = new Vector3(letterPositions[typedLenght-1].x + width + indent, letterPositions[typedLenght-1].y, letterPositions[typedLenght-1].z);   
+                letters[typedLenght].position = new Vector3(letters[typedLenght-1].position.x + width + indent, letters[typedLenght-1].position.y, letters[typedLenght-1].position.z);   
             }
         }
         else //удаление одного символа
@@ -243,13 +247,13 @@ public class EnglishGameInput : MonoBehaviour
             //двигаем все символы вправо на половину его ширины и отступа 
             for(int i = 0; i < typedLenght; i++)
             {
-                letterPositions[i] = new Vector3(letterPositions[i].x + width/2 + indent/2, letterPositions[i].y, letterPositions[i].z); 
+                letters[i].position = new Vector3(letters[i].position.x + width/2 + indent/2, letters[i].position.y, letters[i].position.z); 
             }  
         }
         //перестраиванием позиции изображения букв по массиву позиций
         for(int i = 0; i < typedLenght; i++)
         {
-            letterImages[i].transform.localPosition = letterPositions[i];
+            letters[i].objLetter.transform.localPosition = letters[i].position;
         }
     }
 
@@ -350,26 +354,17 @@ public class EnglishGameInput : MonoBehaviour
         //собираем полное слово из массива char набранноых символов    
         fullWord = "";
         for(int i = 0; i <= typedLenght; i++)
-            fullWord += letterValue[i];
+            fullWord += letters[i].value;
     }
     public void Clear()
     //отчисить данные о набранном слове - отчистить его массивы и удаляем объекты символов
     {    
-        for(int i = 0; i < wordLenght; i++)
+        while (letters.Count != 0)
         {
-            if (letterImages[i] != null)
-            {
-                Destroy(letterImages[i]);
-                letterImages[i] = null;
-            }
+            Destroy(letters[letters.Count-1].objLetter);
+            letters.RemoveAt(letters.Count-1);
         }
-        for(int i = 0; i < wordLenght; i++)
-            coroutinesSet[i] = null;
-        for(int i = 0; i < wordLenght; i++)
-            coroutinesErase[i] = null;        
-        for(int i = 0; i < wordLenght; i++)
-            letterPositions[i] = Vector3.zero;
-        for(int i = 0; i < wordLenght; i++)
-            letterValue[i] = '\0';
+
+        actualLetter = 0; typedLenght = 0;
     }
 }

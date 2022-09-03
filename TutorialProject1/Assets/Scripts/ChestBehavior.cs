@@ -1,5 +1,3 @@
-//using System.Collections;
-//using System.Collections.Generic;
 using UnityEngine;
 using System;
 [RequireComponent(typeof(Outline))]
@@ -13,6 +11,7 @@ public class ChestBehavior : MonoBehaviour
     {
         outline = GetComponent<Outline>(); 
         outline.OutlineWidth = 0; 
+        outline.OutlineColor = Color.yellow;
     } 
 
     void Update()

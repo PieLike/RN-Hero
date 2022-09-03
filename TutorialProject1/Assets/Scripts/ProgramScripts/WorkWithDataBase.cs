@@ -148,13 +148,13 @@ static class WorkWithDataBase
         return DS.Tables[0];
     }
 
-    public static void InsertOneRow(string newDateBaseName, DataTable dataRow)
+    public static void InsertOneRow(string newDateBaseName, DataTable dataRow, string tableName)
     {
         //записать одну строку в базу данных
 
         //пишем запрос на добавление новой строки в дб новую (активного словаря)
         //соотносим колонки и их значения строки первой таблицы(общего словаря) с колонками и значениями для запроса во второй (активный словарь)
-        string insertQuery = $"INSERT INTO words(местополей) VALUES (местозначений);", columnsList = "", valuesList = "";
+        string insertQuery = $"INSERT INTO " + tableName + "(местополей) VALUES (местозначений);", columnsList = "", valuesList = "";
         foreach (DataColumn column in dataRow.Columns)
         {            
             if (columnsList == "")
@@ -174,13 +174,13 @@ static class WorkWithDataBase
         WorkWithDataBase.ExecuteQueryWithoutAnswer(insertQuery, newDateBaseName);
     }
 
-    public static void InsertManyRow(string newDateBaseName, DataTable dataRows) //куда, что(откуда)
+    public static void InsertManyRow(string newDateBaseName, DataTable dataRows, string tableName) //куда, что(откуда)
     {
         //записать несколько строк в базу данных
 
         //пишем запрос на добавление новой строки в дб новую (активного словаря)
         //соотносим колонки и их значения строки первой таблицы(общего словаря) с колонками и значениями для запроса во второй (активный словарь)
-        string insertQuery = $"INSERT INTO words(местополей) VALUES (местозначений);", columnsList = "", valuesList = "";
+        string insertQuery = $"INSERT INTO " + tableName + "(местополей) VALUES (местозначений);", columnsList = "", valuesList = "";
 
 
         foreach (DataRow row in dataRows.Rows)
@@ -205,7 +205,7 @@ static class WorkWithDataBase
             
             columnsList = "";
             valuesList = "";
-            insertQuery = $"INSERT INTO words(местополей) VALUES (местозначений);";
+            insertQuery = $"INSERT INTO " + tableName + "(местополей) VALUES (местозначений);";
         }
     }
 

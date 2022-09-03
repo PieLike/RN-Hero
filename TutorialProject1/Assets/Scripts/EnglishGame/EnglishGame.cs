@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 [RequireComponent(typeof(EnglishGameInput))]
 
@@ -32,21 +33,44 @@ public class EnglishGame : MonoBehaviour
     public void StartGame(GameObject gameObject, bool closeByEnding) //для объектов
     {
         closeByEndingNew = closeByEnding;
+        englishGameObject = gameObject;
 
-        string[] wordsByParent = ReturnByParent(gameObject.name, false);
+        if (MainVariables.modeWithoutEG == true)
+        {
+            typedWordIsRight = true;
+            StartCoroutine(WaitASecond(0.1f));
+            //CloseEnglishGame();
+            return; 
+        }        
+
+        string enemyName;
+        if (gameObject.name.Contains('('))
+            enemyName = gameObject.name.Split('(')[0];
+        else
+            enemyName = gameObject.name;
+        enemyName = enemyName.Replace(" ", "").ToLower();
+
+        string[] wordsByParent = ReturnByParent(enemyName, false);
         if (wordsByParent.Length == 0)  
-            Debug.LogError("Невозможно найти слова по родителю в базе данных: " + gameObject.name);
+            Debug.LogError("Невозможно найти слова по родителю в базе данных: " + enemyName);
         else
         { 
             //выбираем случайное слово из массива и отсылаем его в импут
             int i = UnityEngine.Random.Range(0, wordsByParent.Length);
-            if (SettingActive(wordsByParent[i]))
-                englishGameObject = gameObject; 
+            SettingActive(wordsByParent[i]);
         }
         typedWordIsRight = false;            
     }
     public void StartGame(string objName) //для заклинаний
     {
+        if (MainVariables.modeWithoutEG == true)
+        {
+            typedWordIsRight = true;
+            StartCoroutine(WaitASecond(0.1f));
+            //CloseEnglishGame();
+            return; 
+        }    
+
         string[] wordsByParent = ReturnByParent(objName, false);
         if (wordsByParent.Length == 0)  
             Debug.LogError("Невозможно найти слова по родителю в базе данных: " + objName);
@@ -54,8 +78,7 @@ public class EnglishGame : MonoBehaviour
         { 
             //выбираем случайное слово из массива и отсылаем его в импут
             int i = UnityEngine.Random.Range(0, wordsByParent.Length);
-            if (SettingActive(wordsByParent[i]))
-                englishGameObject = gameObject; 
+            SettingActive(wordsByParent[i]);
         }
         typedWordIsRight = false; 
     }
@@ -130,6 +153,7 @@ public class EnglishGame : MonoBehaviour
                     typedWordIsRight = true;
 
                     EGCheckmark.GetComponent<ForCheckmark>().GoGreen();
+                    StartCoroutine(WaitASecond(1));
                     //CloseEnglishGame(); 
                 }
                 previousInput = EGinput.fullWord;
@@ -155,14 +179,20 @@ public class EnglishGame : MonoBehaviour
     }
 
     public void CloseEnglishGame()
-    {
+    {        
         EGinput.Clear();    //очищаем массивы введенного слова
         EGPanel.SetActive(false);
         MainVariables.inInterface = false; 
         //если требуется удалить объект после EG - удаляем (вызываем CallDead() ) 
         if (closeByEndingNew && (englishGameObject != null) && (englishGameObject.tag == "Enemy") && typedWordIsRight == true)
+        {
             englishGameObject.GetComponent<EnemyBehavior>().CallDead();    
+        }
     }
 
-    
+    private IEnumerator WaitASecond(float seconds = 1f)
+    {
+        yield return new WaitForSeconds(seconds); 
+        CloseEnglishGame();       
+    }    
 }

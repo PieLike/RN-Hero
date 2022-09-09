@@ -84,10 +84,10 @@ public class QuestBehavior : MonoBehaviour
         }     
     }   
 
-    private void EnemyKillingChecker()
+    private void EnemyKillingChecker(string killedEnemyName)
     {
         //если убитый враг это свинья то срабатывает фаза
-        if (QuestEvents.killedEnemyName == targetName || targetName == "enemy")        
+        if (killedEnemyName == targetName || targetName == "enemy")        
         {    
             actualCount++;
             if (actualCount >= targetCount)
@@ -101,10 +101,10 @@ public class QuestBehavior : MonoBehaviour
             }
         } 
     }
-    private void AreaReacherChecker()
+    private void AreaReacherChecker(string reachedAreaName)
     {
         //если убитый враг это свинья то срабатывает фаза
-        if (QuestEvents.reachedAreaName == actualPosition)        
+        if (reachedAreaName == actualPosition)        
         {                
             QuestEvents.OnAreaReach -= AreaReacherChecker;
 
@@ -114,10 +114,10 @@ public class QuestBehavior : MonoBehaviour
                 PreResult();
         } 
     }
-    private void InteractionNpcChecker()
+    private void InteractionNpcChecker(string interactionNpcName)
     {
         //если убитый враг это свинья то срабатывает фаза
-        if (QuestEvents.interactionNpcName == targetName)        
+        if (interactionNpcName == targetName)        
         {                
             QuestEvents.OnInteractionNpc -= InteractionNpcChecker;
 

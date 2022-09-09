@@ -31,14 +31,13 @@ public class NpcBehavior : MonoBehaviour
     }
     public void Interact()
     {        
-        QuestEvents.SendInteractionNpc(npcName);        
+        QuestEvents.SendInteractionNpc(npcName);      
 
-        DialogueSystem.Dialogue dialogue = new DialogueSystem.Dialogue();
-        dialogue.name = npcName;
-        dialogue.sentencs = new string[3];
-        dialogue.sentencs[0] = "1123123";
-        dialogue.sentencs[1] = "212312312";
-        dialogue.sentencs[2] = "3123123";       
+        string fileName = "New Narrative 2";
+        DialogueContainer dialogueGraph = Resources.Load<DialogueContainer>($"DialogueGraphs/{fileName}"); 
+        var dialogue = dialogueSystem.ConvertGraphToDialogue(dialogueGraph);
+
+        dialogue.name = npcName;        
 
         dialogueSystem.StartDialogue(dialogue);
     }

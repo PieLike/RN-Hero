@@ -28,7 +28,7 @@ public class QuestData: ScriptableObject
     [SerializeField]private string questTaker_Task; public string QuestTaker_Task {get{ return questTaker_Task;} set{ questTaker_Task = value;}}
     [NonSerialized] public bool showQuestTakerFolder = true;
 
-    [System.Serializable]
+    [Serializable]
     public class Phase
     {
         public string task, targetName, position; public int count = 1; public TaskType taskType;

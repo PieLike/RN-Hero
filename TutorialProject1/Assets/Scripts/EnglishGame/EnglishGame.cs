@@ -186,6 +186,7 @@ public class EnglishGame : MonoBehaviour
         //если требуется удалить объект после EG - удаляем (вызываем CallDead() ) 
         if (closeByEndingNew && (englishGameObject != null) && (englishGameObject.tag == "Enemy") && typedWordIsRight == true)
         {
+            Debug.Log("CloseEnglishGame calldead");
             englishGameObject.GetComponent<EnemyBehavior>().CallDead();    
         }
     }

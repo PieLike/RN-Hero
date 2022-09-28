@@ -40,18 +40,34 @@ SpriteAtlas:
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 1
-      enableAlphaDilation: 1
+      enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: f2713dc42213874428113b38c01a7120, type: 3}
     - {fileID: 2800000, guid: e0d4a49a56e053042b2b16ca7f9dca93, type: 3}
     - {fileID: 2800000, guid: e5abe2244eb7277449299248d84e540f, type: 3}
+    - {fileID: 2800000, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+    - {fileID: 2800000, guid: 257e17dd9f8252147bc01c3ea7769adf, type: 3}
+    - {fileID: 2800000, guid: 1172105181cedf240aeed5489621f542, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: -1679307677, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: 178340678, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: 806991128, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: -264983986, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: 577188884, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: 2098709367, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: -328106836, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: -1310594610, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: 953089717, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: -808282056, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: -590771829, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: -1176985799, guid: 1172105181cedf240aeed5489621f542, type: 3}
+  - {fileID: 1585776193, guid: 1172105181cedf240aeed5489621f542, type: 3}
   - {fileID: 1577946129, guid: e5abe2244eb7277449299248d84e540f, type: 3}
   - {fileID: 1867927401, guid: e5abe2244eb7277449299248d84e540f, type: 3}
   - {fileID: 687173369, guid: e5abe2244eb7277449299248d84e540f, type: 3}
@@ -101,7 +117,36 @@ SpriteAtlas:
   - {fileID: 388145613, guid: e0d4a49a56e053042b2b16ca7f9dca93, type: 3}
   - {fileID: -330362916, guid: e0d4a49a56e053042b2b16ca7f9dca93, type: 3}
   - {fileID: 1326751150, guid: e0d4a49a56e053042b2b16ca7f9dca93, type: 3}
+  - {fileID: 1478997172, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: 855142683, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: 811642743, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -265146494, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -24276576, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -1294882215, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -83152071, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -1037700109, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: 902580938, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -1690953080, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: 104792976, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -1724903892, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -1147672557, guid: 0ae3eebcda16b5944bf043012c97b1f3, type: 3}
+  - {fileID: -1647040561, guid: 257e17dd9f8252147bc01c3ea7769adf, type: 3}
+  - {fileID: -994676064, guid: 257e17dd9f8252147bc01c3ea7769adf, type: 3}
+  - {fileID: 145528852, guid: 257e17dd9f8252147bc01c3ea7769adf, type: 3}
   m_PackedSpriteNamesToIndex:
+  - texture_grass2_8
+  - texture_grass2_9
+  - texture_grass2_2
+  - texture_grass2_3
+  - texture_grass2_0
+  - texture_grass2_1
+  - texture_grass2_6
+  - texture_grass2_7
+  - texture_grass2_4
+  - texture_grass2_5
+  - texture_grass2_11
+  - texture_grass2_10
+  - texture_grass2_12
   - texture_sand_12
   - texture_sand_11
   - texture_sand_10
@@ -151,6 +196,22 @@ SpriteAtlas:
   - texture_grass_8
   - texture_grass_16
   - texture_grass_9
+  - texture_sand2_0
+  - texture_sand2_1
+  - texture_sand2_2
+  - texture_sand2_3
+  - texture_sand2_4
+  - texture_sand2_5
+  - texture_sand2_6
+  - texture_sand2_7
+  - texture_sand2_12
+  - texture_sand2_11
+  - texture_sand2_10
+  - texture_sand2_8
+  - texture_sand2_9
+  - texture_sea_1
+  - texture_sea_0
+  - texture_sea_2
   m_RenderDataMap: {}
   m_Tag: sprite atlas
   m_IsVariant: 0

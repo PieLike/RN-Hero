@@ -17,6 +17,8 @@ TagManager:
   - Floor
   - Quest
   - Npc
+  - Pass
+  - Branch
   layers:
   - Default
   - TransparentFX
@@ -24,8 +26,8 @@ TagManager:
   - Walls
   - Water
   - UI
-  - 
-  - 
+  - Hero
+  - Chest
   - 
   - 
   - 
@@ -56,4 +58,7 @@ TagManager:
     locked: 0
   - name: New Layer 1
     uniqueID: 1141062871
+    locked: 0
+  - name: Spells
+    uniqueID: 655268079
     locked: 0

@@ -7,12 +7,14 @@ using TMPro;
 
 public class Spells : MonoBehaviour
 {
-    private GameObject MouseTarget, objEnglishGame, prefabDirectionPlane, directionPlane;    
+    private GameObject MouseTarget; 
+    private GameObject objEnglishGame, prefabDirectionPlane, directionPlane;    
     private GameObject USInterface, UsingSpellPanel, USName, USCount;
     private BookOfSpells.spell activeSpell;
     private int usesRemain = 0;
     private bool isWaitingEnemy = false;
     private GameObject interactionObject;
+    float lastSpell;
 
     private void Start() 
     {
@@ -26,7 +28,7 @@ public class Spells : MonoBehaviour
         USCount = USInterface.transform.Find("UsingSpellPanel/USCount").gameObject;
         //находим ресурсы (и создаем на сцене)
         prefabDirectionPlane = Resources.Load<GameObject>("3d_prefabs/DirectionPlane");
-            directionPlane = Instantiate(prefabDirectionPlane, new Vector3(), Quaternion.Euler(0,0,0));
+            directionPlane = Instantiate(prefabDirectionPlane);
             directionPlane.SetActive(false); 
 
         //находим активный спелл по номеру активного слота заклинания 
@@ -40,10 +42,10 @@ public class Spells : MonoBehaviour
         //если спрайт направления активен то задаем ему направление и положение
         if (directionPlane.activeSelf == true) 
         {
-            float angle = MyMathCalculations.CalculateAngle(transform.position, MouseTarget.transform.position, transform.right) * (-1); 
-            directionPlane.transform.rotation = Quaternion.Slerp(directionPlane.transform.rotation, Quaternion.Euler(90,0,angle), 1f);
+            float angle = MyMathCalculations.CalculateAngle2D(transform.position, MouseTarget.transform.position, transform.right) * (-1);
+            directionPlane.transform.rotation = Quaternion.Slerp(directionPlane.transform.rotation, Quaternion.Euler(0f,0f,angle), 1f);
 
-            directionPlane.transform.position = new Vector3(transform.position.x,directionPlane.transform.position.y,transform.position.z);
+            directionPlane.transform.position = new Vector2(transform.position.x, transform.position.y);
         }        
     }
     
@@ -112,20 +114,25 @@ public class Spells : MonoBehaviour
             if (MainVariables.inSpelling)
             {
                 //используем заклинание по клику мыши
-                if (Input.GetMouseButtonDown(0) && UIClick.OnMouseDown())
+                if (Input.GetMouseButton(0) && UIClick.OnMouseDown())
                 {
-                    //если ожидается указание объекта то проверяем есть ли такой
-                    if(isWaitingEnemy == false)
-                        UseSpell(activeSpell);
-                    else if (interactionObject != null)
+                    if(Time.time - lastSpell > activeSpell.usingInterval)
                     {
-                        if (interactionObject.tag == "Enemy")
-                        {
+                        lastSpell = Time.time;
+                
+                        //если ожидается указание объекта то проверяем есть ли такой
+                        if(isWaitingEnemy == false)
                             UseSpell(activeSpell);
+                        else if (interactionObject != null)
+                        {
+                            if (interactionObject.tag == "Enemy")
+                            {
+                                UseSpell(activeSpell);
+                            }
+                            else
+                                Debug.Log("Не враг");
+                            
                         }
-                        else
-                            Debug.Log("Не враг");
-                        
                     }
                 }
                 //сбрасываем заклинание по кнопке
@@ -152,7 +159,7 @@ public class Spells : MonoBehaviour
             MainVariables.inSpelling = true;
             directionPlane.SetActive(true); 
 
-            if (activeSpell.type == "DE") //|| activeSpell.type == "DH")
+            if (activeSpell.type == ScriptableObjSpell.SpellType.DirectedOnEnemy) //|| activeSpell.type == "DH")
                 isWaitingEnemy = true;
             else
                 isWaitingEnemy = false;
@@ -180,13 +187,13 @@ public class Spells : MonoBehaviour
         //находим тип заклинания и зупаскаем соответсвующий класс
         switch(activeSpell.type)
         {
-            case("NPP"): //Non Physic Projectile
-                //находим угол между вектором +X и вектором от героя до курсора
-                angle = MyMathCalculations.CalculateAngle(transform.position, MouseTarget.transform.position, transform.right); 
-                UseNonPhysicProjectileSpell(activeSpell.speed, activeSpell.distance, activeSpell.name, angle, activeSpell.damage);
+            case(ScriptableObjSpell.SpellType.NonPhysicProjectile): //Non Physic Projectile
+                //находим угол между вектором +X и вектором от героя до курсора                
+                angle = MyMathCalculations.CalculateAngle2D(transform.position, MouseTarget.transform.position, transform.up);
+                UseNonPhysicProjectileSpell(activeSpell, angle, MouseTarget.transform.position);
             break;
 
-            case("DE"): //Directed on Enemy
+            case(ScriptableObjSpell.SpellType.DirectedOnEnemy): //Directed on Enemy
                 UseDirectedOnEnemySpell();
             break;
         }
@@ -194,17 +201,21 @@ public class Spells : MonoBehaviour
         SpellEnding();  
     } 
 
-    private void UseNonPhysicProjectileSpell(float speed, float distance, string stringProjectile, float angle, float damage)
+    private void UseNonPhysicProjectileSpell(BookOfSpells.spell spell, float angle, Vector2 position)
     {
-        GameObject projectile = Resources.Load<GameObject>("Spells/" + stringProjectile.ToString());
+        GameObject projectile = Resources.Load<GameObject>("Spells/" + spell.name.ToString() + "/" + spell.name.ToString());
         if (projectile != null)
         {
             Vector3 placeInstantiate = transform.position;
 
-            GameObject newSpellObject = Instantiate(projectile, placeInstantiate, transform.rotation * Quaternion.Euler(Math.Abs(angle),angle,-90));
+            GameObject newSpellObject = Instantiate(projectile, placeInstantiate, transform.rotation * Quaternion.Euler(0f,0f,angle*(-1)));//Quaternion.Euler(Math.Abs(angle),angle,-90)
 
             SpellBehavior newSpellBehavior = newSpellObject.GetComponent<SpellBehavior>(); 
-            newSpellBehavior.NonPhysicProjectile(speed, distance, damage); 
+            Vector2 startPosition = new Vector2(position.x - gameObject.transform.position.x, position.y - gameObject.transform.position.y);
+            newSpellBehavior.NonPhysicProjectile(spell, true, startPosition); 
+
+            if(spell.selfImpact > 0)
+                gameObject.GetComponent<HeroMove>().TakeImpact(spell.selfImpact, position);
         }       
     } 
 
@@ -258,7 +269,7 @@ public class Spells : MonoBehaviour
             break;
         }
     }
-    private Vector3 SetMousePositionToFinalPoint()
+    /*private Vector3 SetMousePositionToFinalPoint()
     {
         Vector3 finalPoint;
 
@@ -267,6 +278,6 @@ public class Spells : MonoBehaviour
         finalPoint.z = MouseTarget.transform.position.z;
 
         return finalPoint;
-    }    
+    }   */ 
 
 }

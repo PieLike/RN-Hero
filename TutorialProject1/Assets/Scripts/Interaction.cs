@@ -17,12 +17,13 @@ public class Interaction : MonoBehaviour
         //находим объекты на сцене
         objEnglishGame = GameObject.Find("Interface/EnglishGame");
         heroObject = GameObject.Find("Hero");
+        objFinalPoint = GameObject.Find("FinalPoint2D");
 
         heroMove = heroObject.GetComponent<HeroMove>();
     } 
     
     private void LateUpdate()
-    {
+    {       
         //если существует активный объект, то побуждаем героя взаимодейстовать с ним
         if (interactionObject != null)
         {
@@ -30,7 +31,7 @@ public class Interaction : MonoBehaviour
         }
 
         //обрабатываем нажатие мыши (если это не нажатие на интерфейс)        
-        if (Input.GetMouseButtonDown(0) && UIClick.OnMouseDown() && MainVariables.inSpelling == false && MainVariables.inInterface == false)            
+        if (Input.GetMouseButtonDown(0) && UIClick.OnMouseDown() && MainVariables.allowMovement == true)            
         {
             //если наведенный объект существует то делаем его объектом активного взаимодействия
             //и приступаем к взаимодействию
@@ -49,7 +50,7 @@ public class Interaction : MonoBehaviour
         }
         //если герой не в процессе взаимодействия то очищаем слот активного объекта
         if (MainVariables.inInteraction == false && interactionObject != null)
-            interactionObject = null;            
+            interactionObject = null;                           
     }
 
     private void InteractionWith()
@@ -62,18 +63,24 @@ public class Interaction : MonoBehaviour
             switch(interactionObject.tag)
             {
                 case "Enemy":
-                    if(interactionObject.GetComponent<EnemyBehavior>().currentSP <= 0)
+                    if(interactionObject.GetComponent<EnemyData>() != null && interactionObject.GetComponent<EnemyData>().currentSP <= 0)
                         DoAfterReach += StartEG; 
                     break; 
                 case "Word":
                         DoAfterReach += TakeUpWord;
                     break;
                 case "Chest":
-                    if (interactionObject.GetComponent<ChestBehavior>().looted == false)
+                    if (interactionObject.GetComponent<ChestBehavior>() != null && interactionObject.GetComponent<ChestBehavior>().looted == false)
                         DoAfterReach += OpenChest;
                     break; 
                 case "Npc":
                         DoAfterReach += InteractWithNpc;
+                    break;
+                case "Pass":
+                        DoAfterReach += InteractWithPass;
+                    break;
+                case "Branch":
+                        //DoAfterReach += InteractWithPass;
                     break;       
             }
         }
@@ -101,6 +108,10 @@ public class Interaction : MonoBehaviour
     {
         npc.GetComponent<NpcBehavior>().Interact();
     }
+    private void InteractWithPass(GameObject pass)
+    {
+        pass.GetComponent<Pass>().DoPass();
+    }
     public static void TakeUpWord(GameObject takingWord)
     { 
         if (takingWord == null)
@@ -109,15 +120,14 @@ public class Interaction : MonoBehaviour
             return;
         }
         //сохранить предмет в активный словарь и уничтожить
-        if (CheckExisting(takingWord) == false)
-            AddInDataBase(takingWord);       
+        Voculabrary.AddWordInDataBase(takingWord);  
         Destroy(takingWord);   
     }    
 
 
     private bool ReachInteractionObject()
     {
-        FindFinalPoint();   //на всйкий случай находим FinalPoint (еси она уже найдена то он не будет заного искать)
+        //FindFinalPoint();   //на всйкий случай находим FinalPoint (еси она уже найдена то он не будет заного искать)
         if (objFinalPoint != null)
         {
             //заставим героя идти к объекту пока не подойдет
@@ -129,11 +139,14 @@ public class Interaction : MonoBehaviour
                 if (MainVariables.inInteraction == false)
                     MainVariables.inInteraction = true;
                 return false;
-            } else 
+            } 
+            else 
             {                    
                 //заканчиваем взаимодействие и очищаем слот активного объект
                 MainVariables.inInteraction = false;            
                 objFinalPoint.SetActive(false);
+                if (MainVariables.inMovement == true)
+                    MainVariables.inMovement = false;   
                 return true;
             }   
         }
@@ -141,59 +154,31 @@ public class Interaction : MonoBehaviour
             return false; 
     }
    
-    private void OnTriggerStay(Collider other) {
+    private void OnTriggerStay2D(Collider2D other) {
         //заполняем слот наведенного объекта тем, что попал под курсор
         foreach(string tag in MainVariables.interactionTags)
         {
             if(other.gameObject.tag == tag)
             {
-                supposedInteractionObject = other.gameObject;
-                //Debug.Log(supposedInteractionObject.ToString());   
+                if (supposedInteractionObject != other.gameObject)
+                    supposedInteractionObject = other.gameObject;
                 return;
             } 
         }      
     }
-    
-    private void FixedUpdate() {
+    private void OnTriggerExit2D(Collider2D other) 
+    {
         //очищаем слот наведенного объекта
-        supposedInteractionObject = null;    
-    }
-
-    public static void AddInDataBase(GameObject interactionObject)
-    {
-        //ищем в общей дб словаря слово и записываем его в активный словарь
-        string actualDataBaseName = "vocabularyActual.bytes", generalDataBaseName = "vocabularyGeneral.bytes";
-        string itemName = interactionObject.GetComponent<TMP_Text>().text.ToLower();
-
-        //делаем запрос на строку с нужным словом в общем словаре
-        DataTable generalVocabulary = WorkWithDataBase.GetTable($"SELECT * FROM words WHERE eng = '{itemName}';", generalDataBaseName);
-
-        //записываем слово из общего словаря в активный
-        WorkWithDataBase.InsertOneRow(actualDataBaseName, generalVocabulary, "words");      
-    }
-
-    public static bool CheckExisting(GameObject interactionObject)
-    {
-        //проверяем есть ли такой объект у героя (в словаре)
-        string actualDataBaseName = "vocabularyActual.bytes";
-        string itemName = interactionObject.GetComponent<TMP_Text>().text.ToLower();
-
-        //делаем запрос на строку с нужным словом в актуальном словаре
-        DataTable actualVocabulary = WorkWithDataBase.GetTable($"SELECT * FROM words WHERE eng = '{itemName}';", actualDataBaseName);
-
-        foreach(DataRow row in actualVocabulary.Rows)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    private void FindFinalPoint()
+        if (supposedInteractionObject != null)
+            supposedInteractionObject = null; 
+    }    
+    
+    /*private void FindFinalPoint()
     {
         if (objFinalPoint == null)
         {
-            objFinalPoint = GameObject.Find("FinalPoint(Clone)");            
+            objFinalPoint = GameObject.Find("FinalPoint2D(Clone)");            
         }
-    }    
+    }  */  
     
 }

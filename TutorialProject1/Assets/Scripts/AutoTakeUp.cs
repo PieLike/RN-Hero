@@ -1,25 +1,28 @@
-//using System.Collections;
-//using System.Collections.Generic;
 using System;
 using UnityEngine;
-//using System.Data;
 
 public class AutoTakeUp : MonoBehaviour
 {
     [SerializeField] private GameObject lootItem;
     private GameObject heroObject;
-    private Rigidbody lootItemRigidBody; 
+    private Rigidbody2D lootItemRigidBody; 
     private bool inDragging = false;  
     [NonSerialized] public float speed;
-    private Vector3 finalPoint;  
+    private Vector2 finalPoint;  
+    private DictionaryManager dictionaryManager;
+    private void Start() 
+    {
+        dictionaryManager = FindObjectOfType<DictionaryManager>(); 
+    }
 
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.gameObject.tag == "Hero")
         {
             if (lootItem.tag == "Word")
             {
-                if (Interaction.CheckExisting(lootItem) == true)
+                
+                if (dictionaryManager.CheckExisting(lootItem) == true)
                 {
                     TakeUpTo(other.gameObject); 
                 }
@@ -33,7 +36,7 @@ public class AutoTakeUp : MonoBehaviour
 
     private void TakeUpTo(GameObject DraggingToObject)
     {
-        lootItemRigidBody = lootItem.GetComponent<Rigidbody>();
+        lootItemRigidBody = lootItem.GetComponent<Rigidbody2D>();
         inDragging = true;
         heroObject = DraggingToObject;
     }
@@ -56,8 +59,8 @@ public class AutoTakeUp : MonoBehaviour
             {
                 finalPoint = heroObject.transform.position;
             
-                Vector3 direction = MyMathCalculations.CalculateDirectionSpeeds(lootItem.transform.position, finalPoint, speed);
-                lootItemRigidBody.MovePosition(lootItem.transform.position + direction * Time.deltaTime);      
+                Vector2 direction = MyMathCalculations.CalculateDirectionSpeeds(lootItem.transform.position, finalPoint);
+                lootItemRigidBody.MovePosition(lootItemRigidBody.position + direction * Time.deltaTime * speed);      
             }
         }
     }

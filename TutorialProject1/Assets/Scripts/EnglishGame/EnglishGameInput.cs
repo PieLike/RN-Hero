@@ -74,8 +74,14 @@ public class EnglishGameInput : MonoBehaviour
         try {
             //конвертируем из KeyCode в char, а потом находим спрайт по такому символу
             //если ошибка конвертации (KeyCode больше одного символа) то вызываем ошибку
-            string keyChar = kc.ConvertToString(symbol);
-            char letter = Convert.ToChar(keyChar);
+            char letter;
+            if (symbol == KeyCode.Space)
+                letter = ' ';
+            else
+            {
+                string keyChar = kc.ConvertToString(symbol);
+                letter = Convert.ToChar(keyChar);
+            }
 
             if(Char.IsLetter(letter) == false)
                 return;
@@ -341,8 +347,11 @@ public class EnglishGameInput : MonoBehaviour
             case ('Z'):
                 spriteSymbol = allAlphabet.Single(s => s.name == "Alphabet_25");
                 break;
+            case (' '):
+                spriteSymbol = allAlphabet.Single(s => s.name == "Alphabet_26");
+                break;
             default:
-                spriteSymbol = allAlphabet.Single(s => s.name == "Alphabet_43");
+                spriteSymbol = allAlphabet.Single(s => s.name == "Alphabet_26");
                 break;
         }
 

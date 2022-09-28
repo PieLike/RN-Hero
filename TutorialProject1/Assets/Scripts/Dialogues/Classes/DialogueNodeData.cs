@@ -7,11 +7,8 @@ public class DialogueNodeData
 {
     public string NodeGUID, DialogueText;
     public Vector2 Position;
-    public bool EntryPoint = false;
-    public DialogueSystem.emotions emotion;/* public DialogueSystem.emotions emotion {get{
-        
-        return Emotion;
-        } set{ Emotion = value;}}*/
+    public bool EntryPoint = false, HeroLine = true;
+    public DialogueSystem.emotions emotion;
 
     [SerializeField] public List<DialogueChoice> choices; public List<DialogueChoice> Choices {get{
         

@@ -6,13 +6,11 @@ using UnityEngine.UIElements;
 
 public class DialogueNode : Node
 {
-    public enum DialogueType{SingleChoice, MultipleChoice}
     public string GUID;
-        public string DialogueName;
-    public string DialogueText;
-    public bool EntryPoint = false;
+    public string DialogueName, DialogueText;
+    private string NpcName = "НПС";
+    public bool EntryPoint = false, heroLine = true;
     public List<DialogueNodeData.DialogueChoice> Choices;
-    public DialogueType dialogueType;
     public DialogueSystem.emotions emotionType;
 
     public void AddTextInNode(string text = "")
@@ -27,52 +25,20 @@ public class DialogueNode : Node
         mainContainer.Add(textField);
         DialogueText = text;
     }    
-    public void Initialize() 
+    public void Initialize(string npcName = "") 
     {
         //DialogueName = "DialogueName";
         Choices = new List<DialogueNodeData.DialogueChoice>();
         //DialogueText = "Dialogue text.";
+        if (npcName != "")
+            NpcName = npcName;
     }
-
-    /*public void AddChoice()
-    {
-        Choices.Add(null);    
-    }
-
-    public void ParseChoices(List<Edge> edges)
-    {
-        Choices.Clear();
-
-        //Debug.Log(edges.Count().ToString());
-        if (!edges.Any()) return;
-        var connectedSockets = edges.Where(x => x.input.node != null).ToArray();
-        for (var i = 0; i < connectedSockets.Count(); i++)
-        {
-            var outputNode = (connectedSockets[i].output.node as DialogueNode);
-            var inputNode = (connectedSockets[i].input.node as DialogueNode);
-            if(GUID == outputNode.GUID)
-            {
-                var choice = new DialogueSystem.DialogueChoice();
-                    
-                choice.name = connectedSockets[i].output.portName;
-                choice.targetGuid = inputNode.GUID;
-
-                Choices.Add(choice);
-            }
-        }  
-        Debug.Log(Choices.Count().ToString());
-    }*/
 
     public void Draw()
     {
         //Title container
         TextField dialogueNameTextField = new TextField() {value = DialogueName};
         titleContainer.Insert(0,dialogueNameTextField);
-
-        //Input contaner
-        //Port inputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(float));
-        //inputPort.portName = "Input";
-        //inputContainer.Add(inputPort);
 
         //Extensions container
         VisualElement customDataContainer = new VisualElement();
@@ -89,6 +55,15 @@ public class DialogueNode : Node
     {
         emotionType = emotion;
         return emotionType.ToString();
+    }
+    public void SetLineType(bool line)
+    {
+        heroLine = line;
+
+        if (line)
+            title = "Главный герой";
+        else
+            title = NpcName;                                                            
     }
 
 }

@@ -24,12 +24,12 @@ public class GraphSaveUtility
 
     public void SaveGraph(string fileName)
     {
-        DialogueContainer dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
+        DialogueContainer dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();        
+        dialogueContainer.NpcName = targetGraphView.GraphName;
 
         if (!SaveNodes(fileName, dialogueContainer)) return;
 
         SaveExposedProperties(dialogueContainer);
-        //SaveCommentBlocks(dialogueContainer);
 
         if (!AssetDatabase.IsValidFolder("Assets/Resources"))
             AssetDatabase.CreateFolder("Assets", "Resources");
@@ -63,14 +63,13 @@ public class GraphSaveUtility
         }
 
         ClearGraph();
+        AddExposedProperties();
         GenerateDialogueNodes();
         ConnectDialogueNodes();
-        AddExposedProperties();
-        //GenerateCommentBlocks();
     }
     private void ClearGraph()
     {
-        Nodes.Find(x => x.EntryPoint).GUID = containerCache.NodeLinks[0].BaseNodeGUID;
+        //Nodes.Find(x => x.EntryPoint).GUID = containerCache.NodeLinks[0].BaseNodeGUID;
         foreach (var perNode in Nodes)
         {
             //if (perNode.EntryPoint) continue;
@@ -82,9 +81,11 @@ public class GraphSaveUtility
 
     private void GenerateDialogueNodes()
     {
+        targetGraphView.SetGraphName(containerCache.NpcName);
         foreach (var perNode in containerCache.DialogueNodeData)
         {
-            var tempNode = targetGraphView.AddNodeElement("", perNode.EntryPoint, Vector2.zero, perNode.DialogueText, perNode.NodeGUID, perNode.emotion);
+            var tempNode = targetGraphView.AddNodeElement("", perNode.EntryPoint, Vector2.zero, 
+                                                            perNode.DialogueText, perNode.NodeGUID, perNode.emotion, perNode.HeroLine);
 
             var nodePorts = containerCache.NodeLinks.Where(x => x.BaseNodeGUID == perNode.NodeGUID).ToList();
             nodePorts.ForEach(x => targetGraphView.AddChoicePort(tempNode, x.PortName));
@@ -146,7 +147,8 @@ public class GraphSaveUtility
                 Position = node.GetPosition().position,
                 Choices = CollectChoices(node.GUID, Edges),
                 emotion = node.emotionType,
-                EntryPoint = node.EntryPoint              
+                EntryPoint = node.EntryPoint,
+                HeroLine = node.heroLine              
             });
         }
 
@@ -181,22 +183,6 @@ public class GraphSaveUtility
         dialogueContainer.ExposedProperties.Clear();
         dialogueContainer.ExposedProperties.AddRange(targetGraphView.ExposedProperties);
     }
-
-    /*private void SaveCommentBlocks(DialogueContainer dialogueContainer)
-    {
-        foreach (var block in CommentBlocks)
-        {
-            var nodes = block.containedElements.Where(x => x is DialogueNode).Cast<DialogueNode>().Select(x => x.GUID)
-                .ToList();
-
-            dialogueContainer.CommentBlockData.Add(new CommentBlockData
-            {
-                ChildNodes = nodes,
-                Title = block.title,
-                Position = block.GetPosition().position
-            });
-        }
-    }*/
 
     private void AddExposedProperties()
     {

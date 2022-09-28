@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7603314786739804830}
   - component: {fileID: 5779257718595762366}
   - component: {fileID: 6305113819023782191}
-  - component: {fileID: 5789651283702064160}
-  - component: {fileID: 6094563559942597063}
-  - component: {fileID: 6224354539824622790}
-  m_Layer: 0
+  - component: {fileID: 7993714370133115943}
+  - component: {fileID: 5290428615220843866}
+  - component: {fileID: 6614613856661383474}
+  m_Layer: 7
   m_Name: WordDrop
   m_TagString: Word
   m_Icon: {fileID: 0}
@@ -176,43 +176,66 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 5779257718595762366}
   m_maskType: 0
---- !u!54 &5789651283702064160
-Rigidbody:
+--- !u!50 &7993714370133115943
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 594485457781264127}
-  serializedVersion: 2
-  m_Mass: 100
-  m_Drag: 0
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!65 &6094563559942597063
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 594485457781264127}
+  m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.7121491, y: 0.51558137, z: 0.014688479}
-  m_Center: {x: 0.9120014, y: 0.59957725, z: -0.00060695875}
---- !u!33 &6224354539824622790
-MeshFilter:
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!61 &5290428615220843866
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 594485457781264127}
-  m_Mesh: {fileID: 0}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.91285634, y: 0.5753002}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.6806107, y: 0.5292292}
+  m_EdgeRadius: 0
+--- !u!114 &6614613856661383474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594485457781264127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c2695632148a6418c8b19ade4944d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 0}
 --- !u!1 &841900220592766366
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,9 +245,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3824446048565143548}
-  - component: {fileID: 221478059584730841}
   - component: {fileID: 7006862844524255264}
-  m_Layer: 2
+  - component: {fileID: 3181245717799275592}
+  m_Layer: 7
   m_Name: TakeUpArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,19 +274,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.648, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!135 &221478059584730841
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 841900220592766366}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7006862844524255264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,4 +287,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootItem: {fileID: 594485457781264127}
-  speed: 10
+--- !u!58 &3181245717799275592
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841900220592766366}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.27

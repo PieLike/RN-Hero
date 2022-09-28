@@ -11,8 +11,9 @@ using Subtegral.DialogueSystem.DataContainers;
 public class DialogueGraphView : GraphView
 {
     public readonly Vector2 defaultNodeSize = new Vector2(150,200); //x,y
-        public Blackboard Blackboard = new Blackboard();
-        public List<ExposedProperty> ExposedProperties { get; private set; } = new List<ExposedProperty>();
+    public Blackboard Blackboard = new Blackboard();
+    public List<ExposedProperty> ExposedProperties { get; private set; } = new List<ExposedProperty>();
+    public string GraphName;
     
     public DialogueGraphView()
     {
@@ -24,7 +25,8 @@ public class DialogueGraphView : GraphView
     }
     
     public DialogueNode AddNodeElement( string nodeName = "", bool entrypoint = false, Vector2 position = default(Vector2),
-                                        string nodeText = "", string nodeGUID = "", DialogueSystem.emotions emotion = DialogueSystem.emotions.neutral)
+                                        string nodeText = "", string nodeGUID = "", DialogueSystem.emotions emotion = DialogueSystem.emotions.neutral,
+                                        bool heroLine = true)
     {
         DialogueNode node;
         if (entrypoint)
@@ -35,22 +37,11 @@ public class DialogueGraphView : GraphView
         node.SetPosition(new Rect(position, defaultNodeSize)); //x,y,width,height   
         node.AddTextInNode(nodeText);
         node.SetEmotionType(emotion);
+        node.SetLineType(heroLine);
 
-        
+        AddVisualElements(node);   
 
-        List<DialogueSystem.emotions> m_PopupValues = new System.Collections.Generic.List<DialogueSystem.emotions>
-        { DialogueSystem.emotions.neutral, DialogueSystem.emotions.happy, DialogueSystem.emotions.angry };
-
-        var enumPopup = new UnityEditor.UIElements.PopupField<DialogueSystem.emotions>( choices: m_PopupValues, defaultValue: node.emotionType,
-                                                                                        formatSelectedValueCallback: value => node.SetEmotionType(value));
-        enumPopup.style.width = 70; 
-        node.titleContainer.Add(enumPopup);
-
-        var button = new Button( () => AddChoicePort(node) );
-        button.text = "New choice";
-        node.titleContainer.Add(button);
-
-        node.Initialize();
+        node.Initialize(GraphName);
         //node.Draw();
         node.RefreshExpandedState();
         AddElement(node);
@@ -216,6 +207,43 @@ public class DialogueGraphView : GraphView
         var sa = new BlackboardRow(field, propertyValueTextField);
         container.Add(sa);
         Blackboard.Add(container);
+    }
+
+    private void AddVisualElements(DialogueNode node)
+    {
+        //добавление toogle выбора говорящего
+        List<DialogueSystem.emotions> linePopup = new List<DialogueSystem.emotions>
+        { DialogueSystem.emotions.neutral, DialogueSystem.emotions.happy, DialogueSystem.emotions.angry };
+
+        //var lineToggle = new UnityEngine.UIElements.Toggle("Реплика гг");  //BaseField<TValueType>
+        var lineToggle = new UnityEditor.UIElements.ToolbarToggle();
+        lineToggle.label = "Реплика гг";
+        lineToggle.value = node.heroLine;
+        lineToggle.RegisterValueChangedCallback(value => { node.SetLineType(value.newValue);});
+
+        lineToggle.style.width = 80f; lineToggle.style.height = 30f;  
+        node.titleContainer.Add(lineToggle);
+
+        //добавление списка выбора эмоции
+        List<DialogueSystem.emotions> emotionPopup = new System.Collections.Generic.List<DialogueSystem.emotions>
+        { DialogueSystem.emotions.neutral, DialogueSystem.emotions.happy, DialogueSystem.emotions.angry };
+
+        var enumPopup = new UnityEditor.UIElements.PopupField<DialogueSystem.emotions>( choices: emotionPopup, defaultValue: node.emotionType,
+                                                                                        formatSelectedValueCallback: value => node.SetEmotionType(value));
+        enumPopup.style.width = 70; 
+        node.titleContainer.Add(enumPopup);
+
+        //кнопка добавить новый выбор
+        var button = new Button( () => AddChoicePort(node) );
+        button.text = "New choice";
+        node.titleContainer.Add(button);
+    }
+
+    public void SetGraphName(string graphName)
+    {
+        if (GraphName != "")
+            GraphName = graphName;
+
     }
 
     public void ClearBlackBoardAndExposedProperties()

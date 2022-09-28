@@ -1,18 +1,16 @@
 using UnityEngine;
 using System;
-[RequireComponent(typeof(Outline))]
+[RequireComponent(typeof(MyOutline))]
 
 public class ChestBehavior : MonoBehaviour
 {
-    private Outline outline; 
+    private MyOutline outline; 
     [NonSerialized] public bool looted = false;
 
     private void Start() 
     {
-        outline = GetComponent<Outline>(); 
-        outline.OutlineWidth = 0; 
-        outline.OutlineColor = Color.yellow;
-    } 
+        outline = GetComponent<MyOutline>();
+    }
 
     void Update()
     {      
@@ -21,10 +19,12 @@ public class ChestBehavior : MonoBehaviour
             //добавляем или скрываем обводку в зависимости от того наведен ли крусор на объект
             if (Interaction.supposedInteractionObject == gameObject)
             {
-                outline.OutlineWidth = 3;
+                outline.SetOutline(MyOutline.Color.yellow);
             }    
-            else if (outline.OutlineWidth != 0)
-                outline.OutlineWidth = 0;
+            else
+            {
+                outline.RemoveOutline();  
+            }
         }  
     }  
 
@@ -36,6 +36,6 @@ public class ChestBehavior : MonoBehaviour
         gameObject.GetComponent<LootDroping>().Drop();
         //меняем статус на облутанный и на всякий случай убираем обводку
         looted = true;
-        outline.OutlineWidth = 0;
+        outline.RemoveOutline(); 
     }
 }

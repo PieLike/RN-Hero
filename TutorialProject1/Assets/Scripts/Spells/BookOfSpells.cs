@@ -7,17 +7,59 @@ using System;
 public class BookOfSpells : MonoBehaviour
 {
     [NonSerialized] public static spell slot1data, slot2data, slot3data, slot4data, slot5data, slot6data, slot7data, slot8data, slot9data;
-    private static string generalSpellDataBaseName = "spellBook.bytes";
+    //private static string generalSpellDataBaseName = "spellBook.bytes";
     [SerializeField] private GameObject pickSpellUI; //нижняя панель выбора заклинания
 
     public struct spell
     {
-        public string name, fullname, type;
-        public float speed, distance, damage; 
-        public int bullets;
+        public string name, fullname;
+        public float speed, distance, damage, usingInterval; 
+        public int bullets, selfImpact, enemyImpact;
+        public ScriptableObjSpell.SpellType type;        
     }
 
-    public static void FillSlot(int slotNumber, string spellName)
+    public static void FillSlotBySO(int slotNumber, ScriptableObjSpell spellSO)
+    {
+        spell activeSlot = new spell();
+
+        activeSlot.name = spellSO.spellname;
+        activeSlot.speed = spellSO.speed;
+        activeSlot.distance = spellSO.distance;
+        activeSlot.fullname = spellSO.fullname;
+        activeSlot.type = spellSO.type;
+        activeSlot.bullets = spellSO.bullets;
+        activeSlot.damage = spellSO.damage;
+        activeSlot.selfImpact = spellSO.selfImpact;
+        activeSlot.enemyImpact = spellSO.enemyImpact;
+        activeSlot.usingInterval = spellSO.usingInterval;
+
+        switch (slotNumber)
+        {
+            case(1): slot1data = activeSlot; 
+            break;
+            case(2): slot2data = activeSlot; 
+            break; 
+            case(3): slot3data = activeSlot; 
+            break; 
+            case(4): slot4data = activeSlot; 
+            break; 
+            case(5): slot5data = activeSlot; 
+            break; 
+            case(6): slot6data = activeSlot; 
+            break; 
+            case(7): slot7data = activeSlot; 
+            break;
+            case(8): slot8data = activeSlot; 
+            break; 
+            case(9): slot9data = activeSlot; 
+            break;     
+
+            default: slot1data = activeSlot;
+            break;
+        }    
+    }
+
+    /*public static void FillSlot(int slotNumber, string spellName)
     {
         spell activeSlot = new spell();
         
@@ -60,8 +102,6 @@ public class BookOfSpells : MonoBehaviour
             break;
         }
         //НЕ ЗАБЫТЬ ЗАПОЛНИТЬ PickSpellUI.FillSpellSlotIcon(slotNumber); ПОСЛЕ ВЫЗОВЫ ЭТОГО МЕТОДА
-    }
-
-
+    }*/
         
 }

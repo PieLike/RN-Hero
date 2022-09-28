@@ -15,14 +15,53 @@
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [
-          "C:\\Users\\PieLike\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\PieLike\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net471"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
+        "frameworks": {
+          "net471": {
+            "projectReferences": {
+              "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj": {
+                "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj"
+              },
+              "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj": {
+                "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net471": {
+          "dependencies": {
+            "Yandex.Api": {
+              "target": "Package",
+              "version": "[0.0.2, )"
+            },
+            "Yandex.Cloud.SDK": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "YandexTranslate.dll": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            }
+          }
+        }
+      }
+    },
+    "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj",
+        "projectName": "Unity.2D.Tilemap.Extras",
+        "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj",
         "frameworks": {
           "net471": {
             "projectReferences": {}
@@ -30,18 +69,26 @@
         }
       },
       "frameworks": {
-        "net471": {
-          "dependencies": {
-            "Microsoft.Azure.WebJobs": {
-              "target": "Package",
-              "version": "[3.0.33, )"
-            },
-            "Microsoft.Azure.WebJobs.Script.ExtensionsMetadataGenerator": {
-              "target": "Package",
-              "version": "[4.0.1, )"
+        "net471": {}
+      }
+    },
+    "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj",
+        "projectName": "Unity.2D.Tilemap.Extras.Editor",
+        "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj",
+        "frameworks": {
+          "net471": {
+            "projectReferences": {
+              "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj": {
+                "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj"
+              }
             }
           }
         }
+      },
+      "frameworks": {
+        "net471": {}
       }
     }
   }

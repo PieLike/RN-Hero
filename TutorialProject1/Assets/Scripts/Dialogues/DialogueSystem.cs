@@ -8,7 +8,7 @@ public class DialogueSystem : MonoBehaviour
 {
     private string nameNpc;
     private GameObject dialoguePanel, dialogueName;//, dialogueText, 
-    private GameObject messagePanel; private List<GameObject> messages = new List<GameObject>();
+    private GameObject messagePanelRight, messagePanelLeft; private List<GameObject> messages = new List<GameObject>();
     private GameObject choicePanel;
     private Animator dialoguePanelAnimator;// private TMP_Text dialogueTextComponent;
     public enum emotions {neutral, happy, angry};
@@ -28,7 +28,8 @@ public class DialogueSystem : MonoBehaviour
         //dialogueTextComponent = dialogueText.GetComponent<TMP_Text>(); 
         dialoguePanelAnimator = dialoguePanel.GetComponent<Animator>();
 
-        messagePanel = Resources.Load<GameObject>("2d_prefabs/DMessagePanel");
+        messagePanelRight = Resources.Load<GameObject>("2d_prefabs/DMessagePanelRight");
+        messagePanelLeft = Resources.Load<GameObject>("2d_prefabs/DMessagePanelLeft");
 
         choicePanel = transform.Find("DialogueChoicePanel").gameObject;
 
@@ -50,34 +51,36 @@ public class DialogueSystem : MonoBehaviour
             dialoguePanel.SetActive(true);
 
         dialoguePanelAnimator.SetBool("show", true);
-        nameNpc = dialogue.name;       
+        nameNpc = dialogue.speaker; 
+        dialogueName.GetComponent<TMP_Text>().text = nameNpc;      
 
         sentences = dialogue.sentences;
         sentenceNumber = FindFirstSentence();
+
+        MainVariables.inTalking = true;        
+
         DisplayNextSentence();
     }
 
     public void DisplayNextSentence()
     {
-        Debug.Log("sdfsdfs");
         if (closeWaiting)
         {
-            Debug.Log("close");
+            //Debug.Log("close");
             CloseDialogue();
             return;
         }
         if(sentenceNumber+1 > sentences.Count)
         {
-            Debug.Log("end");
+            //Debug.Log("end");
             EndDialogue();
             return;
         }
 
-        dialogueName.GetComponent<TMP_Text>().text = nameNpc; //sentences[i].speaker
         //Debug.Log(sentences[sentenceNumber].emotion.ToString());
         StopAllCoroutines();
         //StartCoroutine(TypeSentence(sentences[sentenceNumber].text));
-        CreateNewMessage(sentences[sentenceNumber].text);
+        CreateNewMessage(sentences[sentenceNumber].text, sentences[sentenceNumber].heroLine);
 
         if(sentences[sentenceNumber].multiply == false)
         {
@@ -153,7 +156,14 @@ public class DialogueSystem : MonoBehaviour
     {        
         dialoguePanelAnimator.SetBool("show", false);
         closeWaiting = false;
+
+        foreach(var mes in messages)
+        {
+            Destroy(mes);
+        }
         messages.Clear();
+
+        MainVariables.inTalking = false;
     }
 
     private int FindSentenceNumberByGuid(string guid)
@@ -177,20 +187,27 @@ public class DialogueSystem : MonoBehaviour
         return 0;    
     }
 
-    private GameObject CreateNewMessage(string messageText = "")
+    private GameObject CreateNewMessage(string messageText = "", bool right = true)
     {
-       // Vector3 position = new Vector3(0f,0f,0f);
-        GameObject newMessage = Instantiate(messagePanel); 
-        newMessage.transform.SetParent(dialoguePanel.transform); 
+        GameObject newMessage;
+        if (right)
+            newMessage = Instantiate(messagePanelRight, dialoguePanel.transform); 
+        else
+            newMessage = Instantiate(messagePanelLeft, dialoguePanel.transform); 
+              
+        RectTransform newMessageTale  = newMessage.transform.Find("DialogueTale").gameObject.GetComponent<RectTransform>();
+        //newMessage.transform.SetParent(dialoguePanel.transform); 
 
         var rectTransform = newMessage.GetComponent<RectTransform>(); 
         rectTransform.localScale = Vector3.one; 
-        rectTransform.localRotation = Quaternion.Euler(0,0,0); 
-//        Debug.Log(rectTransform.rect.height.ToString());
+
+        if (right)
+            rectTransform.localRotation = Quaternion.Euler(0,0,0);
+        else
+            rectTransform.localRotation = Quaternion.Euler(0,180f,0); 
+
         rectTransform.localPosition = new Vector3(0f,0f,0f);
-        rectTransform.anchoredPosition = new Vector3(0f,30f,0f);
-          
-        //Debug.Log(rectTransform.rect.bottom.ToString());
+        rectTransform.anchoredPosition = new Vector3(0f,30f + newMessageTale.rect.height,0f);
         
         GameObject dialogueText = newMessage.transform.Find("DialogueText").gameObject; 
         TMP_Text dialogueTextComponent = dialogueText.GetComponent<TMP_Text>();
@@ -205,9 +222,8 @@ public class DialogueSystem : MonoBehaviour
             offset = linesCount * lineHeight +dialogueTextComponent.margin.y*2;
             rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, offset);
         }
-
         messages.Add(newMessage);    
-        MoveOldMessages(offset);
+        MoveOldMessages(offset + newMessageTale.rect.height);
             
         return messages[messages.Count-1];
     }
@@ -237,6 +253,7 @@ public class DialogueSystem : MonoBehaviour
     {
         var dialogue = new Dialogue();
         dialogue.sentencesCount = dialogueGraph.DialogueNodeData.Count;
+        dialogue.speaker = dialogueGraph.NpcName;
 
         dialogue.sentences = new List<Sentence>();
         for(int i = 0; i < dialogue.sentencesCount; i++)
@@ -246,6 +263,7 @@ public class DialogueSystem : MonoBehaviour
             newSentence.text = dialogueGraph.DialogueNodeData[i].DialogueText; 
             newSentence.emotion = dialogueGraph.DialogueNodeData[i].emotion;
             newSentence.first = dialogueGraph.DialogueNodeData[i].EntryPoint;
+            newSentence.heroLine = dialogueGraph.DialogueNodeData[i].HeroLine;
 
             newSentence.choices = dialogueGraph.DialogueNodeData[i].Choices;
             if (dialogueGraph.DialogueNodeData[i].Choices != null)
@@ -260,7 +278,7 @@ public class DialogueSystem : MonoBehaviour
     [Serializable]
     public class Dialogue 
     {
-        public string name;
+        public string name, speaker;
         public int sentencesCount;
         [SerializeField] public List<Sentence> sentences;// public List<Sentence> sentences { get { if (Sentences != null) return Sentences; else  { Debug.Log("return"); return new List<Sentence>();  } } set{ Sentences = value;}}
     }
@@ -268,9 +286,9 @@ public class DialogueSystem : MonoBehaviour
     [Serializable]
     public class Sentence
     {
-        public string guid, speaker, text;
+        public string guid, text;
         public emotions emotion;
-        public bool multiply = false, first; 
+        public bool multiply = false, first, heroLine; 
         [SerializeField] public List<DialogueNodeData.DialogueChoice> choices;// public List<DialogueNodeData.DialogueChoice> choices { get { if (Choices != null) return Choices; else  { return new List<DialogueNodeData.DialogueChoice>();  } } set{ Choices = value;}}
     }
 }

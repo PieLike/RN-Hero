@@ -167,7 +167,7 @@ Tilemap:
   m_Origin: {x: -6, y: -2, z: 0}
   m_Size: {x: 17, y: 9, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
-  m_TileOrientation: 1
+  m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
     e01: 0
@@ -205,7 +205,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -373,7 +373,7 @@ Tilemap:
   m_Origin: {x: -20, y: -2, z: 0}
   m_Size: {x: 88, y: 31, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
-  m_TileOrientation: 1
+  m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
     e01: 0
@@ -411,7 +411,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -558,7 +558,7 @@ Tilemap:
   m_Origin: {x: -15, y: -15, z: 0}
   m_Size: {x: 83, y: 47, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
-  m_TileOrientation: 1
+  m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
     e01: 0
@@ -596,7 +596,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -636,7 +636,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 32, y: 0, z: 32}
+  m_Size: {x: 32, y: 32, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9172650853521993399
 GameObject:
@@ -733,7 +733,7 @@ Tilemap:
   m_Origin: {x: -16, y: -3, z: 0}
   m_Size: {x: 32, y: 33, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
-  m_TileOrientation: 1
+  m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
     e01: 0
@@ -771,7 +771,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -848,7 +848,7 @@ Grid:
   m_CellSize: {x: 1, y: 1, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
-  m_CellSwizzle: 1
+  m_CellSwizzle: 0
 --- !u!1001 &4398593494951683728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -863,6 +863,10 @@ PrefabInstance:
     - target: {fileID: 4398593494532753756, guid: acfeb007a77212243aa513b7cc64866f, type: 3}
       propertyPath: m_Origin.y
       value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398593494532753756, guid: acfeb007a77212243aa513b7cc64866f, type: 3}
+      propertyPath: m_TileOrientation
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4398593494532753756, guid: acfeb007a77212243aa513b7cc64866f, type: 3}
       propertyPath: m_Tiles.Array.size

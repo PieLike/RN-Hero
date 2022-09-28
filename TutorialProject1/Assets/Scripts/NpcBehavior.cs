@@ -1,16 +1,14 @@
 using UnityEngine;
-[RequireComponent(typeof(Outline))]
+[RequireComponent(typeof(MyOutline))]
 
 public class NpcBehavior : MonoBehaviour
 {
     public string npcName = "";
-    private Outline outline; 
+    private MyOutline outline; 
     private GameObject objDialogueSystem; private DialogueSystem dialogueSystem;
     void Start()
     {
-        outline = GetComponent<Outline>(); 
-        outline.OutlineWidth = 0;  
-        outline.OutlineColor = Color.blue;
+        outline = GetComponent<MyOutline>();
 
         objDialogueSystem = GameObject.Find("Interface/DialogueSystem");  
         dialogueSystem = objDialogueSystem.GetComponent<DialogueSystem>(); 
@@ -24,10 +22,12 @@ public class NpcBehavior : MonoBehaviour
         //добавляем или скрываем обводку в зависимости от того наведен ли крусор на объект
         if (Interaction.supposedInteractionObject == gameObject)
         {
-            outline.OutlineWidth = 3;
+            outline.SetOutline(MyOutline.Color.blue);
         }    
-        else if (outline.OutlineWidth != 0)
-            outline.OutlineWidth = 0;    
+        else
+        {
+            outline.RemoveOutline();  
+        }   
     }
     public void Interact()
     {        

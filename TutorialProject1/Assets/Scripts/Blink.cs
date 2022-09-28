@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class Blink : MonoBehaviour
 {
-    public void DoBlink()
+    public void DoBlink(bool hideObject)
     {
         //снимаем прошлый куротин, чтобы сбросить таймер исчезновения через 3 секунды
         StopCoroutine(SetActiveSetFalseCoroutine());
         //показываем объект (щит) мигаем белым на 0.1 секунды, и запускаем куротину на скрытие объекта (щита) через 3 секунды
-        gameObject.SetActive(true);
+        if (hideObject) gameObject.SetActive(true);
         StartCoroutine(BlinkCoroutine());
-        StartCoroutine(SetActiveSetFalseCoroutine());        
+        if (hideObject) StartCoroutine(SetActiveSetFalseCoroutine());        
     }
     
     private IEnumerator BlinkCoroutine()
@@ -20,8 +20,9 @@ public class Blink : MonoBehaviour
         //запоминаем первоначальный цвет и меняем его делая светлее
         //через 0.1 секунд возвращаем первоначальный цвет
         UnityEngine.Color originColor = gameObject.GetComponent<SpriteRenderer>().color;        
-        UnityEngine.Color newColor = ChangeColorBrightness(originColor,10f);
+        UnityEngine.Color newColor = new Color(1f, 0.5f, 0.5f); //ChangeColorBrightness(originColor,10f);
         gameObject.GetComponent<SpriteRenderer>().color = newColor;
+        Debug.Log(newColor.ToString());
         float duration = 0.1f;
 
         yield return new WaitForSeconds(duration);    
@@ -36,7 +37,7 @@ public class Blink : MonoBehaviour
         gameObject.SetActive(false);       
     }
 
-    public UnityEngine.Color ChangeColorBrightness(UnityEngine.Color color, float correctionFactor)
+    /*public UnityEngine.Color ChangeColorBrightness(UnityEngine.Color color, float correctionFactor)
     {
         //делаем цвет ярче (на данный момент превращаем в белый)
         float red = (float)color.r;
@@ -60,5 +61,5 @@ public class Blink : MonoBehaviour
         }
 
         return new UnityEngine.Color((int)red, (int)green, (int)blue);;
-    }
+    }*/
 }

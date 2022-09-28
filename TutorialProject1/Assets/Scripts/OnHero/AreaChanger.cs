@@ -7,6 +7,8 @@ public class AreaChanger : MonoBehaviour
     public GameObject[] activeAreas;
     private GameObject cameraBoards;
     private FollowCamera mainCameraFollow;
+    //bool readyToLeave; 
+    GameObject potentialArea;
 
     private void Start() 
     {
@@ -17,14 +19,40 @@ public class AreaChanger : MonoBehaviour
 
         activeAreas = new GameObject[9];    
     }
-    private void OnTriggerEnter(Collider other) 
+    /*private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.gameObject.tag == "Area")
         {
-            //получаем имя parent 
-            areaName = other.gameObject.name; 
-            activeAreas[0] = other.gameObject.transform.Find("Area").gameObject; 
+            potentialArea = other.gameObject; 
+            readyToLeave = true;
         }    
+    }
+
+    private void OnTriggerExit2D(Collider2D other) 
+    {
+        if(other.gameObject.tag == "Area" && readyToLeave && potentialArea != null)
+        {
+            //получаем имя parent 
+            areaName = potentialArea.name; 
+            activeAreas[0] = potentialArea.transform.Find("Area").gameObject;
+
+            readyToLeave = false; 
+        }     
+    }*/
+    private void OnTriggerStay2D(Collider2D other) 
+    {
+        potentialArea = other.gameObject;
+        if(areaName != potentialArea.name)
+        {
+            if(other.gameObject.tag == "Area")
+            {
+                //получаем имя parent                 
+                areaName = potentialArea.name; 
+                activeAreas[0] = potentialArea.transform.Find("Area").gameObject;
+
+                //readyToLeave = false; 
+            }   
+        }          
     }
 
     private void SetActiveForActiveAreas()
@@ -67,6 +95,8 @@ public class AreaChanger : MonoBehaviour
 
     private void Update() 
     {
+        if (areaName == null) return;
+
         if (prevAreaName != areaName)
         //при изменении сцены
         {
@@ -119,7 +149,7 @@ public class AreaChanger : MonoBehaviour
                 if (NewActiveAreaParent != null)
                     activeAreas[4] = NewActiveAreaParent.transform.Find("Area").gameObject;
             }
-            //находим зоны сверху слева
+        /*    //находим зоны сверху слева
             if(row != '9' && (column != 'A'))
             {
                 newColumn = (char)(((int)column) - 1);
@@ -158,7 +188,7 @@ public class AreaChanger : MonoBehaviour
                 NewActiveAreaParent = GameObject.Find(newArea);
                 if (NewActiveAreaParent != null)
                     activeAreas[8] = NewActiveAreaParent.transform.Find("Area").gameObject;
-            }
+            }*/
 
             prevAreaName = areaName;
 
@@ -185,7 +215,7 @@ public class AreaChanger : MonoBehaviour
     //изменить грани движения камеры под новую зону
     {
         cameraBoards.transform.position = activeAreas[0].transform.position; //cameraBoards.transform.position +
-        cameraBoards.transform.localScale = new Vector3(3.2f, cameraBoards.transform.localScale.y, 3.2f); 
+        /*cameraBoards.transform.localScale = new Vector3(3.2f, cameraBoards.transform.localScale.y, 3.2f); 
 
         if(activeAreas[2] == null)// если снизу НЕТ зоны, тотянем до туда борд
         {
@@ -208,7 +238,7 @@ public class AreaChanger : MonoBehaviour
             //else
             //    cameraBoards.transform.position = new Vector3(cameraBoards.transform.position.x - left_offset*0.5f, cameraBoards.transform.position.y, cameraBoards.transform.position.z);
         }
-        
+        */
         
         mainCameraFollow.CalculateBorders();
     } 

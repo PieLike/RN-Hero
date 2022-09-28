@@ -10,16 +10,24 @@ public class PickSpellUI : MonoBehaviour
     private GameObject PickSpell, SpellPickSquere;
     private static BookOfSpells.spell activeSpell;
     private RectTransform rectTransform; 
-    private int previousActiveSpellSlot = 1;    
+    private int previousActiveSpellSlot = 1;  
+
+    private ScriptableObjSpell FindSpellSO(string spellName)
+    {
+        ScriptableObjSpell spell = Resources.Load<ScriptableObjSpell>("Spells/" + spellName + "/" + spellName); 
+        return spell;  
+    }  
 
     private void Start() 
     {
         PickSpellUI pickSpellUI = gameObject.GetComponent<PickSpellUI>();
-        BookOfSpells.FillSlot(1, "frostspell"); //потом убрать
+
+
+        BookOfSpells.FillSlotBySO (1, FindSpellSO("frostspell")); //потом убрать
         //pickSpellUI.FillSpellSlotIcon(1);
-        BookOfSpells.FillSlot(2, "recognizespell"); //потом убрать
+        BookOfSpells.FillSlotBySO(2, FindSpellSO("recognizespell")); //потом убрать
         //pickSpellUI.FillSpellSlotIcon(2);
-        BookOfSpells.FillSlot(3, "fireballspell"); //потом убрать
+        BookOfSpells.FillSlotBySO(3, FindSpellSO("fireballspell")); //потом убрать
         //pickSpellUI.FillSpellSlotIcon(3);
 
         //находим объекты на сцене
@@ -97,10 +105,10 @@ public class PickSpellUI : MonoBehaviour
             Sprite icon;
 
             //Debug.Log("icon" + activeSpell.name.ToString());
-            icon = Resources.Load<Sprite>("Sprites/Icons/icon" + activeSpell.name.ToString());
+            icon = Resources.Load<Sprite>("Spells/icon" + activeSpell.name.ToString() + "/" + activeSpell.name.ToString());
             if (icon == null)
             {
-                icon = Resources.Load<Sprite>("iconerror");
+                icon = Resources.Load<Sprite>("Spells/iconerror");
                 if (icon == null)
                 {
                     Debug.Log("программа не может найти иконки для заклинаний");

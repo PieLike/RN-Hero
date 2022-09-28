@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3c5f6fb8f980c4a8a6ba500fd59a88, type: 3}
   m_Name: New Narrative 2
   m_EditorClassIdentifier: 
+  NpcName: 123
   NodeLinks:
   - BaseNodeGUID: 3f9ca172-f46e-4974-b84c-d70ca55919f0
     TargetNodeGUID: 210c06eb-5f61-4f43-8203-c431a43f0490
@@ -26,8 +27,9 @@ MonoBehaviour:
   - NodeGUID: 3f9ca172-f46e-4974-b84c-d70ca55919f0
     DialogueText: "\u0433\u0434\u0435 \u0442\u043E \u0432 \u0432\u0438\u043A\u0438
       \u0432\u0438\u0434\u0435\u043B\u0430"
-    Position: {x: 100, y: 200}
+    Position: {x: 0, y: 0}
     EntryPoint: 1
+    HeroLine: 1
     emotion: 0
     choices:
     - name: First
@@ -39,6 +41,7 @@ MonoBehaviour:
       \u043D\u0430 \u043F\u043A"
     Position: {x: 548, y: 200}
     EntryPoint: 0
+    HeroLine: 1
     emotion: 0
     choices:
     - name: Choice 1
@@ -53,6 +56,7 @@ MonoBehaviour:
       \u0434\u0430\u043D\u0436\u0438, \u044F \u0440\u0430\u0441\u0441\u0442\u0440\u0430\u0438\u0432\u0430\u044E\u0441\u044C"
     Position: {x: 306, y: 52}
     EntryPoint: 0
+    HeroLine: 0
     emotion: 0
     choices:
     - name: Choice 1
@@ -64,6 +68,7 @@ MonoBehaviour:
       \u043F\u043E\u043B\u0443\u0447\u0430\u0435\u0448\u044C \u0437\u0430 \u0431\u0438\u0442\u0432\u044B"
     Position: {x: 867, y: 335}
     EntryPoint: 0
+    HeroLine: 0
     emotion: 0
     choices: []
   ExposedProperties: []

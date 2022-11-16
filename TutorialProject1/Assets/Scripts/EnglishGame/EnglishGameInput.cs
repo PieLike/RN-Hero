@@ -15,6 +15,7 @@ public class EnglishGameInput : MonoBehaviour
     private int wordLenght = 12, typedLenght = 0; 
     private int actualLetter = 0;
     float lastStep, timeBetweenSteps = 0.1f;
+    private InterfaceManager interfaceManager;
 
     [NonSerialized] public string fullWord = "";
     private List<LetterImages> letters;
@@ -26,10 +27,14 @@ public class EnglishGameInput : MonoBehaviour
 
     private void Start() 
     {
+        interfaceManager = FindObjectOfType<InterfaceManager>();
         //находим дочерние объекты
-        EGPanel = transform.Find("EnglishGamePanel").gameObject;
-        EGCheckmark = transform.Find("EnglishGamePanel/EGCheckmark").gameObject;
-        EGInputPanel = transform.Find("EnglishGamePanel/EGInputPanel").gameObject;
+        //EGPanel = transform.Find("EnglishGamePanel").gameObject;
+        //EGCheckmark = transform.Find("EnglishGamePanel/EGCheckmark").gameObject;
+        //EGInputPanel = transform.Find("EnglishGamePanel/EGInputPanel").gameObject;
+        EGPanel = interfaceManager.EnglishGamePanel;
+        EGCheckmark = interfaceManager.EGCheckmark;
+        EGInputPanel = interfaceManager.EGInputPanel;
         //находим объекты в resourses
         objLetterImage = Resources.Load<GameObject>("2d_prefabs/EGInpitButton");       
         allAlphabet = Resources.LoadAll<Sprite>("Sprites/Alphabet");  //загружаем алфавит спрайтов
@@ -68,61 +73,19 @@ public class EnglishGameInput : MonoBehaviour
                 EGCheckmark.GetComponent<ForCheckmark>().GoRed();
         }
     }
-
-    private void TypeLetter(KeyCode symbol)
+    public void TypeLetter(KeyCode symbol)
     {
         try {
             //конвертируем из KeyCode в char, а потом находим спрайт по такому символу
             //если ошибка конвертации (KeyCode больше одного символа) то вызываем ошибку
-            char letter;
+
             if (symbol == KeyCode.Space)
-                letter = ' ';
+                TypeLetter(" ");
             else
             {
                 string keyChar = kc.ConvertToString(symbol);
-                letter = Convert.ToChar(keyChar);
-            }
-
-            if(Char.IsLetter(letter) == false)
-                return;
-
-            Sprite spriteSymbol = SetSprite(letter);
-
-            while (actualLetter + 1 > letters.Count)
-            {
-                letters.Add(null);
-                letters[letters.Count-1] = new LetterImages();
-            }
-
-            //останавливаем и заканчиваем если нужно прошлые куротины
-            if(letters[actualLetter].coroutinesSet != null)
-            {
-                StopCoroutine(letters[actualLetter].coroutinesSet);
-                letters[actualLetter].coroutinesSet = null;
-            } else if (letters[actualLetter].coroutinesErase  != null)
-            {
-                StopCoroutine(letters[actualLetter].coroutinesErase );
-                Destroy(letters[actualLetter].objLetter);
-                letters[actualLetter].objLetter = null;                    
-                letters[actualLetter].coroutinesErase  = null;  
-            }             
-
-            //создать новый объект в панели EG для записи изображения буквы
-            letters[actualLetter].objLetter = Instantiate(objLetterImage, letters[actualLetter].position, Quaternion.Euler(0,0,0));
-            letters[actualLetter].objLetter.transform.SetParent(EGInputPanel.transform, false);
-            letters[actualLetter].objLetter.transform.localScale = new Vector3 (1f,1f,1f);
-            //задаем ему спрайт символа
-            letters[actualLetter].objLetter.GetComponent<Image>().sprite = spriteSymbol;
-
-            PushLettersApart(true); //двигаем картинки символов
-
-            TypeEffect(letters[actualLetter].objLetter, actualLetter);   //красиво опускаем его в его позицию    
-
-            letters[actualLetter].value = letter;
-            RecountLetters();   //пересчет полного слова
-
-            typedLenght += 1;
-            actualLetter += 1;
+                TypeLetter(keyChar);
+            }            
         } 
         catch(FormatException)
         {
@@ -131,7 +94,57 @@ public class EnglishGameInput : MonoBehaviour
         catch(IndexOutOfRangeException)
         {
             Debug.Log("нет ячейки для записы буквы");
+        }       
+    }
+
+    public void TypeLetter(string keyChar)
+    {
+        char letter;
+        if (keyChar == " ")
+            letter = ' ';
+        else
+            letter = Convert.ToChar(keyChar);
+
+        if(Char.IsLetter(letter) == false)
+            return;
+
+        Sprite spriteSymbol = SetSprite(letter);
+
+        while (actualLetter + 1 > letters.Count)
+        {
+            letters.Add(null);
+            letters[letters.Count-1] = new LetterImages();
         }
+
+        //останавливаем и заканчиваем если нужно прошлые куротины
+        if(letters[actualLetter].coroutinesSet != null)
+        {
+            StopCoroutine(letters[actualLetter].coroutinesSet);
+            letters[actualLetter].coroutinesSet = null;
+        } else if (letters[actualLetter].coroutinesErase  != null)
+        {
+            StopCoroutine(letters[actualLetter].coroutinesErase );
+            Destroy(letters[actualLetter].objLetter);
+            letters[actualLetter].objLetter = null;                    
+            letters[actualLetter].coroutinesErase  = null;  
+        }             
+
+        //создать новый объект в панели EG для записи изображения буквы
+        letters[actualLetter].objLetter = Instantiate(objLetterImage, letters[actualLetter].position, Quaternion.Euler(0,0,0), transform);
+        letters[actualLetter].objLetter.transform.SetParent(EGInputPanel.transform, false);
+        letters[actualLetter].objLetter.transform.localScale = new Vector3 (1f,1f,1f);
+        //задаем ему спрайт символа
+        letters[actualLetter].objLetter.GetComponent<Image>().sprite = spriteSymbol;
+
+        PushLettersApart(true); //двигаем картинки символов
+
+        TypeEffect(letters[actualLetter].objLetter, actualLetter);   //красиво опускаем его в его позицию    
+
+        letters[actualLetter].value = letter;
+        RecountLetters();   //пересчет полного слова
+
+        typedLenght += 1;
+        actualLetter += 1;
     }
     private void EraseLetter()
     {

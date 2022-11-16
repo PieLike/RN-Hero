@@ -4,6 +4,7 @@ using System.Data;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(EnglishGameInput))]
 
@@ -12,22 +13,33 @@ public class EnglishGame : MonoBehaviour
     private GameObject EGOriginalWord, EGCheckmark, EGPanel, EGExit;
     //private TMP_InputField tmp_Text;
     private string previousInput = "";
-    private string translate = "";//, originalWord;
+    private List<string> translate;//, originalWord;
     private GameObject englishGameObject;
     private bool closeByEndingNew = false;
     private EnglishGameInput EGinput;
     private bool typedWordIsRight = false;
+    private InterfaceManager interfaceManager;
+    private DictionaryManager dictionaryManager;
+    private PickerWheelEnglishType pickerWheel;
     
     private void Start() 
     {
-        //находим дочерние объекты
-        EGPanel = transform.Find("EnglishGamePanel").gameObject;
-        EGCheckmark = transform.Find("EnglishGamePanel/EGCheckmark").gameObject;
-        EGOriginalWord = transform.Find("EnglishGamePanel/EGOriginalWord").gameObject;
-        EGExit = transform.Find("EnglishGamePanel/EGExit").gameObject;
+        interfaceManager = FindObjectOfType<InterfaceManager>();
+        dictionaryManager = FindObjectOfType<DictionaryManager>();
+
+        EGPanel = interfaceManager.EnglishGamePanel;
+        EGCheckmark = interfaceManager.EGCheckmark;
+        EGOriginalWord = interfaceManager.EGOriginalWord;
+        EGExit = interfaceManager.EGExit;
             EGExit.GetComponent<Button>().onClick.AddListener(CloseEnglishGame);  
 
-        EGinput = gameObject.GetComponent<EnglishGameInput>();   
+        EGinput = gameObject.GetComponent<EnglishGameInput>(); 
+
+        pickerWheel = interfaceManager.PickerWheelEnglshType.GetComponent<PickerWheelEnglishType>();
+
+        /*Word randomWord = dictionaryManager.TakeRandom();
+        if (randomWord != null)
+            SettingActive(randomWord);*/
     }
 
     public void StartGame(GameObject gameObject, bool closeByEnding) //для объектов
@@ -50,13 +62,14 @@ public class EnglishGame : MonoBehaviour
             enemyName = gameObject.name;
         enemyName = enemyName.Replace(" ", "").ToLower();
 
-        string[] wordsByParent = ReturnByParent(enemyName, false);
-        if (wordsByParent.Length == 0)  
+        List<Word> wordsByParent = new List<Word>();
+        wordsByParent = dictionaryManager.ReturnByParent(enemyName);
+        if (wordsByParent.Count == 0)  
             Debug.LogError("Невозможно найти слова по родителю в базе данных: " + enemyName);
         else
         { 
             //выбираем случайное слово из массива и отсылаем его в импут
-            int i = UnityEngine.Random.Range(0, wordsByParent.Length);
+            int i = UnityEngine.Random.Range(0, wordsByParent.Count);
             SettingActive(wordsByParent[i]);
         }
         typedWordIsRight = false;            
@@ -71,69 +84,49 @@ public class EnglishGame : MonoBehaviour
             return; 
         }    
 
-        string[] wordsByParent = ReturnByParent(objName, false);
-        if (wordsByParent.Length == 0)  
+        List<Word> wordsByParent = new List<Word>();
+        wordsByParent = dictionaryManager.ReturnByParent(objName);
+        if (wordsByParent.Count == 0)  
             Debug.LogError("Невозможно найти слова по родителю в базе данных: " + objName);
         else
         { 
             //выбираем случайное слово из массива и отсылаем его в импут
-            int i = UnityEngine.Random.Range(0, wordsByParent.Length);
+            int i = UnityEngine.Random.Range(0, wordsByParent.Count);
             SettingActive(wordsByParent[i]);
         }
         typedWordIsRight = false; 
     }
 
-    private string[] ReturnByParent(string parent, bool returnEng)
-    {
-        //ищем слова по слову родителю в БД
-        string[] words;
-        string generalDataBaseName = "vocabularyGeneral.bytes";
-        DataTable generalVocabulary;
-
-        if (returnEng)  
-            //ищем английские слова у родителя  
-            generalVocabulary = WorkWithDataBase.GetTable($"SELECT eng FROM words WHERE parent = '{parent.ToLower()}';", generalDataBaseName);              
-        else
-            generalVocabulary = WorkWithDataBase.GetTable($"SELECT rus FROM words WHERE parent = '{parent.ToLower()}';", generalDataBaseName);
-
-        if (generalVocabulary.Rows.Count > 0)
-        {
-            //цикл для записи слов из datatable в массив string
-            words = new string[generalVocabulary.Rows.Count];
-            for(int i = 0; i < generalVocabulary.Rows.Count; i++)
-                words[i] = generalVocabulary.Rows[i][0].ToString();
-        }
-        else
-        {
-            //иначе нулевой массив
-            words = new string[0];
-        }
-
-        return words;
-    }
     
-    public bool SettingActive(string originalWord)
+    
+    public bool SettingActive(Word originalWord)
     {
-        if (String.IsNullOrEmpty(originalWord))
+        string stringOriginalWord = originalWord.word;
+        if (originalWord.filled == false)
+            originalWord = dictionaryManager.FillWordData(originalWord);
+
+        if (String.IsNullOrEmpty(stringOriginalWord))
         {
             Debug.LogError("Проблемы с выводом слова");
             return false;
         }
         else
         {
-            translate = ReturnTranslate(originalWord, true);
-            if (translate == "")
+            translate = originalWord.translate;
+            if (originalWord.translate == null || originalWord.translate.Count == 0 || originalWord.translate[0] == "")
             {
-                Debug.LogError("Невозможно найти слово в базе данных: " + originalWord);
+                Debug.LogError("Не нашлось перевода у слова: " + stringOriginalWord);
                 return false;
             }
             else
             //если есть оригинал слова и его перевод то запускаем интерфейс EG
             {
                 EGPanel.SetActive(true);
-                EGOriginalWord.GetComponent<TMP_Text>().text = originalWord;
+                EGOriginalWord.GetComponent<TMP_Text>().text = stringOriginalWord;
 
-                MainVariables.inInterface = true;
+                pickerWheel.FillWheelPieces(stringOriginalWord);
+
+                //MainVariables.inInterface = true;
 
                 //при успешном вызове даём об этом знать
                 return true;
@@ -148,46 +141,34 @@ public class EnglishGame : MonoBehaviour
             //потом идет проверка - введен ли в импут перевод слова
             if(previousInput != EGinput.fullWord)
             {
-                if (EGinput.fullWord.ToLower() == translate.ToLower())
+                foreach (string tr in translate)
                 {
-                    typedWordIsRight = true;
+                    if (EGinput.fullWord.ToLower() == tr.ToLower())
+                    {
+                        typedWordIsRight = true;
 
-                    EGCheckmark.GetComponent<ForCheckmark>().GoGreen();
-                    StartCoroutine(WaitASecond(1));
-                    //CloseEnglishGame(); 
-                }
+                        EGCheckmark.GetComponent<ForCheckmark>().GoGreen();
+                        StartCoroutine(WaitASecond(1));
+                        //CloseEnglishGame(); 
+                        break;
+                    }
+                }                
                 previousInput = EGinput.fullWord;
             }
         }
-    }    
-    public static string ReturnTranslate(string originalWord, bool englishInput)
-    {
-        //возвращаем перевод слова по его иностранному аналогу (рус или енг)
-        string generalDataBaseName = "vocabularyGeneral.bytes";
-        DataTable generalVocabulary;
-
-        if (englishInput)  
-            //вводим англисйкое слово    
-            generalVocabulary = WorkWithDataBase.GetTable($"SELECT eng FROM words WHERE rus = '{originalWord.ToLower()}';", generalDataBaseName);              
-        else
-            generalVocabulary = WorkWithDataBase.GetTable($"SELECT rus FROM words WHERE eng = '{originalWord.ToLower()}';", generalDataBaseName);
-
-        if (generalVocabulary.Rows.Count > 0)
-            return generalVocabulary.Rows[0][0].ToString();
-        else
-            return "";
-    }
+    } 
 
     public void CloseEnglishGame()
     {        
         EGinput.Clear();    //очищаем массивы введенного слова
         EGPanel.SetActive(false);
-        MainVariables.inInterface = false; 
+        //MainVariables.inInterface = false; 
         //если требуется удалить объект после EG - удаляем (вызываем CallDead() ) 
         if (closeByEndingNew && (englishGameObject != null) && (englishGameObject.tag == "Enemy") && typedWordIsRight == true)
         {
             Debug.Log("CloseEnglishGame calldead");
-            englishGameObject.GetComponent<EnemyBehavior>().CallDead();    
+            //englishGameObject.GetComponent<EnemyBehavior>().CallDead(); 
+            englishGameObject.GetComponent<EnemyBehavior>().isDead = true;   
         }
     }
 

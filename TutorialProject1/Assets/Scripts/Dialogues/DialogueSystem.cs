@@ -14,6 +14,7 @@ public class DialogueSystem : MonoBehaviour
     public enum emotions {neutral, happy, angry};
     private List<Sentence> sentences; public int sentenceNumber;
     private List<ChoiceButton> choiceButtons; private bool choiceWaiting = false, closeWaiting = false;
+    private InterfaceManager interfaceManager;
 
     private class ChoiceButton
     {
@@ -22,22 +23,24 @@ public class DialogueSystem : MonoBehaviour
 
     private void Start() 
     {
-        dialoguePanel = transform.Find("DialoguePanel2").gameObject;
-            dialogueName = dialoguePanel.transform.Find("DialogueName").gameObject;   
-            //dialogueText = dialoguePanel.transform.Find("DialogueText").gameObject; 
-        //dialogueTextComponent = dialogueText.GetComponent<TMP_Text>(); 
+        interfaceManager = FindObjectOfType<InterfaceManager>();
+
+        dialoguePanel = interfaceManager.DialoguePanel2; 
+        dialogueName =  interfaceManager.DialogueName;  
+        
         dialoguePanelAnimator = dialoguePanel.GetComponent<Animator>();
 
         messagePanelRight = Resources.Load<GameObject>("2d_prefabs/DMessagePanelRight");
         messagePanelLeft = Resources.Load<GameObject>("2d_prefabs/DMessagePanelLeft");
 
-        choicePanel = transform.Find("DialogueChoicePanel").gameObject;
+        choicePanel = interfaceManager.DialogueChoicePanel;
 
         choiceButtons = new List<ChoiceButton>();
         for (int i = 0; i < 3; i++)
         {
             ChoiceButton choiceButton = new ChoiceButton();
-            choiceButton.button = choicePanel.transform.Find($"DChoice{i+1}").gameObject;
+            //choiceButton.button = choicePanel.transform.Find($"DChoice{i+1}").gameObject;
+            choiceButton.button = interfaceManager.DialogueChoicePanel.transform.Find($"DChoice{i+1}").gameObject;
             GameObject textObj = choiceButton.button.transform.Find("Text (TMP)").gameObject; 
             choiceButton.text = textObj.GetComponent<TMP_Text>();
 

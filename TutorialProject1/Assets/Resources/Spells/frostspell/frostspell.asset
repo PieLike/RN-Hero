@@ -15,7 +15,7 @@ MonoBehaviour:
   spellname: frostspell
   fullname: Frost Spell
   type: 0
-  speed: 20
+  speed: 10
   distance: 10
   damage: 1
   bullets: 50

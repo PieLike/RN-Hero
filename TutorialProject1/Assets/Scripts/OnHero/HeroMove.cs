@@ -1,156 +1,318 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Pathfinding;
 
+[RequireComponent(typeof(Seeker))]
 public class HeroMove : MonoBehaviour
 {
-    [NonSerialized] public static bool isReached = false;
-    public float speed = 500f;   
+    public enum TargetObject { interactionObject, finalPoint, none }; public TargetObject targetObject = TargetObject.none;
+    public bool isReached = false;
+    public float nextWaypointDistance = 2f;  
     private Rigidbody2D rigidBody;
-    private GameObject objFinalPoint;
-    private bool isRotate;
-    private Animator animator;
-    private SpriteRenderer sprite;
+    private GameObject objFinalPoint;        
+        private Seeker seeker; Path path; Vector2 prevFP, prevIO, prevH; public GameObject interactionObject;
+        private int currentWaypoint;// bool reachedEndOfPath;
+        //float lastUpdatePath, timeBetweenUpdatePath = 0.05f;
+
+        private Action<GameObject> DoAfterReach; TakeUp takeUp;
 
     private void Start() 
     {
-        animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
-        objFinalPoint = GameObject.Find("FinalPoint2D");
-        sprite = GetComponent<SpriteRenderer>();
+        objFinalPoint = GameObject.Find("FinalPoint2D");        
+
+        seeker = GetComponent<Seeker>();
+        prevFP = transform.position; prevIO = transform.position;
+
+        takeUp = GetComponent<TakeUp>();
+
+        InvokeRepeating("UpdatePath", 0f, 0.3f);
     }
 
     private void FixedUpdate() 
     {
-        if (MainVariables.forceNewMovementLockWhenMove == false)
+        if (MainVariables.allowMovement == true)
         { 
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
             {
                 Vector2 direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-                rigidBody.velocity = direction * speed * Time.fixedDeltaTime;
+                //Vector2 force = direction * HeroMainData.speed * Time.fixedDeltaTime;
+                //rigidBody.AddForce(force);
+                rigidBody.velocity = direction * (HeroMainData.plainSpeed + HeroMainData.buffSpeed);
 
-                if(Input.GetAxis("Horizontal") > 0 && (isRotate == false))
-                {
-                    //transform.Rotate(0,180f,0);
-                    sprite.flipX = true;
-                    isRotate = true;
-                }
-                else if(Input.GetAxis("Horizontal") < 0 && isRotate == true)
-                {
-                    //transform.Rotate(0,-180f,0); 
-                    sprite.flipX = false; 
-                    isRotate = false;  
-                }    
-                
-                if (animator.GetBool("Walking") == false)
-                    animator.SetBool("Walking", true);
                 if (objFinalPoint!= null && objFinalPoint.activeSelf == true) 
                     objFinalPoint.SetActive(false);
-                if (MainVariables.inMovement == true)
-                    MainVariables.inMovement = false;
-            }
-            else if(MainVariables.inMovement == false && MainVariables.inImpacting == false)
-            {
-                DisableMoving();    
-            }
-        }
-        //если герой в движении
-        if (MainVariables.inMovement)
-        { 
-            //FindFinalPoint();   //на всйкий случай находим FinalPoint (еси она уже найдена то он не будет заного искать)
-            //проверяем добрался ли до точки, если да то заканчиваем статус "движение"
-            //иначе двигаем героя в точке
-            if (objFinalPoint != null)
-            {
-                if (MyMathCalculations.CheckReachToPoint(transform.position, objFinalPoint.transform.position) == false && (objFinalPoint.activeSelf == true))
-                {
-                    Vector2 direction = MyMathCalculations.CalculateDirectionSpeeds(transform.position, objFinalPoint.transform.position); 
-                    rigidBody.velocity = direction * Time.fixedDeltaTime * speed; //transform.TransformDirection(
-                }
-                else
-                    //до сюда скорее всего не дойдет тк выклчютися раньше но на всякий случай
-                    DisableMoving();             
-            }
-        }
-        if (isReached == true)
-            isReached = false; 
-    }
+                
+                MainVariables.inInteraction = false;
+                interactionObject = null;
+                targetObject = TargetObject.none;
+                prevIO = Vector2.zero; 
 
-    private void DisableMoving()
+                MainVariables.inMovement = true;
+            }
+            else if(targetObject == TargetObject.none && MainVariables.inMovement == true)
+            {
+                //rigidBody.velocity = Vector2.zero;
+                //rigidBody.Sleep();
+                MainVariables.inMovement = false;   
+            }
+        }
+        if(targetObject == TargetObject.none && MainVariables.inImpacting == false && MainVariables.inMovement == false && MainVariables.isPassing == false && MainVariables.isDashing == false)
+        {
+            rigidBody.velocity = Vector2.zero;
+            rigidBody.Sleep();
+        }
+
+        if (path != null && MainVariables.inMovement == true && targetObject != TargetObject.none)
+        {
+            if (currentWaypoint >= path.vectorPath.Count && Input.GetMouseButton(1) == false)
+            {               
+                //reachedEndOfPath = true;
+
+                Stop();
+            }
+            else if (currentWaypoint < path.vectorPath.Count)
+            {
+                //reachedEndOfPath = false;            
+
+                Vector2 direction = ((Vector2) path.vectorPath[currentWaypoint] - rigidBody.position).normalized; //Debug.Log("direction = " + direction.ToString());
+                //Vector2 force = direction * HeroMainData.speed * Time.fixedDeltaTime;
+                //rigidBody.AddForce(force);
+                rigidBody.velocity = direction * (HeroMainData.plainSpeed + HeroMainData.buffSpeed); //Debug.Log("force = " + (direction * (HeroMainData.plainSpeed + HeroMainData.buffSpeed)).ToString());
+                
+                float distance = Vector2.Distance(rigidBody.position, path.vectorPath[currentWaypoint]);
+                if (distance < nextWaypointDistance)
+                {
+                    currentWaypoint++;
+                }  
+            }
+        }
+    }
+    private void Stop()
     {
-        if (animator.GetBool("Walking") == true)
-            animator.SetBool("Walking", false);
-        rigidBody.velocity = Vector2.zero;
-        rigidBody.Sleep();
-        if (MainVariables.inMovement == true)
-            MainVariables.inMovement = false;
+        //rigidBody.velocity = Vector2.zero;
+        //rigidBody.Sleep();
+
+        if (targetObject == TargetObject.interactionObject)
+            isReached = true;
+
+        path = null;
+        MainVariables.inMovement = false;
+        targetObject = TargetObject.none;
+        prevIO = Vector2.zero;
+
         if (MainVariables.inInteraction == false && objFinalPoint != null && objFinalPoint.activeSelf == true) 
             objFinalPoint.SetActive(false);
     }
 
-    public void LateUpdate() 
+    public void Update() 
     {    
-        
+        if(MainVariables.inInteraction && isReached)
+        {
+            MainVariables.inMovement = false;
+            FillDoAfterReach();
+            InteractionWith();
+            DoAfterReach = null;
+        }
         //при клике мыши Не на интерфейс, не во время заклинания, не во время интерфейса и не на объект
         //задаём точку движения "к чему" и включаем движение
-        if (Input.GetMouseButton(0) && UIClick.OnMouseDown() && MainVariables.allowMovement == true && Interaction.supposedInteractionObject == null)
-        {
-            //FindFinalPoint();   //на всякий случай находим FinalPoint (еси она уже найдена то он не будет заного искать)                        
-            if (objFinalPoint != null)
+        
+            /*if (Input.GetMouseButtonDown(1) && MainVariables.allowMovement == true)
             {
-                if (objFinalPoint.activeSelf == true)
-                {
-                    if (animator.GetBool("Walking") == false)
-                        animator.SetBool("Walking", true);
-                    RotateObject();
-                    MainVariables.inMovement = true;    
+                if(Time.time - lastUpdatePath > timeBetweenUpdatePath)
+                {          
+                    lastUpdatePath = Time.time;
+
+                    targetObject = TargetObject.finalPoint;
+                    UpdatePath();
+                    MainVariables.inMovement = true;
                 }
-            }
-        } 
-        
-
-
-        if (Input.GetMouseButtonDown(1) && UIClick.OnMouseDown())
+            }*/
+        if (UIClick.OnMouseDown() && Input.GetMouseButtonUp(0) && MousePosition2D.supposedInteractionObject != null && MainVariables.inInteraction == false && MainVariables.inInterface == false)   //Interaction
         {
-            //Debug.Log("ПКМ");
+            interactionObject = MousePosition2D.supposedInteractionObject;  
+            MainVariables.inInteraction = true;     
+            isReached = false;         
+            ReachThenInteract();
         }
-        if (Input.GetMouseButtonDown(2) && UIClick.OnMouseDown())
-        {
-            //Debug.Log("СКМ");
-        }    
-        
     }  
-
-    private void OnTriggerStay2D(Collider2D other) 
+    public void ReachThenInteract()
     {
-        //FindFinalPoint();   //на всйкий случай находим FinalPoint (еси она уже найдена то он не будет заного искать)
-        if (objFinalPoint != null)
+        if (isReached == false)
         {
-            if (other.gameObject == objFinalPoint)
-            {
-                isReached = true;
-                MainVariables.forceNewMovementLockWhenMove = false;
+            //ChaseInterationObject();            
+            prevIO = Vector2.zero;
+            targetObject = TargetObject.interactionObject;
+            UpdatePath();
+            MainVariables.inMovement = true;
+        }
+        /*else
+        {
+            FillDoAfterReach();
+            InteractionWith();
+        }*/
+    }
+    private void InteractionWith()
+    {       
+        MainVariables.inInteraction = false;        
+        
+        if (interactionObject != null && DoAfterReach != null)
+        {
+            if (interactionObject.name == "AdditionalCollider")
+                interactionObject = interactionObject.transform.parent.gameObject;
 
-                if (MainVariables.inMovement == true)
-                {
-                    DisableMoving();    
-                }   
+            DoAfterReach.Invoke(interactionObject);
+            interactionObject = null;             
+        }                       
+    }
+    private void FillDoAfterReach()
+    {
+        //ищем тип объекта активного взаимодействия                    
+        if (DoAfterReach == null)
+        {
+            switch(interactionObject.tag)
+            {
+                //case "Enemy":
+                    //if(interactionObject.GetComponent<EnemyData>() != null && interactionObject.GetComponent<EnemyData>().currentSP <= 0)
+                        //DoAfterReach += StartEG; 
+                //    break; 
+                case "Word":                                        
+                        DoAfterReach += TakeWord;
+                    break;
+                case "Chest":
+                    ChestBehavior chestBehavior = interactionObject.GetComponent<ChestBehavior>();
+                    if (chestBehavior != null && chestBehavior.looted == false)
+                        DoAfterReach += OpenChest;
+                    break; 
+                case "Npc":
+                        DoAfterReach += InteractWithNpc;
+                    break;
+                case "Pass":
+                        DoAfterReach += InteractWithPass;
+                    break;
+                case "Pot":
+                        DoAfterReach += InteractWithPot;
+                    break;       
             }
-        }     
+        }
+    }
+    private void TakeWord(GameObject capsuleChild)
+    {
+        try
+        {
+            GameObject wordObj = capsuleChild.transform.parent.gameObject;
+            takeUp.TakeUpWord(wordObj);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("TakeWord(), " + e);
+        }        
+    }
+    private void OpenChest(GameObject chest)
+    {        
+        Debug.Log("open chest");
+        try
+        {
+            chest.GetComponent<ChestBehavior>().Open();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("OpenChest(), " + e);
+        }        
+    }
+    private void InteractWithNpc(GameObject npc)
+    {
+        try
+        {
+            npc.GetComponent<NpcBehavior>().Interact();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("InteractWithNpc(), " + e);
+        }
+    }
+    private void InteractWithPass(GameObject pass)
+    {
+        try
+        {
+            Pass passComponent = pass.GetComponent<Pass>();
+            if (passComponent != null)
+            {
+                //passComponent.speed = speed;
+                passComponent.FindContactPoint(transform.position);
+                passComponent.DoPass();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("InteractWithPass(), " + e);
+        }
+    }    
+    void InteractWithPot(GameObject pot)
+    {
+        //Debug.Log("InteractWithPot");
+        try
+        {
+            AlchemyPotBehavior alchemyPotBehavior = pot.GetComponent<AlchemyPotBehavior>();
+            if (alchemyPotBehavior != null)
+                alchemyPotBehavior.UsePot();
+            else
+                Debug.LogError("alchemyPotBehavior = null");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("InteractWithPot(), " + e);
+        }
     }
 
-    private void OnCollisionStay2D(Collision2D other) 
+    private void OnCollisionStay2D(Collision2D other)  //OnTriggerStay2D
     {
-        if (other.gameObject.tag == "Wall" && MainVariables.inMovement == true)
+        if (interactionObject != null)
         {
-            MainVariables.inMovement = false; 
-        }    
+            if (other.transform == interactionObject.transform && targetObject == TargetObject.interactionObject)
+            {
+                Stop();
+            }
+        } 
+    }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (interactionObject != null)
+        {
+            if (other.transform == interactionObject.transform && targetObject == TargetObject.interactionObject)
+            {
+                Stop();
+            }
+        } 
+    }
+
+    private void OnCollisionExit2D(Collision2D other)  //OnTriggerExit2D 
+    {
+        if (interactionObject != null)
+        {
+            if (other.transform == interactionObject.transform)
+            {
+                isReached = false;
+            }
+        } 
+    }
+    private void OnTriggerExit2D(Collider2D other) 
+    {
+        if (interactionObject != null)
+        {
+            if (other.transform == interactionObject.transform)
+            {
+                isReached = false;
+            }
+        } 
     }
 
     public void TakeImpact(float impact, Vector2 impactPosition)
     {
         MainVariables.inMovement = false;
         MainVariables.inImpacting = true;
+        MainVariables.allowMovement = false;
 
         rigidBody.velocity -= new Vector2(impactPosition.x - gameObject.transform.position.x, impactPosition.y - gameObject.transform.position.y) * impact /10;
         
@@ -162,20 +324,48 @@ public class HeroMove : MonoBehaviour
         yield return new WaitForSeconds(duration);
         MainVariables.inImpacting = false;  
     }
-
-    private void RotateObject()
+    
+    private void UpdatePath()
     {
-        if(objFinalPoint.transform.position.x > transform.position.x && (isRotate == false))
-        {            
-            //transform.Rotate(0,180f,0);
-            sprite.flipX = true;
-            isRotate = true;
-        }
-        else if(objFinalPoint.transform.position.x < transform.position.x && isRotate == true)
+        if (targetObject != TargetObject.none && seeker.IsDone())
         {
-            //transform.Rotate(0,-180f,0);  
-            sprite.flipX = false;
-            isRotate = false;  
-        }    
+            switch (targetObject)
+            {
+                case TargetObject.none:
+                    break;
+                case TargetObject.interactionObject:
+                    if (interactionObject != null)
+                    {
+                        Vector2 interactionObjectPosition = (Vector2) interactionObject.transform.position;
+                        if (prevIO != interactionObjectPosition)
+                        {
+                            seeker.StartPath(rigidBody.position, interactionObjectPosition, OnPathComplete);
+                            prevIO = interactionObjectPosition;
+                        }
+                    }
+                    break;
+                case TargetObject.finalPoint:
+                    if (objFinalPoint != null)
+                    {
+                        Vector2 finalPoint = (Vector2) objFinalPoint.transform.position;
+                        if (prevFP != finalPoint)
+                        {
+                            seeker.StartPath(rigidBody.position, finalPoint, OnPathComplete);
+                            prevFP = finalPoint;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }            
+        }            
     }
+    private void OnPathComplete(Path _path)
+    {
+        if (!_path.error)
+        {
+            path = _path;
+            currentWaypoint = 0;
+        }
+    }  
 }

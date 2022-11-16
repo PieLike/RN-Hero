@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public Sound[] sounds;
+    public Sound[] allsounds;   //activeSounds
     public static AudioManager instance;
     
     void Awake()
@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        foreach (Sound sound in sounds)
+        foreach (Sound sound in allsounds)
         {
             sound.source = gameObject.AddComponent<AudioSource>();
             sound.source.clip = sound.clip;
@@ -28,12 +28,24 @@ public class AudioManager : MonoBehaviour
             sound.source.pitch = sound.pitch;
             sound.source.loop = sound.loop;
         }
-    }
+    }    
 
-    public void Play (string soundName)
+    public Sound Play (string soundName)
     {
-        Sound sound = Array.Find(sounds, sound => sound.name == soundName);
-        sound.source.Play();
+        Sound sound = Array.Find(allsounds, sound => sound.name == soundName);
+        if (sound != null)
+        {
+            sound.source.Play();
+            return sound;
+        }
+        else
+        {
+            Debug.Log("не найден аудиоклип в менеджере " + soundName);
+            return null;
+        }
     }
-
+    public void Stop (Sound _sound)
+    {
+        _sound.source.Stop();
+    }
 }

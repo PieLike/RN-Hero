@@ -47,7 +47,9 @@ public class FollowCamera : MonoBehaviour
                 cameraX = target.transform.position.x; 
         }*/         
 
-        transform.position = Vector3.Lerp (transform.position, new Vector3(cameraBoards.transform.position.x, cameraY, transform.position.z), Time.deltaTime * smooth);
+        transform.position = Vector3.Lerp (transform.position, new Vector3(cameraBoards.transform.position.x, cameraBoards.transform.position.y, transform.position.z), Time.deltaTime * smooth);
+        //transform.position = Vector3.Lerp (transform.position, new Vector3(cameraBoards.transform.position.x, cameraY, transform.position.z), Time.deltaTime * smooth);
+
         //transform.position = Vector3.Lerp (transform.position, new Vector3(transform.position.x, target.transform.position.y, cameraY) + offset, Time.deltaTime * smooth);
         //transform.LookAt(target.transform);
     } 

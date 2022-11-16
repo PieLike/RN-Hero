@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor;
@@ -252,3 +253,4 @@ public class DialogueGraphView : GraphView
         Blackboard.Clear();
     }
 }
+#endif

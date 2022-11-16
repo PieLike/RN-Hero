@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class OutlineAddition : MonoBehaviour
 {
-    public Material outlineMaterialWhite, defaultSprite, outlineMaterialRed, outlineMaterialBlue, outlineMaterialYellow;
+    public Material outlineMaterialWhite, defaultSprite, outlineMaterialRed, outlineMaterialBlue, outlineMaterialYellow, outlineMaterialFatBlue;
     void Start()
     {
         outlineMaterialWhite = Resources.Load<Material>("Materials/ForOutline");
@@ -10,5 +10,6 @@ public class OutlineAddition : MonoBehaviour
         outlineMaterialBlue = Resources.Load<Material>("Materials/ForOutlineBlue");
         outlineMaterialYellow = Resources.Load<Material>("Materials/ForOutlineYellow"); 
         defaultSprite = Resources.Load<Material>("Materials/Default");  
+        outlineMaterialFatBlue = Resources.Load<Material>("Materials/ForOutlineFatBlue"); 
     }
 }

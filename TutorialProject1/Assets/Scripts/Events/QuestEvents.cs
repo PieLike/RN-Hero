@@ -12,13 +12,18 @@ public class QuestEvents : MonoBehaviour
     }
 
 
-    public static event Action<string> OnEnemyKilled;
-    public static string killedEnemyName = "";
-    public static void SendEnemyKilled(string enemyName)  //когда вызывается где либо SendPigKilled() то вызывается отсюда всё методы, записанные в Action OnEnemyKilled
+    public static event Action<KilledEnemy> OnEnemyKilled;
+    public static KilledEnemy killedEnemy = new KilledEnemy();
+    public static void SendEnemyKilled(KilledEnemy enemy)  //когда вызывается где либо SendEnemyKilled() то вызывается отсюда всё методы, записанные в Action OnEnemyKilled
     {
-        killedEnemyName = enemyName;
-        if (OnEnemyKilled != null) OnEnemyKilled.Invoke(killedEnemyName);
+        killedEnemy = enemy;
+        if (OnEnemyKilled != null) OnEnemyKilled.Invoke(killedEnemy);
 
+    }
+    public struct KilledEnemy
+    {
+        public Enemy enemy;
+        public Transform spawnPoint;
     }
 
     public static event Action<string> OnAreaReach;
@@ -36,6 +41,16 @@ public class QuestEvents : MonoBehaviour
     {
         interactionNpcName = npcName;
         if (OnInteractionNpc != null) OnInteractionNpc.Invoke(interactionNpcName);
+
+    }
+
+    public static event Action<string> OnAreaEnable;
+    public static string enabledAreaName = "";
+    public static void SendEnableArea(string areaName)
+    {
+        enabledAreaName = areaName;
+        if (OnAreaEnable != null) 
+            OnAreaEnable.Invoke(enabledAreaName);
 
     }
 }

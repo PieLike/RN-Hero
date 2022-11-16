@@ -1,77 +1,40 @@
 using System.Collections;
-//using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 [RequireComponent(typeof(EnemyData))]
 public class EnemyBehavior : MonoBehaviour
 {
-    public Vector2 finalPoint;
-    [NonSerialized] public bool inMovement, isDead, inWaiting, beenCollide, inImpacting;
-    public float speed = 50f;
-    [NonSerialized] public GameObject shield;            
-    private Animator animator;
-    private Rigidbody2D rigidBody;
-    private bool isRotate;    
-    private EnemyData enemyData;    
+    //[NonSerialized]public Vector2 finalPoint;
+    [NonSerialized] public bool isDead, inImpacting, waitAfterAttack;//beenCollide, 
+    [NonSerialized] public GameObject shield;     
+    private Rigidbody2D rigidBody; Sound walkingSound;  //AudioManager audioManager; 
+    [NonSerialized] public EnemyData enemyData;  public EnemyAI enemyAI;
     [NonSerialized] public bool lootDropIsDone;
 
-    private void Start() 
+    public virtual void Start() 
     {
         enemyData = gameObject.GetComponent<EnemyData>();
+        enemyAI = gameObject.GetComponent<EnemyAI>();
         //находим дочерние объекты
         shield = transform.Find("Shield").gameObject;           
 
-        animator = GetComponent<Animator>();
-        rigidBody = GetComponent<Rigidbody2D>();  
-    }    
+        rigidBody = GetComponent<Rigidbody2D>(); 
 
-    private void MoveTo(GameObject objectToMoveTo)
-    {
-        finalPoint = objectToMoveTo.transform.position;
+        //audioManager = FindObjectOfType<AudioManager>();  
 
-        inMovement = true;
-        animator.SetBool("Walking", true);
-    }
-
-    private void MoveRandom()
-    {
-        float directionX = UnityEngine.Random.Range(-2.0f, 2.0f);
-        float directionY = UnityEngine.Random.Range(-0.5f, 0.5f);
-
-        finalPoint = new Vector2 (transform.position.x + directionX, transform.position.y + directionY); 
-
-        RotateObject(); //поворачивем если необходимо
-
-        inMovement = true;
-        animator.SetBool("Walking", true);
-    }
-
-    private void RotateObject()
-    {
-        if(finalPoint.x > transform.position.x)
+        foreach (Sound sound in enemyData.data.sounds)
         {
-            if (isRotate == false)
-            {
-                transform.Rotate(0,180f,0);
-                isRotate = true;
-            }
-        }
-        else if(isRotate == true)
-            {
-                transform.Rotate(0,-180f,0);  
-                isRotate = false;  
-            }    
-    }
+            sound.source = gameObject.AddComponent<AudioSource>();
+            sound.source.clip = sound.clip;
 
-    private void WaitRandom()
-    {
-        inWaiting = true;
-        float duration = UnityEngine.Random.Range(1.0f,10.0f);
-        StartCoroutine(WaitCoroutine(duration));
-    }
+            sound.source.volume = sound.volume;
+            sound.source.pitch = sound.pitch;
+            sound.source.loop = sound.loop;
+        }
+    }    
     
-    void Update()
+    public virtual void Update()
     {
         if (isDead == false)
         {
@@ -80,114 +43,128 @@ public class EnemyBehavior : MonoBehaviour
                 //вызываем функцию дропа лута у активного объекта (врага)
                 CallLootDrop();                
                 //делаем его компоненты неактивными (потом нужно будет исправить чтобы полностью удалять)
-                CallDead();
+                isDead = true;
             }            
         } 
         else
         {
             if (lootDropIsDone)
-                Destroy(gameObject);   
-        }             
+            {
+                Destroy(gameObject);  Debug.Log("destroy " + gameObject.name); 
+                EnemyDeadRegistration();
+                Experience.AddExp(MainVariables.expForEnemyKill);
+            }
+        }   
+
+    if  (enemyData.inMovement == true && (walkingSound == null || walkingSound.playing == false))
+        {            
+            walkingSound = Play("walking");//audioManager.Play(enemyData.data.walkingSound); 
+        }
+        else if (walkingSound != null && enemyData.inMovement == false && walkingSound.playing == true)
+        {
+            Stop(walkingSound);
+        }         
     }  
 
     private void FixedUpdate() 
     {
         //если движение прекращено
-        if (inMovement == false && inImpacting == false)
+        if (inImpacting == true)
         {
             rigidBody.velocity = Vector2.zero;
             rigidBody.Sleep();
+            
+            //if (finalPoint != rigidBody.position)
+            //    finalPoint = rigidBody.position;
+            //if (beenCollide != false)
+            //    beenCollide = false;
+        }    
+    }    
 
-            if (animator.GetBool("Walking") == true)
-                animator.SetBool("Walking", false);
-            if (finalPoint != rigidBody.position)
-                finalPoint = rigidBody.position;
-            if (beenCollide != false)
-                beenCollide = false;
-        }
-        if (isDead == false && inWaiting == false)
-        {
-            if (inMovement && finalPoint != null)
-            {
-                if (MyMathCalculations.CheckReachToPoint(rigidBody.position, finalPoint))
-                {
-                    inMovement = false;                    
-                }
-                else
-                {
-                    Vector2 direction = MyMathCalculations.CalculateDirectionSpeeds(rigidBody.position, finalPoint);
-                    if (isRotate == false)
-                    {
-                        rigidBody.velocity = direction * Time.fixedDeltaTime * speed;
-                    }
-                    else
-                    {
-                        rigidBody.velocity = new Vector2(direction.x, direction.y) * Time.fixedDeltaTime * speed;
-                    }                               
-                }
-            }
-            else
-            {
-                //придаём случайное движение если стоит
-                //if (Input.GetKeyUp(KeyCode.H))  
-                System.Random randomThing = new System.Random();              
-                switch(randomThing.Next(2))
-                {
-                    case(0): 
-                        //Debug.Log("going move");
-                        MoveRandom(); break;
-                    case(1):
-                        //Debug.Log("going wait");
-                        WaitRandom(); break;
-                }                
-            }
-        }        
-    }
-    public void CallDead()
-    {
-        isDead = true; inMovement = true;
-        
-        /*CircleCollider2D circleCollider2D  = gameObject.GetComponent<CircleCollider2D>();
-        if (circleCollider2D) circleCollider2D.enabled = false;
-
-        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        if (spriteRenderer) spriteRenderer.enabled = false;
-        
-        StartCoroutine(DeadCoroutine());*/
-
-        //зарегестрировать смерть врага в ивент менеджере
-        EnemyDeadRegistration();
-    }
-
-    private void EnemyDeadRegistration()
+    public virtual void EnemyDeadRegistration()
     {
         //зарегестрировать смерть врага в ивент менеджере
-        string enemyName;
+        /*string enemyName;
         if (gameObject.name.Contains('('))
             enemyName = gameObject.name.Split('(')[0];
         else
             enemyName = gameObject.name;
 
-        enemyName = enemyName.Replace(" ", "").ToLower();
+        enemyName = enemyName.Replace(" ", "").ToLower();*/
 
-        QuestEvents.SendEnemyKilled(enemyName);
+        QuestEvents.KilledEnemy killedEnemy = new QuestEvents.KilledEnemy { enemy = enemyData.data, spawnPoint = transform.parent};
+        QuestEvents.SendEnemyKilled(killedEnemy);
     }
 
     private void CallLootDrop()
     {
         //вызвать выпадение лута у активного объекта
         LootDroping lootDroping = gameObject.GetComponent<LootDroping>();
-        lootDroping.Drop();
+        if (lootDroping != null)
+            lootDroping.Drop();
     }
+
+    public IEnumerator WaitAfterAttackCoroutine(float duration)
+    {
+        waitAfterAttack = true;
+        yield return new WaitForSeconds(duration);
+        waitAfterAttack = false;   
+    }
+
+    public virtual void OnCollisionStay2D(Collision2D other) 
+    {
+        //необходим для override
+        //для краба например
+    }
+
+    public Sound Play (string soundName)
+    {
+        //Debug.Log("Play");
+        Sound sound = Array.Find(enemyData.data.sounds, sound => sound.name == soundName);
+        if (sound != null)
+        {
+            sound.source.Play();
+            StartCoroutine(PlayAudioClip(sound));
+            return sound;
+        }
+        else
+        {
+            Debug.Log("не найден аудиоклип в объекте " + gameObject.name + ": " + soundName);
+            return null;
+        }
+    }
+    public void Stop (Sound _sound)
+    {
+        _sound.source.Stop();
+    }
+
+    private IEnumerator PlayAudioClip(Sound _sound)
+    {        
+        _sound.playing = true;
+        yield return new WaitForSeconds(_sound.clip.length);
+        _sound.playing = false; 
+    }
+    /*public AudioClip FindAnimation (Animator _animator, string name) 
+    {
+        foreach (AudioClip clip in _animator.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == name)
+            {
+                return clip;
+            }
+        }
+
+        return null;
+    }*/
     
-    private IEnumerator DeadCoroutine()
+    /*private IEnumerator DeadCoroutine()
     {
         float duration = 5.0f;
         yield return new WaitForSeconds(duration); 
         Destroy(gameObject);       
-    }
+    }*/
 
-    private void OnCollisionEnter2D(Collision2D other) 
+    /*private void OnCollisionEnter2D(Collision2D other) 
     {
         if (other.gameObject.tag != "Floor")// && other.gameObject.tag != "Hero")
         {
@@ -203,12 +180,5 @@ public class EnemyBehavior : MonoBehaviour
                     inMovement = false; 
             }  
         }
-    }
-
-    private IEnumerator WaitCoroutine(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        inWaiting = false;   
-    }
-
+    }*/
 }

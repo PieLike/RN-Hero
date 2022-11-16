@@ -4,7 +4,7 @@ using UnityEngine;
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager instance;
-    private static string vocSaveDBName = "vocabularySave.bytes"; //vocActualDBName = "vocabularyActual.bytes", 
+    private static string vocSaveDBName = "vocabularySave.bytes";
     private static string questActualDBName = "questActual.bytes", questSaveDBName = "questSave.bytes";
     
     void Awake()
@@ -26,9 +26,6 @@ public class SaveManager : MonoBehaviour
         ClearVoculabraryDataBase(vocSaveDBName);
         ClearQuestsDataBase(questSaveDBName);
 
-        //DataTable actualVocabulary;        
-        //actualVocabulary = WorkWithDataBase.GetTable("SELECT * FROM words;", vocActualDBName);        
-        //WorkWithDataBase.InsertManyRow(vocSaveDBName, actualVocabulary, "words"); 
         ManagerToDataBase(vocSaveDBName, "dictionary");
 
         DataTable actualQuests;        
@@ -42,7 +39,6 @@ public class SaveManager : MonoBehaviour
 
         DataTable saveVocabulary;
         saveVocabulary = WorkWithDataBase.GetTable("SELECT * FROM words;", vocSaveDBName);
-        //WorkWithDataBase.InsertManyRow(vocActualDBName, saveVocabulary, "words");
         DataTableToManager(saveVocabulary, "dictionary");                
 
         DataTable saveQuests;

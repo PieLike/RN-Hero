@@ -1,4 +1,4 @@
-using System;
+#if UNITY_EDITOR
 using System.Linq;
 using Subtegral.DialogueSystem.DataContainers;
 using UnityEditor;
@@ -118,3 +118,4 @@ public class DialogueGraphWindow : EditorWindow
         rootVisualElement.Remove(graphView); 
     }
 }
+#endif

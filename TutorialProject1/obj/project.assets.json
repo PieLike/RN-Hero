@@ -2,843 +2,892 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.7.1": {
-      "Google.Protobuf/3.19.1": {
+      "DotNetOpenAuth/4.3.4.13329": {
         "type": "package",
         "dependencies": {
-          "System.Memory": "4.5.3"
-        },
-        "compile": {
-          "lib/net45/Google.Protobuf.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net45/Google.Protobuf.dll": {
-            "related": ".pdb;.xml"
-          }
+          "DotNetOpenAuth.OAuth.Consumer": "[4.3.4.13329]",
+          "DotNetOpenAuth.OAuth.ServiceProvider": "[4.3.4.13329]",
+          "DotNetOpenAuth.OAuth2.AuthorizationServer": "[4.3.4.13329]",
+          "DotNetOpenAuth.OAuth2.Client.UI": "[4.3.4.13329]",
+          "DotNetOpenAuth.OAuth2.ResourceServer": "[4.3.4.13329]",
+          "DotNetOpenAuth.OpenId.Provider.UI": "[4.3.4.13329]",
+          "DotNetOpenAuth.OpenId.RelyingParty.UI": "[4.3.4.13329]",
+          "DotNetOpenAuth.OpenIdInfoCard.UI": "[4.3.4.13329]",
+          "DotNetOpenAuth.OpenIdOAuth": "[4.3.4.13329]"
         }
       },
-      "Grpc/2.41.1": {
+      "DotNetOpenAuth.Core/4.3.4.13329": {
         "type": "package",
         "dependencies": {
-          "Grpc.Core": "2.41.1"
-        }
-      },
-      "Grpc.Core/2.41.1": {
-        "type": "package",
-        "dependencies": {
-          "Grpc.Core.Api": "2.41.1",
-          "System.Memory": "4.5.3"
+          "Microsoft.Net.Http": "(, )"
         },
         "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "System"
+          "System.Configuration"
         ],
         "compile": {
-          "lib/net45/Grpc.Core.dll": {
-            "related": ".pdb;.xml"
+          "lib/net45-full/DotNetOpenAuth.Core.dll": {
+            "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net45/Grpc.Core.dll": {
-            "related": ".pdb;.xml"
+          "lib/net45-full/DotNetOpenAuth.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.Core.UI/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.Core.UI.dll": {
+            "related": ".xml"
           }
         },
-        "build": {
-          "buildTransitive/net45/Grpc.Core.targets": {}
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.Core.UI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.InfoCard/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.Core": "[4.3.4.13329]"
         },
-        "runtimeTargets": {
-          "runtimes/linux-arm64/native/libgrpc_csharp_ext.arm64.so": {
-            "assetType": "native",
-            "rid": "linux-arm64"
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.InfoCard.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.InfoCard.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.InfoCard.UI/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.Core.UI": "[4.3.4.13329]",
+          "DotNetOpenAuth.InfoCard": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.InfoCard.UI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.InfoCard.UI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth.Common/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth.Common.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth.Common.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth.Consumer/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OAuth.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth.Consumer.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth.Consumer.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth.Core/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth.ServiceProvider/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OAuth.Common": "[4.3.4.13329]",
+          "DotNetOpenAuth.OAuth.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth.ServiceProvider.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth.ServiceProvider.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth2.AuthorizationServer/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OAuth2.ClientAuthorization": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.AuthorizationServer.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.AuthorizationServer.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth2.Client/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OAuth2.ClientAuthorization": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.Client.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.Client.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth2.Client.UI/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OAuth2.Client": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.Client.UI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.Client.UI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth2.ClientAuthorization/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OAuth2.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.ClientAuthorization.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.ClientAuthorization.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth2.Core/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OAuth2.ResourceServer/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OAuth.Common": "[4.3.4.13329]",
+          "DotNetOpenAuth.OAuth2.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.ResourceServer.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OAuth2.ResourceServer.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OpenId.Core/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OpenId.Core.UI/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.Core.UI": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.UI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.UI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OpenId.Provider/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OpenId.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.Provider.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.Provider.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OpenId.Provider.UI/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OpenId.Core.UI": "[4.3.4.13329]",
+          "DotNetOpenAuth.OpenId.Provider": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.Provider.UI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.Provider.UI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OpenId.RelyingParty/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OpenId.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.RelyingParty.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.RelyingParty.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OpenId.RelyingParty.UI/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OpenId.Core.UI": "[4.3.4.13329]",
+          "DotNetOpenAuth.OpenId.RelyingParty": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.RelyingParty.UI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OpenId.RelyingParty.UI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OpenIdInfoCard.UI/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.InfoCard.UI": "[4.3.4.13329]",
+          "DotNetOpenAuth.OpenId.RelyingParty.UI": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OpenIdInfoCard.UI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OpenIdInfoCard.UI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DotNetOpenAuth.OpenIdOAuth/4.3.4.13329": {
+        "type": "package",
+        "dependencies": {
+          "DotNetOpenAuth.OAuth.Consumer": "[4.3.4.13329]",
+          "DotNetOpenAuth.OAuth.ServiceProvider": "[4.3.4.13329]",
+          "DotNetOpenAuth.OpenId.Core": "[4.3.4.13329]"
+        },
+        "compile": {
+          "lib/net45-full/DotNetOpenAuth.OpenIdOAuth.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45-full/DotNetOpenAuth.OpenIdOAuth.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Net.Http/2.0.20505": {
+        "type": "package",
+        "compile": {
+          "lib/net40/System.Net.Http.WebRequest.dll": {
+            "related": ".xml"
           },
-          "runtimes/linux-x64/native/libgrpc_csharp_ext.x64.so": {
-            "assetType": "native",
-            "rid": "linux-x64"
+          "lib/net40/System.Net.Http.dll": {
+            "related": ".WebRequest.xml;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net40/System.Net.Http.WebRequest.dll": {
+            "related": ".xml"
           },
-          "runtimes/osx-x64/native/libgrpc_csharp_ext.x64.dylib": {
-            "assetType": "native",
-            "rid": "osx-x64"
-          },
-          "runtimes/win-x64/native/grpc_csharp_ext.x64.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x86/native/grpc_csharp_ext.x86.dll": {
-            "assetType": "native",
-            "rid": "win-x86"
+          "lib/net40/System.Net.Http.dll": {
+            "related": ".WebRequest.xml;.xml"
           }
         }
       },
-      "Grpc.Core.Api/2.41.1": {
+      "OAuth/1.0.3": {
         "type": "package",
-        "dependencies": {
-          "System.Memory": "4.5.3"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "System"
-        ],
         "compile": {
-          "lib/net45/Grpc.Core.Api.dll": {
+          "lib/net40/OAuth.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net45/Grpc.Core.Api.dll": {
+          "lib/net40/OAuth.dll": {
             "related": ".pdb;.xml"
           }
         }
       },
-      "Microsoft.Bcl.AsyncInterfaces/1.1.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Threading.Tasks.Extensions": "4.5.2"
-        },
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll": {}
-        },
-        "runtime": {
-          "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.CSharp/4.7.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Buffers/4.5.1": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net45/System.Buffers.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net461/System.Buffers.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Memory/4.5.4": {
-        "type": "package",
-        "dependencies": {
-          "System.Buffers": "4.5.1",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Runtime.CompilerServices.Unsafe": "4.5.3"
-        },
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "lib/net461/System.Memory.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net461/System.Memory.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Numerics.Vectors/4.5.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Numerics",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Numerics.Vectors.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net46/System.Numerics.Vectors.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Runtime.CompilerServices.Unsafe/4.7.1": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net461/System.Runtime.CompilerServices.Unsafe.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net461/System.Runtime.CompilerServices.Unsafe.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Text.Encodings.Web/4.7.1": {
-        "type": "package",
-        "dependencies": {
-          "System.Memory": "4.5.4"
-        },
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "lib/net461/System.Text.Encodings.Web.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net461/System.Text.Encodings.Web.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Text.Json/4.7.2": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "1.1.0",
-          "System.Buffers": "4.5.1",
-          "System.Memory": "4.5.4",
-          "System.Numerics.Vectors": "4.5.0",
-          "System.Runtime.CompilerServices.Unsafe": "4.7.1",
-          "System.Text.Encodings.Web": "4.7.1",
-          "System.Threading.Tasks.Extensions": "4.5.4",
-          "System.ValueTuple": "4.5.0"
-        },
-        "frameworkAssemblies": [
-          "System",
-          "System.Core",
-          "mscorlib"
-        ],
-        "compile": {
-          "lib/net461/System.Text.Json.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net461/System.Text.Json.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Threading.Tasks.Extensions/4.5.4": {
-        "type": "package",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "4.5.3"
-        },
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "lib/net461/System.Threading.Tasks.Extensions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net461/System.Threading.Tasks.Extensions.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.ValueTuple/4.5.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net47/System.ValueTuple.dll": {}
-        },
-        "runtime": {
-          "lib/net47/System.ValueTuple.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Yandex.Api/0.0.2": {
+      "Workflow/1.0.4": {
         "type": "package",
         "compile": {
-          "lib/net45/Yandex.Api.dll": {}
+          "lib/XWorkflow.dll": {}
         },
         "runtime": {
-          "lib/net45/Yandex.Api.dll": {}
-        }
-      },
-      "Yandex.Cloud.Protos/1.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Google.Protobuf": "3.19.1",
-          "Grpc": "2.41.1"
-        },
-        "compile": {
-          "lib/netstandard2.0/Yandex.Cloud.Protos.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Yandex.Cloud.Protos.dll": {}
-        }
-      },
-      "Yandex.Cloud.SDK/1.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.CSharp": "4.7.0",
-          "System.Text.Json": "4.7.2",
-          "Yandex.Cloud.Protos": "1.2.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Yandex.Cloud.SDK.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Yandex.Cloud.SDK.dll": {}
-        }
-      },
-      "YandexTranslate.dll/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/YandexTranslate.dll": {}
-        },
-        "runtime": {
-          "lib/YandexTranslate.dll": {}
-        }
-      },
-      "Unity.2D.Tilemap.Extras/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/Unity.2D.Tilemap.Extras.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Unity.2D.Tilemap.Extras.dll": {}
-        }
-      },
-      "Unity.2D.Tilemap.Extras.Editor/1.0.0": {
-        "type": "project",
-        "dependencies": {
-          "Unity.2D.Tilemap.Extras": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Unity.2D.Tilemap.Extras.Editor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Unity.2D.Tilemap.Extras.Editor.dll": {}
+          "lib/XWorkflow.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "Google.Protobuf/3.19.1": {
-      "sha512": "M6yun2BPdHkBjD3V14muZSt72azWHRJEx88ME2TyyH2+/ww6R3hIptjBFQQtO6pmkfLXW/NGQ4hADWSa9AmK2A==",
+    "DotNetOpenAuth/4.3.4.13329": {
+      "sha512": "+XrbtWeBBUujZBRGirbUUBzp7JESRwSIsQMdh/2kJzlwTr+ZVvggHQ1Tpr4uF7F8n1LTYWNy571wDdNs94BYZw==",
       "type": "package",
-      "path": "google.protobuf/3.19.1",
+      "path": "dotnetopenauth/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "google.protobuf.3.19.1.nupkg.sha512",
-        "google.protobuf.nuspec",
-        "lib/net45/Google.Protobuf.dll",
-        "lib/net45/Google.Protobuf.pdb",
-        "lib/net45/Google.Protobuf.xml",
-        "lib/net5.0/Google.Protobuf.dll",
-        "lib/net5.0/Google.Protobuf.pdb",
-        "lib/net5.0/Google.Protobuf.xml",
-        "lib/netstandard1.1/Google.Protobuf.dll",
-        "lib/netstandard1.1/Google.Protobuf.pdb",
-        "lib/netstandard1.1/Google.Protobuf.xml",
-        "lib/netstandard2.0/Google.Protobuf.dll",
-        "lib/netstandard2.0/Google.Protobuf.pdb",
-        "lib/netstandard2.0/Google.Protobuf.xml"
+        "dotnetopenauth.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.nuspec"
       ]
     },
-    "Grpc/2.41.1": {
-      "sha512": "kRUkybQ/3G1m+H1nZcNMJ/FQ63S5u/Mo9HRzJG4iPjSt4WWU4F2MZpD2lRu6FSNKDFXas/QQPHRNfEsBmzm4dA==",
+    "DotNetOpenAuth.Core/4.3.4.13329": {
+      "sha512": "sgTuUWHv5tn1weh8jLqXytGQKWpebhk+D4e/RTNNH21eqCEs/ch+x7YxQxzp2u70DO1Hvcjb6dTDj2rO3grgxA==",
       "type": "package",
-      "path": "grpc/2.41.1",
+      "path": "dotnetopenauth.core/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "grpc.2.41.1.nupkg.sha512",
-        "grpc.nuspec"
+        "content/web.config.transform",
+        "dotnetopenauth.core.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.core.nuspec",
+        "lib/net35-full/DotNetOpenAuth.Core.dll",
+        "lib/net35-full/DotNetOpenAuth.Core.xml",
+        "lib/net40-full/DotNetOpenAuth.Core.dll",
+        "lib/net40-full/DotNetOpenAuth.Core.xml",
+        "lib/net45-full/DotNetOpenAuth.Core.dll",
+        "lib/net45-full/DotNetOpenAuth.Core.xml"
       ]
     },
-    "Grpc.Core/2.41.1": {
-      "sha512": "Zjr17VM0jbIsdDNcKb2K5N9y/pvxIkQBD0wkq7IS0df39AW7LBD9Uj1kVtlfZQblEa0iyhX2Bn3YNCGiwxtmWg==",
+    "DotNetOpenAuth.Core.UI/4.3.4.13329": {
+      "sha512": "xd7tQ1TDolBUedrNaCZkvaQ7zeBmo7pzuWvrANGsAAzv+KOyUYAA4ATgp6H0MW+K682hjCrAEo0G/7wFRPBIWA==",
       "type": "package",
-      "path": "grpc.core/2.41.1",
+      "path": "dotnetopenauth.core.ui/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "build/net45/Grpc.Core.targets",
-        "buildTransitive/net45/Grpc.Core.targets",
-        "grpc.core.2.41.1.nupkg.sha512",
-        "grpc.core.nuspec",
-        "lib/net45/Grpc.Core.dll",
-        "lib/net45/Grpc.Core.pdb",
-        "lib/net45/Grpc.Core.xml",
-        "lib/netstandard1.5/Grpc.Core.dll",
-        "lib/netstandard1.5/Grpc.Core.pdb",
-        "lib/netstandard1.5/Grpc.Core.xml",
-        "lib/netstandard2.0/Grpc.Core.dll",
-        "lib/netstandard2.0/Grpc.Core.pdb",
-        "lib/netstandard2.0/Grpc.Core.xml",
-        "runtimes/linux-arm64/native/libgrpc_csharp_ext.arm64.so",
-        "runtimes/linux-x64/native/libgrpc_csharp_ext.x64.so",
-        "runtimes/osx-x64/native/libgrpc_csharp_ext.x64.dylib",
-        "runtimes/win-x64/native/grpc_csharp_ext.x64.dll",
-        "runtimes/win-x86/native/grpc_csharp_ext.x86.dll"
+        "dotnetopenauth.core.ui.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.core.ui.nuspec",
+        "lib/net35-full/DotNetOpenAuth.Core.UI.dll",
+        "lib/net35-full/DotNetOpenAuth.Core.UI.xml",
+        "lib/net40-full/DotNetOpenAuth.Core.UI.dll",
+        "lib/net40-full/DotNetOpenAuth.Core.UI.xml",
+        "lib/net45-full/DotNetOpenAuth.Core.UI.dll",
+        "lib/net45-full/DotNetOpenAuth.Core.UI.xml"
       ]
     },
-    "Grpc.Core.Api/2.41.1": {
-      "sha512": "va82wvX7xkurFu56vqXhpdtvzEtuaLipRJ4PkS162JbzeZ4O9mwX0sSroglGTXiMsUiZtgYlSgfW6/JkjE1PCg==",
+    "DotNetOpenAuth.InfoCard/4.3.4.13329": {
+      "sha512": "aKPCMoX9rZWU+kYbdpWyaQZnXp9EU8Y4W81NfM+kV/Nlb+01b9QTJvT3K6XeAou7habnrNEXQg0iAjYS7AeDwg==",
       "type": "package",
-      "path": "grpc.core.api/2.41.1",
+      "path": "dotnetopenauth.infocard/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "grpc.core.api.2.41.1.nupkg.sha512",
-        "grpc.core.api.nuspec",
-        "lib/net45/Grpc.Core.Api.dll",
-        "lib/net45/Grpc.Core.Api.pdb",
-        "lib/net45/Grpc.Core.Api.xml",
-        "lib/netstandard1.5/Grpc.Core.Api.dll",
-        "lib/netstandard1.5/Grpc.Core.Api.pdb",
-        "lib/netstandard1.5/Grpc.Core.Api.xml",
-        "lib/netstandard2.0/Grpc.Core.Api.dll",
-        "lib/netstandard2.0/Grpc.Core.Api.pdb",
-        "lib/netstandard2.0/Grpc.Core.Api.xml"
+        "dotnetopenauth.infocard.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.infocard.nuspec",
+        "lib/net35-full/DotNetOpenAuth.InfoCard.dll",
+        "lib/net35-full/DotNetOpenAuth.InfoCard.xml",
+        "lib/net40-full/DotNetOpenAuth.InfoCard.dll",
+        "lib/net40-full/DotNetOpenAuth.InfoCard.xml",
+        "lib/net45-full/DotNetOpenAuth.InfoCard.dll",
+        "lib/net45-full/DotNetOpenAuth.InfoCard.xml"
       ]
     },
-    "Microsoft.Bcl.AsyncInterfaces/1.1.0": {
-      "sha512": "1Am6l4Vpn3/K32daEqZI+FFr96OlZkgwK2LcT3pZ2zWubR5zTPW3/FkO1Rat9kb7oQOa4rxgl9LJHc5tspCWfg==",
+    "DotNetOpenAuth.InfoCard.UI/4.3.4.13329": {
+      "sha512": "YS6cxh3Y3jIwc6srlcjFwgMY2mnErFLVaPaScq5/eCBt+7UcCyYlZxD4qOH+Am69TogSVZa1AV/jwn+qMq8lOw==",
       "type": "package",
-      "path": "microsoft.bcl.asyncinterfaces/1.1.0",
+      "path": "dotnetopenauth.infocard.ui/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
-        "lib/net461/Microsoft.Bcl.AsyncInterfaces.xml",
-        "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
-        "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
-        "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
-        "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
-        "microsoft.bcl.asyncinterfaces.1.1.0.nupkg.sha512",
-        "microsoft.bcl.asyncinterfaces.nuspec",
-        "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll",
-        "ref/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
-        "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.infocard.ui.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.infocard.ui.nuspec",
+        "lib/net35-full/DotNetOpenAuth.InfoCard.UI.dll",
+        "lib/net35-full/DotNetOpenAuth.InfoCard.UI.xml",
+        "lib/net40-full/DotNetOpenAuth.InfoCard.UI.dll",
+        "lib/net40-full/DotNetOpenAuth.InfoCard.UI.xml",
+        "lib/net45-full/DotNetOpenAuth.InfoCard.UI.dll",
+        "lib/net45-full/DotNetOpenAuth.InfoCard.UI.xml"
       ]
     },
-    "Microsoft.CSharp/4.7.0": {
-      "sha512": "pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+    "DotNetOpenAuth.OAuth.Common/4.3.4.13329": {
+      "sha512": "42q/rT1H0n/mo1hIqoyhtSX+efBpf23c9gZvv5pc37PXST1zYmtTM3RDW+UM0cuAKlzCBhkqfjo63Nito57UpA==",
       "type": "package",
-      "path": "microsoft.csharp/4.7.0",
+      "path": "dotnetopenauth.oauth.common/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net45/_._",
-        "lib/netcore50/Microsoft.CSharp.dll",
-        "lib/netcoreapp2.0/_._",
-        "lib/netstandard1.3/Microsoft.CSharp.dll",
-        "lib/netstandard2.0/Microsoft.CSharp.dll",
-        "lib/netstandard2.0/Microsoft.CSharp.xml",
-        "lib/portable-net45+win8+wp8+wpa81/_._",
-        "lib/uap10.0.16299/_._",
-        "lib/win8/_._",
-        "lib/wp80/_._",
-        "lib/wpa81/_._",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "microsoft.csharp.4.7.0.nupkg.sha512",
-        "microsoft.csharp.nuspec",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net45/_._",
-        "ref/netcore50/Microsoft.CSharp.dll",
-        "ref/netcore50/Microsoft.CSharp.xml",
-        "ref/netcore50/de/Microsoft.CSharp.xml",
-        "ref/netcore50/es/Microsoft.CSharp.xml",
-        "ref/netcore50/fr/Microsoft.CSharp.xml",
-        "ref/netcore50/it/Microsoft.CSharp.xml",
-        "ref/netcore50/ja/Microsoft.CSharp.xml",
-        "ref/netcore50/ko/Microsoft.CSharp.xml",
-        "ref/netcore50/ru/Microsoft.CSharp.xml",
-        "ref/netcore50/zh-hans/Microsoft.CSharp.xml",
-        "ref/netcore50/zh-hant/Microsoft.CSharp.xml",
-        "ref/netcoreapp2.0/_._",
-        "ref/netstandard1.0/Microsoft.CSharp.dll",
-        "ref/netstandard1.0/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/de/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/es/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/fr/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/it/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/ja/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/ko/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/ru/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/zh-hans/Microsoft.CSharp.xml",
-        "ref/netstandard1.0/zh-hant/Microsoft.CSharp.xml",
-        "ref/netstandard2.0/Microsoft.CSharp.dll",
-        "ref/netstandard2.0/Microsoft.CSharp.xml",
-        "ref/portable-net45+win8+wp8+wpa81/_._",
-        "ref/uap10.0.16299/_._",
-        "ref/win8/_._",
-        "ref/wp80/_._",
-        "ref/wpa81/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.oauth.common.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth.common.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth.Common.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth.Common.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth.Common.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth.Common.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth.Common.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth.Common.xml"
       ]
     },
-    "System.Buffers/4.5.1": {
-      "sha512": "Rw7ijyl1qqRS0YQD/WycNst8hUUMgrMH4FCn1nNm27M4VxchZ1js3fVjQaANHO5f3sN4isvP4a+Met9Y4YomAg==",
+    "DotNetOpenAuth.OAuth.Consumer/4.3.4.13329": {
+      "sha512": "J+2v9yoOn4yIFBstU95/5f0iKs/WrSyYzlnv6dlOkSTqMX/Bm0pIg462U0whr0dnRd3U8JKP6yUNKTfvCrscQA==",
       "type": "package",
-      "path": "system.buffers/4.5.1",
+      "path": "dotnetopenauth.oauth.consumer/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/System.Buffers.dll",
-        "lib/net461/System.Buffers.xml",
-        "lib/netcoreapp2.0/_._",
-        "lib/netstandard1.1/System.Buffers.dll",
-        "lib/netstandard1.1/System.Buffers.xml",
-        "lib/netstandard2.0/System.Buffers.dll",
-        "lib/netstandard2.0/System.Buffers.xml",
-        "lib/uap10.0.16299/_._",
-        "ref/net45/System.Buffers.dll",
-        "ref/net45/System.Buffers.xml",
-        "ref/netcoreapp2.0/_._",
-        "ref/netstandard1.1/System.Buffers.dll",
-        "ref/netstandard1.1/System.Buffers.xml",
-        "ref/netstandard2.0/System.Buffers.dll",
-        "ref/netstandard2.0/System.Buffers.xml",
-        "ref/uap10.0.16299/_._",
-        "system.buffers.4.5.1.nupkg.sha512",
-        "system.buffers.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.oauth.consumer.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth.consumer.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth.Consumer.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth.Consumer.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth.Consumer.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth.Consumer.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth.Consumer.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth.Consumer.xml"
       ]
     },
-    "System.Memory/4.5.4": {
-      "sha512": "1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
+    "DotNetOpenAuth.OAuth.Core/4.3.4.13329": {
+      "sha512": "lvdJweyGX+orYVDX8LfQ/p2Lr5D8brkCPmTP4t5QlgeztV629oJCtKvqZxaB7ir6nO3jKPfiyrSJVgAW0e1d4g==",
       "type": "package",
-      "path": "system.memory/4.5.4",
+      "path": "dotnetopenauth.oauth.core/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/System.Memory.dll",
-        "lib/net461/System.Memory.xml",
-        "lib/netcoreapp2.1/_._",
-        "lib/netstandard1.1/System.Memory.dll",
-        "lib/netstandard1.1/System.Memory.xml",
-        "lib/netstandard2.0/System.Memory.dll",
-        "lib/netstandard2.0/System.Memory.xml",
-        "ref/netcoreapp2.1/_._",
-        "system.memory.4.5.4.nupkg.sha512",
-        "system.memory.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "content/web.config.transform",
+        "dotnetopenauth.oauth.core.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth.core.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth.xml"
       ]
     },
-    "System.Numerics.Vectors/4.5.0": {
-      "sha512": "QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ==",
+    "DotNetOpenAuth.OAuth.ServiceProvider/4.3.4.13329": {
+      "sha512": "P/I9gINYouLktBFQlM5bluPh+/HPORlpLtIsc3HoIulHQr/UJuJNBbS0YxKnJWh8CWpniTamU9DPc7/NZLLTIA==",
       "type": "package",
-      "path": "system.numerics.vectors/4.5.0",
+      "path": "dotnetopenauth.oauth.serviceprovider/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net46/System.Numerics.Vectors.dll",
-        "lib/net46/System.Numerics.Vectors.xml",
-        "lib/netcoreapp2.0/_._",
-        "lib/netstandard1.0/System.Numerics.Vectors.dll",
-        "lib/netstandard1.0/System.Numerics.Vectors.xml",
-        "lib/netstandard2.0/System.Numerics.Vectors.dll",
-        "lib/netstandard2.0/System.Numerics.Vectors.xml",
-        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
-        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
-        "lib/uap10.0.16299/_._",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net45/System.Numerics.Vectors.dll",
-        "ref/net45/System.Numerics.Vectors.xml",
-        "ref/net46/System.Numerics.Vectors.dll",
-        "ref/net46/System.Numerics.Vectors.xml",
-        "ref/netcoreapp2.0/_._",
-        "ref/netstandard1.0/System.Numerics.Vectors.dll",
-        "ref/netstandard1.0/System.Numerics.Vectors.xml",
-        "ref/netstandard2.0/System.Numerics.Vectors.dll",
-        "ref/netstandard2.0/System.Numerics.Vectors.xml",
-        "ref/uap10.0.16299/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "system.numerics.vectors.4.5.0.nupkg.sha512",
-        "system.numerics.vectors.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.oauth.serviceprovider.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth.serviceprovider.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth.ServiceProvider.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth.ServiceProvider.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth.ServiceProvider.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth.ServiceProvider.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth.ServiceProvider.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth.ServiceProvider.xml"
       ]
     },
-    "System.Runtime.CompilerServices.Unsafe/4.7.1": {
-      "sha512": "zOHkQmzPCn5zm/BH+cxC1XbUS3P4Yoi3xzW7eRgVpDR2tPGSzyMZ17Ig1iRkfJuY0nhxkQQde8pgePNiA7z7TQ==",
+    "DotNetOpenAuth.OAuth2.AuthorizationServer/4.3.4.13329": {
+      "sha512": "yq8IpYhlmm4gVrbx6qeoE8F6OaiBipFyTsuXdLUEXWS1hv/Fq5BNG6eACyKW7BiG+jb1jFO7gedWjmjO+wPdiA==",
       "type": "package",
-      "path": "system.runtime.compilerservices.unsafe/4.7.1",
+      "path": "dotnetopenauth.oauth2.authorizationserver/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
-        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
-        "ref/net461/System.Runtime.CompilerServices.Unsafe.xml",
-        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512",
-        "system.runtime.compilerservices.unsafe.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.oauth2.authorizationserver.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth2.authorizationserver.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.AuthorizationServer.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.AuthorizationServer.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.AuthorizationServer.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.AuthorizationServer.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.AuthorizationServer.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.AuthorizationServer.xml"
       ]
     },
-    "System.Text.Encodings.Web/4.7.1": {
-      "sha512": "3qreYFQcLnyFk1LuaNWyyWE+sfkfe5eSTaIIssYrLNUIDbgyZNQBYQSzSDo4AprpjVeVX2T4KHKii9fiSZVUow==",
+    "DotNetOpenAuth.OAuth2.Client/4.3.4.13329": {
+      "sha512": "7a0AnHNMx15rgG2GPFdhRpcrFJX7MZdRY+bxnooJ9rUXCKJgFn8e061Wnc7tff3mY2YAjPOo2bg+ThIOqYaClw==",
       "type": "package",
-      "path": "system.text.encodings.web/4.7.1",
+      "path": "dotnetopenauth.oauth2.client/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/System.Text.Encodings.Web.dll",
-        "lib/net461/System.Text.Encodings.Web.xml",
-        "lib/netstandard1.0/System.Text.Encodings.Web.dll",
-        "lib/netstandard1.0/System.Text.Encodings.Web.xml",
-        "lib/netstandard2.0/System.Text.Encodings.Web.dll",
-        "lib/netstandard2.0/System.Text.Encodings.Web.xml",
-        "lib/netstandard2.1/System.Text.Encodings.Web.dll",
-        "lib/netstandard2.1/System.Text.Encodings.Web.xml",
-        "system.text.encodings.web.4.7.1.nupkg.sha512",
-        "system.text.encodings.web.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.oauth2.client.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth2.client.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.Client.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.Client.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.Client.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.Client.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.Client.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.Client.xml"
       ]
     },
-    "System.Text.Json/4.7.2": {
-      "sha512": "TcMd95wcrubm9nHvJEQs70rC0H/8omiSGGpU4FQ/ZA1URIqD4pjmFJh2Mfv1yH1eHgJDWTi2hMDXwTET+zOOyg==",
+    "DotNetOpenAuth.OAuth2.Client.UI/4.3.4.13329": {
+      "sha512": "hAih1ctQvR6Hl57/WHoMEdrB2kKCU6j+i3B++iRpeyjESO3KIZOphnBYHCuHvQ6bgjnX5hJ0XI/HrZTEDzwwjA==",
       "type": "package",
-      "path": "system.text.json/4.7.2",
+      "path": "dotnetopenauth.oauth2.client.ui/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net461/System.Text.Json.dll",
-        "lib/net461/System.Text.Json.xml",
-        "lib/netcoreapp3.0/System.Text.Json.dll",
-        "lib/netcoreapp3.0/System.Text.Json.xml",
-        "lib/netstandard2.0/System.Text.Json.dll",
-        "lib/netstandard2.0/System.Text.Json.xml",
-        "system.text.json.4.7.2.nupkg.sha512",
-        "system.text.json.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.oauth2.client.ui.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth2.client.ui.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.Client.UI.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.Client.UI.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.Client.UI.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.Client.UI.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.Client.UI.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.Client.UI.xml"
       ]
     },
-    "System.Threading.Tasks.Extensions/4.5.4": {
-      "sha512": "zteT+G8xuGu6mS+mzDzYXbzS7rd3K6Fjb9RiZlYlJPam2/hU7JCBZBVEcywNuR+oZ1ncTvc/cq0faRr3P01OVg==",
+    "DotNetOpenAuth.OAuth2.ClientAuthorization/4.3.4.13329": {
+      "sha512": "J102aHCpTNLzZ6pmkNEkZiNvRPXkSMxPUlvDseGGWEd/g+dSfFT4fH4VQMHV2gb0g6JOhwgImEdy6UB8NJBhOQ==",
       "type": "package",
-      "path": "system.threading.tasks.extensions/4.5.4",
+      "path": "dotnetopenauth.oauth2.clientauthorization/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net461/System.Threading.Tasks.Extensions.dll",
-        "lib/net461/System.Threading.Tasks.Extensions.xml",
-        "lib/netcoreapp2.1/_._",
-        "lib/netstandard1.0/System.Threading.Tasks.Extensions.dll",
-        "lib/netstandard1.0/System.Threading.Tasks.Extensions.xml",
-        "lib/netstandard2.0/System.Threading.Tasks.Extensions.dll",
-        "lib/netstandard2.0/System.Threading.Tasks.Extensions.xml",
-        "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll",
-        "lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.xml",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/netcoreapp2.1/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-        "system.threading.tasks.extensions.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.oauth2.clientauthorization.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth2.clientauthorization.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.ClientAuthorization.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.ClientAuthorization.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.ClientAuthorization.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.ClientAuthorization.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.ClientAuthorization.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.ClientAuthorization.xml"
       ]
     },
-    "System.ValueTuple/4.5.0": {
-      "sha512": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
+    "DotNetOpenAuth.OAuth2.Core/4.3.4.13329": {
+      "sha512": "2KPnfW/lEObcn5dtme1zrwkU3wxIMaAp/fZvrRom9TA/6P8WZLb/wiyHMtkm77+rC18SRYbAmGCHxuc3p+Uezw==",
       "type": "package",
-      "path": "system.valuetuple/4.5.0",
+      "path": "dotnetopenauth.oauth2.core/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net461/System.ValueTuple.dll",
-        "lib/net461/System.ValueTuple.xml",
-        "lib/net47/System.ValueTuple.dll",
-        "lib/net47/System.ValueTuple.xml",
-        "lib/netcoreapp2.0/_._",
-        "lib/netstandard1.0/System.ValueTuple.dll",
-        "lib/netstandard1.0/System.ValueTuple.xml",
-        "lib/netstandard2.0/_._",
-        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
-        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.xml",
-        "lib/uap10.0.16299/_._",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net461/System.ValueTuple.dll",
-        "ref/net47/System.ValueTuple.dll",
-        "ref/netcoreapp2.0/_._",
-        "ref/netstandard2.0/_._",
-        "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
-        "ref/uap10.0.16299/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "system.valuetuple.4.5.0.nupkg.sha512",
-        "system.valuetuple.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "dotnetopenauth.oauth2.core.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth2.core.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.xml"
       ]
     },
-    "Yandex.Api/0.0.2": {
-      "sha512": "cubR+uzQNtqfcMPWmvf9ic8Ct+5SXj/lqr/M9/9s+1Ne5ZYNrS//G5G2B9qqo5QM58H6dW92R6KMNDO1jbsQpg==",
+    "DotNetOpenAuth.OAuth2.ResourceServer/4.3.4.13329": {
+      "sha512": "Y2MgpdJ3fophQaa74FSHYx9eihIcknQyOh53ktCJ3QxNKX8qjuA9pqITMoJdpnv5c39NOY6s4jRU6AvuhfQB1Q==",
       "type": "package",
-      "path": "yandex.api/0.0.2",
+      "path": "dotnetopenauth.oauth2.resourceserver/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net45/Yandex.Api.dll",
-        "yandex.api.0.0.2.nupkg.sha512",
-        "yandex.api.nuspec"
+        "dotnetopenauth.oauth2.resourceserver.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.oauth2.resourceserver.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.ResourceServer.dll",
+        "lib/net35-full/DotNetOpenAuth.OAuth2.ResourceServer.xml",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.ResourceServer.dll",
+        "lib/net40-full/DotNetOpenAuth.OAuth2.ResourceServer.xml",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.ResourceServer.dll",
+        "lib/net45-full/DotNetOpenAuth.OAuth2.ResourceServer.xml"
       ]
     },
-    "Yandex.Cloud.Protos/1.2.0": {
-      "sha512": "LNeotKKhKMYuBsOJTIGUcFpVGkGlZ7h18DdsjF2AvCCf6LhNP6t8wO2o8nWf5EcFv8jF+XxvxLtH0IpZXiLWZQ==",
+    "DotNetOpenAuth.OpenId.Core/4.3.4.13329": {
+      "sha512": "r8XKTJ6c+YvOOQcTLMgjWsfAkNxgxp8QVsP6pRXrg1Onp5TpzNZ9ULVzKkyRRipmC0fEGitydRnjKRDD2QxLtg==",
       "type": "package",
-      "path": "yandex.cloud.protos/1.2.0",
+      "path": "dotnetopenauth.openid.core/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/netstandard2.0/Yandex.Cloud.Protos.dll",
-        "yandex.cloud.protos.1.2.0.nupkg.sha512",
-        "yandex.cloud.protos.nuspec"
+        "content/net35-full/web.config.transform",
+        "content/net40-full/web.config.transform",
+        "content/net45-full/web.config.transform",
+        "dotnetopenauth.openid.core.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.openid.core.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OpenId.dll",
+        "lib/net35-full/DotNetOpenAuth.OpenId.xml",
+        "lib/net35-full/Mono.Math.dll",
+        "lib/net35-full/Mono.Math.xml",
+        "lib/net35-full/Org.Mentalis.Security.Cryptography.dll",
+        "lib/net35-full/Org.Mentalis.Security.Cryptography.xml",
+        "lib/net40-full/DotNetOpenAuth.OpenId.dll",
+        "lib/net40-full/DotNetOpenAuth.OpenId.xml",
+        "lib/net40-full/Mono.Math.dll",
+        "lib/net40-full/Mono.Math.xml",
+        "lib/net40-full/Org.Mentalis.Security.Cryptography.dll",
+        "lib/net40-full/Org.Mentalis.Security.Cryptography.xml",
+        "lib/net45-full/DotNetOpenAuth.OpenId.dll",
+        "lib/net45-full/DotNetOpenAuth.OpenId.xml",
+        "lib/net45-full/Mono.Math.dll",
+        "lib/net45-full/Mono.Math.xml",
+        "lib/net45-full/Org.Mentalis.Security.Cryptography.dll",
+        "lib/net45-full/Org.Mentalis.Security.Cryptography.xml"
       ]
     },
-    "Yandex.Cloud.SDK/1.2.0": {
-      "sha512": "nLywlIe4nGt5Kj9e9I5u7ZKoSmBbumuimrANZiV5UU8WZN0+6N5GhOCp4nSyvnzk+3Ldz8zM2rQ1WgC70zV5UA==",
+    "DotNetOpenAuth.OpenId.Core.UI/4.3.4.13329": {
+      "sha512": "Jooj8My+LgRGN6WbiakcU40wl9oXxK8IbIrH2BW87mpQTqAQFIsepAHxlzKStkoEFgByxSEI05YnnscRu9uLMg==",
       "type": "package",
-      "path": "yandex.cloud.sdk/1.2.0",
+      "path": "dotnetopenauth.openid.core.ui/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/netstandard2.0/Yandex.Cloud.SDK.dll",
-        "yandex.cloud.sdk.1.2.0.nupkg.sha512",
-        "yandex.cloud.sdk.nuspec"
+        "dotnetopenauth.openid.core.ui.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.openid.core.ui.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OpenId.UI.dll",
+        "lib/net35-full/DotNetOpenAuth.OpenId.UI.xml",
+        "lib/net40-full/DotNetOpenAuth.OpenId.UI.dll",
+        "lib/net40-full/DotNetOpenAuth.OpenId.UI.xml",
+        "lib/net45-full/DotNetOpenAuth.OpenId.UI.dll",
+        "lib/net45-full/DotNetOpenAuth.OpenId.UI.xml"
       ]
     },
-    "YandexTranslate.dll/1.0.0": {
-      "sha512": "RUPrh9OsGE1D7dGivF+IzIGrx6ZYcnOh4ht+ERrzBUDrsaQdi0k1MZ402SpiD6KdWnvitSCXPrIjYlk60X0FyA==",
+    "DotNetOpenAuth.OpenId.Provider/4.3.4.13329": {
+      "sha512": "AU332jmP8/BUZ6Tmu7bpykJWNd4gO9xsMVz0G/pZg1pAaEP7ftdprbMu93ZhLgk7v3YIUT2pQje8DbWElFJu4Q==",
       "type": "package",
-      "path": "yandextranslate.dll/1.0.0",
+      "path": "dotnetopenauth.openid.provider/4.3.4.13329",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "NuGet.exe",
-        "lib/YandexTranslate.dll",
-        "yandextranslate.dll.1.0.0.nupkg.sha512",
-        "yandextranslate.dll.nuspec"
+        "content/web.config.transform",
+        "dotnetopenauth.openid.provider.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.openid.provider.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OpenId.Provider.dll",
+        "lib/net35-full/DotNetOpenAuth.OpenId.Provider.xml",
+        "lib/net40-full/DotNetOpenAuth.OpenId.Provider.dll",
+        "lib/net40-full/DotNetOpenAuth.OpenId.Provider.xml",
+        "lib/net45-full/DotNetOpenAuth.OpenId.Provider.dll",
+        "lib/net45-full/DotNetOpenAuth.OpenId.Provider.xml"
       ]
     },
-    "Unity.2D.Tilemap.Extras/1.0.0": {
-      "type": "project",
-      "path": "Unity.2D.Tilemap.Extras.csproj",
-      "msbuildProject": "Unity.2D.Tilemap.Extras.csproj"
+    "DotNetOpenAuth.OpenId.Provider.UI/4.3.4.13329": {
+      "sha512": "/WeLnfEPwuWyWFENzqNGYRioqfKKdGSiVnT2wW5hx1T/1DjbK7HxwiE+bpUxctNU0iodlFnIYUdkwkFlNmg3SA==",
+      "type": "package",
+      "path": "dotnetopenauth.openid.provider.ui/4.3.4.13329",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dotnetopenauth.openid.provider.ui.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.openid.provider.ui.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OpenId.Provider.UI.dll",
+        "lib/net35-full/DotNetOpenAuth.OpenId.Provider.UI.xml",
+        "lib/net40-full/DotNetOpenAuth.OpenId.Provider.UI.dll",
+        "lib/net40-full/DotNetOpenAuth.OpenId.Provider.UI.xml",
+        "lib/net45-full/DotNetOpenAuth.OpenId.Provider.UI.dll",
+        "lib/net45-full/DotNetOpenAuth.OpenId.Provider.UI.xml"
+      ]
     },
-    "Unity.2D.Tilemap.Extras.Editor/1.0.0": {
-      "type": "project",
-      "path": "Unity.2D.Tilemap.Extras.Editor.csproj",
-      "msbuildProject": "Unity.2D.Tilemap.Extras.Editor.csproj"
+    "DotNetOpenAuth.OpenId.RelyingParty/4.3.4.13329": {
+      "sha512": "2uME8eTovsaE+/EiDDkr82O7y7yl0LMyoQHuHCdOVizUHrUZewkF/vi7pn1F9pGqs8zeBQqI9y1AZ6XQ3s2REA==",
+      "type": "package",
+      "path": "dotnetopenauth.openid.relyingparty/4.3.4.13329",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/web.config.transform",
+        "dotnetopenauth.openid.relyingparty.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.openid.relyingparty.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OpenId.RelyingParty.dll",
+        "lib/net35-full/DotNetOpenAuth.OpenId.RelyingParty.xml",
+        "lib/net40-full/DotNetOpenAuth.OpenId.RelyingParty.dll",
+        "lib/net40-full/DotNetOpenAuth.OpenId.RelyingParty.xml",
+        "lib/net45-full/DotNetOpenAuth.OpenId.RelyingParty.dll",
+        "lib/net45-full/DotNetOpenAuth.OpenId.RelyingParty.xml"
+      ]
+    },
+    "DotNetOpenAuth.OpenId.RelyingParty.UI/4.3.4.13329": {
+      "sha512": "06kxJcANMgQ4eLWh2HawHRDJ6rRAL+EOWMGLhW5aE8G0F31iQHB2vlRVPEo//rnf0dhAaVSDo0mPgwodYmjKGA==",
+      "type": "package",
+      "path": "dotnetopenauth.openid.relyingparty.ui/4.3.4.13329",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dotnetopenauth.openid.relyingparty.ui.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.openid.relyingparty.ui.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OpenId.RelyingParty.UI.dll",
+        "lib/net35-full/DotNetOpenAuth.OpenId.RelyingParty.UI.xml",
+        "lib/net40-full/DotNetOpenAuth.OpenId.RelyingParty.UI.dll",
+        "lib/net40-full/DotNetOpenAuth.OpenId.RelyingParty.UI.xml",
+        "lib/net45-full/DotNetOpenAuth.OpenId.RelyingParty.UI.dll",
+        "lib/net45-full/DotNetOpenAuth.OpenId.RelyingParty.UI.xml"
+      ]
+    },
+    "DotNetOpenAuth.OpenIdInfoCard.UI/4.3.4.13329": {
+      "sha512": "HkV7igZG5cudLfdT9p9gQshtSr8C4da65UmaubYqnLMJpgdBnKIlsVz/2PhRfQ8zfxWPOcpkjQxu1Ps/K33v2Q==",
+      "type": "package",
+      "path": "dotnetopenauth.openidinfocard.ui/4.3.4.13329",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dotnetopenauth.openidinfocard.ui.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.openidinfocard.ui.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OpenIdInfoCard.UI.dll",
+        "lib/net35-full/DotNetOpenAuth.OpenIdInfoCard.UI.xml",
+        "lib/net40-full/DotNetOpenAuth.OpenIdInfoCard.UI.dll",
+        "lib/net40-full/DotNetOpenAuth.OpenIdInfoCard.UI.xml",
+        "lib/net45-full/DotNetOpenAuth.OpenIdInfoCard.UI.dll",
+        "lib/net45-full/DotNetOpenAuth.OpenIdInfoCard.UI.xml"
+      ]
+    },
+    "DotNetOpenAuth.OpenIdOAuth/4.3.4.13329": {
+      "sha512": "37yvW2z/l1e6WGiLMdqjpWijgOpqHGa6GClIyynF94PjEs2bEJH9iPpHTrskxNdimOG1nzqR9sJYS4Gh26mt4w==",
+      "type": "package",
+      "path": "dotnetopenauth.openidoauth/4.3.4.13329",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dotnetopenauth.openidoauth.4.3.4.13329.nupkg.sha512",
+        "dotnetopenauth.openidoauth.nuspec",
+        "lib/net35-full/DotNetOpenAuth.OpenIdOAuth.dll",
+        "lib/net35-full/DotNetOpenAuth.OpenIdOAuth.xml",
+        "lib/net40-full/DotNetOpenAuth.OpenIdOAuth.dll",
+        "lib/net40-full/DotNetOpenAuth.OpenIdOAuth.xml",
+        "lib/net45-full/DotNetOpenAuth.OpenIdOAuth.dll",
+        "lib/net45-full/DotNetOpenAuth.OpenIdOAuth.xml"
+      ]
+    },
+    "Microsoft.Net.Http/2.0.20505": {
+      "sha512": "XRsKQP2XEd/DGLerVsU+T2pKQGTFc9ctWsIVbRblL/y+jT/BUo28aJ5mWN40oAeUwwbpXshAc8uO/LRscWav9A==",
+      "type": "package",
+      "path": "microsoft.net.http/2.0.20505",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/System.Net.Http.WebRequest.dll",
+        "lib/net40/System.Net.Http.WebRequest.xml",
+        "lib/net40/System.Net.Http.dll",
+        "lib/net40/System.Net.Http.xml",
+        "microsoft.net.http.2.0.20505.nupkg.sha512",
+        "microsoft.net.http.nuspec"
+      ]
+    },
+    "OAuth/1.0.3": {
+      "sha512": "hgYuURGgXcAmxg8Xn/wIlI85eCy4UuxujmR04uXpDQjUwFfgT25eM+j1FerJwI9FK+K8Mr1ViNXP4Vm9BsxW7A==",
+      "type": "package",
+      "path": "oauth/1.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "lib/net20/OAuth.Net20.dll",
+        "lib/net20/OAuth.Net20.pdb",
+        "lib/net20/OAuth.Net20.xml",
+        "lib/net35/OAuth.Net35.dll",
+        "lib/net35/OAuth.Net35.pdb",
+        "lib/net35/OAuth.Net35.xml",
+        "lib/net40/OAuth.dll",
+        "lib/net40/OAuth.pdb",
+        "lib/net40/OAuth.xml",
+        "lib/sl4-wp/OAuth.WindowsPhone.dll",
+        "lib/sl4-wp/OAuth.WindowsPhone.pdb",
+        "lib/sl4-wp/OAuth.WindowsPhone.xml",
+        "lib/sl4-wp71/OAuth.WindowsPhone.Mango.XML",
+        "lib/sl4-wp71/OAuth.WindowsPhone.Mango.dll",
+        "lib/sl4-wp71/OAuth.WindowsPhone.Mango.pdb",
+        "oauth.1.0.3.nupkg.sha512",
+        "oauth.nuspec"
+      ]
+    },
+    "Workflow/1.0.4": {
+      "sha512": "vE2Dk0dg2xIHIacK7xai4QBP2tTkqrK2FdS7jVaYoFmv/ZDU0FJ1oOacBVt+x3tDi8zqqGjJebopIHxtGsDYIw==",
+      "type": "package",
+      "path": "workflow/1.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/XWorkflow.csproj",
+        "lib/XWorkflow.dll",
+        "workflow.1.0.4.nupkg.sha512",
+        "workflow.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.7.1": [
-      "Unity.2D.Tilemap.Extras >= 1.0.0",
-      "Unity.2D.Tilemap.Extras.Editor >= 1.0.0",
-      "Yandex.Api >= 0.0.2",
-      "Yandex.Cloud.SDK >= 1.2.0",
-      "YandexTranslate.dll >= 1.0.0"
+      "DotNetOpenAuth >= 4.3.4.13329",
+      "OAuth >= 1.0.3",
+      "Workflow >= 1.0.4"
     ]
   },
   "packageFolders": {
@@ -867,34 +916,39 @@
       },
       "frameworks": {
         "net471": {
-          "projectReferences": {
-            "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj": {
-              "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj"
-            },
-            "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj": {
-              "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       }
     },
     "frameworks": {
       "net471": {
         "dependencies": {
-          "Yandex.Api": {
+          "DotNetOpenAuth": {
             "target": "Package",
-            "version": "[0.0.2, )"
+            "version": "[4.3.4.13329, )"
           },
-          "Yandex.Cloud.SDK": {
+          "OAuth": {
             "target": "Package",
-            "version": "[1.2.0, )"
+            "version": "[1.0.3, )"
           },
-          "YandexTranslate.dll": {
+          "Workflow": {
             "target": "Package",
-            "version": "[1.0.0, )"
+            "version": "[1.0.4, )"
           }
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1602",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "DotNetOpenAuth.Core 4.3.4.13329 не задает включенную нижнюю границу для зависимости Microsoft.Net.Http. Использовано наилучшее приближенное соответствие Microsoft.Net.Http 2.0.20505.",
+      "libraryId": "Microsoft.Net.Http",
+      "targetGraphs": [
+        ".NETFramework,Version=v4.7.1"
+      ]
+    }
+  ]
 }

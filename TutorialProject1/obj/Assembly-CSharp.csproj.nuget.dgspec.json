@@ -27,68 +27,27 @@
         },
         "frameworks": {
           "net471": {
-            "projectReferences": {
-              "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj": {
-                "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj"
-              },
-              "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj": {
-                "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         }
       },
       "frameworks": {
         "net471": {
           "dependencies": {
-            "Yandex.Api": {
+            "DotNetOpenAuth": {
               "target": "Package",
-              "version": "[0.0.2, )"
+              "version": "[4.3.4.13329, )"
             },
-            "Yandex.Cloud.SDK": {
+            "OAuth": {
               "target": "Package",
-              "version": "[1.2.0, )"
+              "version": "[1.0.3, )"
             },
-            "YandexTranslate.dll": {
+            "Workflow": {
               "target": "Package",
-              "version": "[1.0.0, )"
+              "version": "[1.0.4, )"
             }
           }
         }
-      }
-    },
-    "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj": {
-      "restore": {
-        "projectUniqueName": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj",
-        "projectName": "Unity.2D.Tilemap.Extras",
-        "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj",
-        "frameworks": {
-          "net471": {
-            "projectReferences": {}
-          }
-        }
-      },
-      "frameworks": {
-        "net471": {}
-      }
-    },
-    "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj": {
-      "restore": {
-        "projectUniqueName": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj",
-        "projectName": "Unity.2D.Tilemap.Extras.Editor",
-        "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.Editor.csproj",
-        "frameworks": {
-          "net471": {
-            "projectReferences": {
-              "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj": {
-                "projectPath": "C:\\Users\\PieLike\\TutorialProject1\\Unity.2D.Tilemap.Extras.csproj"
-              }
-            }
-          }
-        }
-      },
-      "frameworks": {
-        "net471": {}
       }
     }
   }

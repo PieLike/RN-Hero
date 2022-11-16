@@ -36,7 +36,7 @@ public class QuestBehavior : MonoBehaviour
             break;
             case(QuestData.TaskType.InteractWithNpc):
                 targetName = data.ListPhases[phaseNumber-1].targetName;
-                QuestEvents.OnAreaReach += InteractionNpcChecker;
+                QuestEvents.OnInteractionNpc += InteractionNpcChecker;
             break;
             default:
                 QuestEvents.OnAreaReach += AreaReacherChecker;
@@ -56,7 +56,7 @@ public class QuestBehavior : MonoBehaviour
             if (objQuestTaker != null)
             {
                 targetName = data.QuestTaker;
-                QuestEvents.OnAreaReach += InteractionNpcChecker;
+                QuestEvents.OnInteractionNpc += InteractionNpcChecker;
             }    
         }
         else
@@ -84,8 +84,9 @@ public class QuestBehavior : MonoBehaviour
         }     
     }   
 
-    private void EnemyKillingChecker(string killedEnemyName)
+    private void EnemyKillingChecker(QuestEvents.KilledEnemy killedEnemy)
     {
+        string killedEnemyName = killedEnemy.enemy.fullName;
         //если убитый враг это свинья то срабатывает фаза
         if (killedEnemyName == targetName || targetName == "enemy")        
         {    

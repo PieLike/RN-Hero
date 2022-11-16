@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DictionaryManager : MonoBehaviour
 {
     public static DictionaryManager instance;
 
-    public Word[] words;
+    public List<Word> words;
     private void Awake() 
     {
         if(instance == null)
@@ -20,56 +22,53 @@ public class DictionaryManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);        
     }
 
-    public bool AddWord(Word newWord)
+    public bool AddWord(Word newWord, bool fillWordData = false)
     {
-        if (words != null)
-        {
-            if (CheckExisting(newWord) == false)
+        //if (words != null)
+        //{
+            int numberWord = CheckExisting(newWord);
+            if (words == null || numberWord == (-1))
             {
-                Word[] newWords = new Word[words.Length + 1];
-                for (int i = 0; i < words.Length; i ++)
-                {
-                    newWords[i] = words[i];
-                }
-                newWords[words.Length] = newWord;
+                if (fillWordData && newWord.filled == false)
+                    newWord = FillWordData(newWord);
+                newWord.learnCount = 1;
 
-                words = newWords;
+                if (words == null) words = new List<Word>();
+                words.Add(newWord);
+                Experience.AddExp(MainVariables.expForWord); //expForNewWord
                 return true;
             }
-            else
+            else if (numberWord != (-1))
+            {
+                //AddLearnCount(newWord);
+                words[numberWord].learnCount ++;
+                Experience.AddExp(MainVariables.expForWord);
                 return false;
-        }
+            }
+            return false;
+        /*}
         else
         {
             Debug.Log("words = null");
             return false;
-        }
+        }*/
     }
-    public bool AddWord(string stringNewWord)
+    public bool AddWord(Loot lootNewWord, bool fillWordData = false)
     {
         
-        Word newWord = new Word{ name = stringNewWord };
-        return AddWord(newWord);
+        Word newWord = lootNewWord.word;
+        return AddWord(newWord, fillWordData);
     }
 
-    public bool DeleteWord(string newWord)  //обязательно сдл
+    public bool DeleteWord(Word newWord)//(string newWord) 
     {
         if (words != null)
         {
-            if (CheckExisting(newWord) == true)
+            int numberWord = CheckExisting(newWord);
+            if (numberWord != (-1))
             {
-                if (words.Length == 1)
-                    words = new Word[0]; 
+                words.Remove(words[numberWord]);
 
-                Word[] newWords = new Word[words.Length - 1];
-                for (int i = 0; i < words.Length; i ++)
-                {
-                    if (words[i].name == newWord)
-                        continue;
-                    newWords[i] = words[i];
-                }
-
-                words = newWords;
                 return true;
             }
             else
@@ -81,32 +80,10 @@ public class DictionaryManager : MonoBehaviour
             return false;
         }
     }
-    public bool DeleteWord(Word newWord)
+    public int CheckExisting(Word _word)
     {
-        string stringNewWord = newWord.name;
-        return DeleteWord(stringNewWord);
-    }
-
-    public bool CheckExisting(GameObject word)
-    {
-        string itemName = word.GetComponent<TMPro.TMP_Text>().text.ToLower();
-        return CheckExisting(itemName);
-    }
-    public bool CheckExisting(string stringNewWord)
-    {
-        Word newWord = new Word{ name = stringNewWord };
-        return CheckExisting(newWord);
-    }
-    public bool CheckExisting(Word itemName)
-    {
-        foreach (Word word in words)
-        {
-            if(itemName == word)
-            {
-                return true;  
-            }
-        }
-        return false;
+        if (words == null) return (-1);
+        return words.FindIndex( delegate(Word word){ return word.word == _word.word; } );
     }
     public void AddWordsWithClear(DataTable dataTable)
     {
@@ -114,16 +91,16 @@ public class DictionaryManager : MonoBehaviour
 
         if (dataTable.Rows.Count != 0)
         {
-            Word[] newWords = new Word[dataTable.Rows.Count];
-
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                string stringNewWord = dataTable.Rows[i]["name"].ToString();
-                Word newWord = new Word{ name = stringNewWord };
-                newWords[i] = newWord;
-            }
+                string stringNewWord = dataTable.Rows[i]["text"].ToString();
+                int newlearnCount = dataTable.Rows[i]["count"].ToString() == "" ? 0 : Convert.ToInt32(dataTable.Rows[i]["count"]);
+                Word newWord = new Word{ word = stringNewWord, learnCount = newlearnCount };
+                newWord = FillWordData(newWord);
 
-            words = newWords;
+                if (words == null) words = new List<Word>();
+                words.Add(newWord);
+            }
         }
         else
             Debug.Log("база данных с сохраненными словами пустая");
@@ -132,7 +109,7 @@ public class DictionaryManager : MonoBehaviour
     {
         if (words != null)
         {            
-            words = new Word[0];
+            words.Clear();
         }
         else
         {
@@ -143,14 +120,137 @@ public class DictionaryManager : MonoBehaviour
     public void SaveWordsToDataBase(string nameDataBase)
     {
         string tableName = "words";
-        string columns = "name";
+        string columns = "text, count";
         string values;
         
         foreach (Word word in words)
         {
-            values = word.name;
+            values = "'" + word.word + "'," + word.learnCount;
             string insertQuery = $"INSERT INTO {tableName} {columns} VALUES {values};";
             WorkWithDataBase.ExecuteQueryWithoutAnswer(insertQuery, nameDataBase);
         }      
+    }
+
+    /*public bool AddLearnCount(string newWord)
+    {
+        if (words != null)
+        {
+            int foundedWord = words.FindIndex( delegate(Word word){ return word.word == newWord; } );
+            if (foundedWord != (-1))
+            {
+                words[foundedWord].learnCount ++;
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+        {
+            Debug.Log("words = null");
+            return false;
+        }  
+    }
+    public bool AddLearnCount(GameObject word)
+    {
+        string itemName = word.GetComponent<TMPro.TMP_Text>().text.ToLower();
+        return AddLearnCount(itemName);
+    }
+    public bool AddLearnCount(Word word)
+    {
+        string itemName = word.word;
+        return AddLearnCount(itemName);
+    }*/
+
+    public Word FillWordData(Word word)    
+    {
+        //Debug.Log(word.word + ", " + word.pos);
+        DataTable saveVocabulary;
+        string data = "words.Text as Text, words.Pos as Pos, translations.Text as Translation, words.Frequency as Frequency, words.Colloq as Colloq, translations.Fr as TranslationFrequency"; 
+        saveVocabulary = WorkWithDataBase.GetTable($"SELECT {data} FROM words LEFT JOIN translations ON words.Id = translations.ParentWord WHERE words.Text = '{word.word}' AND translations.Pos = '{word.pos.ToString()}'", "Dictionary.bytes");
+
+        if(saveVocabulary.Rows.Count > 0)
+        {
+            word.translate = new List<string>();
+            word.addictionTranslate = new List<string>();
+            word.addictionTranslate2 = new List<string>();
+            for (int i = 0; i < saveVocabulary.Rows.Count; i++)
+            {
+                string translationFrequency = saveVocabulary.Rows[i]["TranslationFrequency"].ToString();
+                if (translationFrequency == "10")
+                    //word.translate[i] = saveVocabulary.Rows[i]["Translation"].ToString();  
+                    word.translate.Add(saveVocabulary.Rows[i]["Translation"].ToString());
+                else if(translationFrequency == "5")
+                    //word.addictionTranslate[i] = saveVocabulary.Rows[i]["Translation"].ToString();  
+                    word.addictionTranslate.Add(saveVocabulary.Rows[i]["Translation"].ToString());
+                else// if (translationFrequency == "1")  
+                    //word.addictionTranslate2[i] = saveVocabulary.Rows[i]["Translation"].ToString();  
+                    word.addictionTranslate2.Add(saveVocabulary.Rows[i]["Translation"].ToString());          
+            }
+            word.frequency = Convert.ToInt32(saveVocabulary.Rows[0]["Frequency"]);
+            word.pos = (Word.Pos) Enum.Parse(typeof(Word.Pos), saveVocabulary.Rows[0]["Pos"].ToString());
+            word.colloq = Convert.ToBoolean(Convert.ToInt32(saveVocabulary.Rows[0]["Colloq"]));
+
+            FindIcon.DictStruct dictStruct = new FindIcon.DictStruct {  manager = this, wordElement = word};
+            FindIcon.SetIcon(word.word, dictStruct);
+
+            word.filled = true;
+        }
+        else
+            Debug.Log("Перевода не найдено: " + word.word);
+        
+        return word;
+    }
+
+    public List<Word> ReturnByParent(string parent)
+    {
+        List<Word> words = new List<Word>();
+        //заполняем массив слов словами из общей базы данных по parent = имея объекта
+        string wordsDataBaseName = "Dictionary.bytes";
+        string query = ($"SELECT words.Text, words.Pos FROM sons LEFT JOIN words On sons.SonId = words.Id, (SELECT words.Id FROM words WHERE words.Text = '{parent.ToLower()}') as ParentIdTable WHERE ParentId = ParentIdTable.Id");              
+        DataTable sonsDataTable = WorkWithDataBase.GetTable(query, wordsDataBaseName);   
+
+        foreach (DataRow row in sonsDataTable.Rows)
+        {
+            Word newWord = new Word();
+            newWord.word = row["Text"].ToString(); 
+            newWord.pos = (Word.Pos) Enum.Parse(typeof(Word.Pos), row["Pos"].ToString()); 
+            words.Add(newWord);  
+        }
+        return words;
+    }
+
+    public Word TakeRandom()
+    {
+        if (words != null)
+        {
+            int random = UnityEngine.Random.Range(0, words.Count);
+            return words[random];
+        }
+        else
+        {
+            Debug.Log("words = null");
+            return null;
+        }
+    }
+
+    public void SetIcon(Word _word, Sprite sprite)
+    {
+        int numberWord = CheckExisting(_word);
+        if (numberWord != (-1))
+            words[numberWord].icon = sprite;
+    }
+
+    public void LearnWord(Word word)
+    {
+        if (words != null)
+        {
+            int numberWord = CheckExisting(word);
+            if (numberWord != (-1))
+            {
+                words[numberWord].learned = true;
+                //words.Remove(foundedWord);
+                Experience.AddExp(MainVariables.expForWordLearn);
+            }
+        }        
     }
 }

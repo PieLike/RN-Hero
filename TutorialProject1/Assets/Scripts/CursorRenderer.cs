@@ -2,51 +2,50 @@ using UnityEngine;
 
 public class CursorRenderer : MonoBehaviour
 {
-    SpriteRenderer sprite;
+    SpriteRenderer spriteRenderer;
     
     void Start()
     {
-        sprite = GetComponent<SpriteRenderer>();    
+        spriteRenderer = GetComponent<SpriteRenderer>();    
+    }
+
+    void Update()
+    {
+        if (MainVariables.inInterface == false)
+        {
+            if (spriteRenderer.enabled != true)
+                spriteRenderer.enabled = true;
+        }
+        else
+        {
+            spriteRenderer.enabled = false;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other) 
     {
-        /*if(other.gameObject.tag == "Floor")
+        if(other.gameObject.tag == "Hero")
         {
-            if (sprite.enabled == false)
-                sprite.enabled = true; 
-        }
-        else*/
-        //{
-            if(other.gameObject.tag == "Hero")
+            if (spriteRenderer.enabled == true)
+                spriteRenderer.enabled = false;
+            return;
+        } 
+
+        foreach(string tag in MainVariables.interactionTags)
+        {
+            if(other.gameObject.tag == tag)
             {
-                if (sprite.enabled == true)
-                    sprite.enabled = false;
+                if (spriteRenderer.enabled == true)
+                    spriteRenderer.enabled = false;
                 return;
             } 
-
-            foreach(string tag in MainVariables.interactionTags)
-            {
-                if(other.gameObject.tag == tag)
-                {
-                    if (sprite.enabled == true)
-                        sprite.enabled = false;
-                    return;
-                } 
-            }  
-        //}
+        } 
     }
     private void OnTriggerExit2D(Collider2D other) 
     {
-        /*if(other.gameObject.tag == "Floor")
+        if (spriteRenderer.enabled == false)
         {
-            if (sprite.enabled == true)
-                sprite.enabled = false; 
-        }*/
-        //else 
-        if (sprite.enabled == false)
-        {
-            sprite.enabled = true;  
+            spriteRenderer.enabled = true;  
         }    
     }
 }

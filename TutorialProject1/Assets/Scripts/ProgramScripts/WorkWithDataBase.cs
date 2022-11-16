@@ -49,7 +49,8 @@ static class WorkWithDataBase
         yield return reader.SendWebRequest();
 
         //File.WriteAllBytes(toPath, reader.bytes);
-        File.WriteAllBytes(toPath, reader.downloadHandler.data);
+        if (reader.result == UnityWebRequest.Result.Success)
+            File.WriteAllBytes(toPath, reader.downloadHandler.data);
     }
 
     /// <summary> Этот метод открывает подключение к БД. </summary>

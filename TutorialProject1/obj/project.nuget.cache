@@ -1,27 +1,46 @@
 {
   "version": 2,
-  "dgSpecHash": "t7Gz6az3OMUb0YKWw3ynJRV8ejs9iPoD2fWXxXsZAKOfoFhyOTHrSLqdf2hC78SB1fT0CNRZUs7awxXTOfupzA==",
+  "dgSpecHash": "dVP5nuEzeL6H6mHc7BJKa2hFVRFMv40vzvEACeJF047bKQ5vStTHV2xhPoXfRSctOau74+yBymvTKLeq2BZwbw==",
   "success": true,
   "projectFilePath": "C:\\Users\\PieLike\\TutorialProject1\\Assembly-CSharp.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\PieLike\\.nuget\\packages\\google.protobuf\\3.19.1\\google.protobuf.3.19.1.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\grpc\\2.41.1\\grpc.2.41.1.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\grpc.core\\2.41.1\\grpc.core.2.41.1.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\grpc.core.api\\2.41.1\\grpc.core.api.2.41.1.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.0\\microsoft.bcl.asyncinterfaces.1.1.0.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.7.1\\system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\system.text.encodings.web\\4.7.1\\system.text.encodings.web.4.7.1.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\yandex.api\\0.0.2\\yandex.api.0.0.2.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\yandex.cloud.protos\\1.2.0\\yandex.cloud.protos.1.2.0.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\yandex.cloud.sdk\\1.2.0\\yandex.cloud.sdk.1.2.0.nupkg.sha512",
-    "C:\\Users\\PieLike\\.nuget\\packages\\yandextranslate.dll\\1.0.0\\yandextranslate.dll.1.0.0.nupkg.sha512"
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth\\4.3.4.13329\\dotnetopenauth.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.core\\4.3.4.13329\\dotnetopenauth.core.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.core.ui\\4.3.4.13329\\dotnetopenauth.core.ui.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.infocard\\4.3.4.13329\\dotnetopenauth.infocard.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.infocard.ui\\4.3.4.13329\\dotnetopenauth.infocard.ui.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth.common\\4.3.4.13329\\dotnetopenauth.oauth.common.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth.consumer\\4.3.4.13329\\dotnetopenauth.oauth.consumer.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth.core\\4.3.4.13329\\dotnetopenauth.oauth.core.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth.serviceprovider\\4.3.4.13329\\dotnetopenauth.oauth.serviceprovider.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth2.authorizationserver\\4.3.4.13329\\dotnetopenauth.oauth2.authorizationserver.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth2.client\\4.3.4.13329\\dotnetopenauth.oauth2.client.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth2.client.ui\\4.3.4.13329\\dotnetopenauth.oauth2.client.ui.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth2.clientauthorization\\4.3.4.13329\\dotnetopenauth.oauth2.clientauthorization.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth2.core\\4.3.4.13329\\dotnetopenauth.oauth2.core.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.oauth2.resourceserver\\4.3.4.13329\\dotnetopenauth.oauth2.resourceserver.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.openid.core\\4.3.4.13329\\dotnetopenauth.openid.core.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.openid.core.ui\\4.3.4.13329\\dotnetopenauth.openid.core.ui.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.openid.provider\\4.3.4.13329\\dotnetopenauth.openid.provider.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.openid.provider.ui\\4.3.4.13329\\dotnetopenauth.openid.provider.ui.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.openid.relyingparty\\4.3.4.13329\\dotnetopenauth.openid.relyingparty.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.openid.relyingparty.ui\\4.3.4.13329\\dotnetopenauth.openid.relyingparty.ui.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.openidinfocard.ui\\4.3.4.13329\\dotnetopenauth.openidinfocard.ui.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\dotnetopenauth.openidoauth\\4.3.4.13329\\dotnetopenauth.openidoauth.4.3.4.13329.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\microsoft.net.http\\2.0.20505\\microsoft.net.http.2.0.20505.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\oauth\\1.0.3\\oauth.1.0.3.nupkg.sha512",
+    "C:\\Users\\PieLike\\.nuget\\packages\\workflow\\1.0.4\\workflow.1.0.4.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1602",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "DotNetOpenAuth.Core 4.3.4.13329 не задает включенную нижнюю границу для зависимости Microsoft.Net.Http. Использовано наилучшее приближенное соответствие Microsoft.Net.Http 2.0.20505.",
+      "libraryId": "Microsoft.Net.Http",
+      "targetGraphs": [
+        ".NETFramework,Version=v4.7.1"
+      ]
+    }
+  ]
 }

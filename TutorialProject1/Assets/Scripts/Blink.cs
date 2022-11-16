@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class Blink : MonoBehaviour
 {
+    UnityEngine.Color originColor;
+    private void Start() 
+    {
+        originColor = gameObject.GetComponent<SpriteRenderer>().color;
+    }
     public void DoBlink(bool hideObject)
     {
         //снимаем прошлый куротин, чтобы сбросить таймер исчезновения через 3 секунды
@@ -18,11 +23,9 @@ public class Blink : MonoBehaviour
     private IEnumerator BlinkCoroutine()
     {
         //запоминаем первоначальный цвет и меняем его делая светлее
-        //через 0.1 секунд возвращаем первоначальный цвет
-        UnityEngine.Color originColor = gameObject.GetComponent<SpriteRenderer>().color;        
+        //через 0.1 секунд возвращаем первоначальный цвет                 
         UnityEngine.Color newColor = new Color(1f, 0.5f, 0.5f); //ChangeColorBrightness(originColor,10f);
-        gameObject.GetComponent<SpriteRenderer>().color = newColor;
-        Debug.Log(newColor.ToString());
+        gameObject.GetComponent<SpriteRenderer>().color = newColor;        
         float duration = 0.1f;
 
         yield return new WaitForSeconds(duration);    

@@ -3,14 +3,27 @@ using System;
 
 public class MainVariables
 {
-    [NonSerialized] public static bool inMovement = false, forceNewMovementLockWhenMove = false, allowMovement = false, isWalkingByKeys = false;
+    [NonSerialized] public static bool inMovement, isPassing, allowMovement, isWalkingByKeys, isDashing;
+    [NonSerialized] public static bool allowAttack;
     [NonSerialized] public static bool inImpacting;
-    [NonSerialized] public static bool inSpelling = false;
-    [NonSerialized] public static bool inInteraction = false;
-    [NonSerialized] public static bool inInterface = false;
-    [NonSerialized] public static bool inTalking = false; 
+    [NonSerialized] public static bool inSpelling;
+    [NonSerialized] public static bool inInteraction;
+    [NonSerialized] public static bool inInterface;
+    [NonSerialized] public static bool inTalking; 
     [NonSerialized] public static int activeSpellSlot = 1;
-    [NonSerialized] public static string[] interactionTags = new string[] {"Enemy","Word","Chest","Npc","Pass","Branch"};
-    [NonSerialized] public static bool autoLoad = true;
+    [NonSerialized] public static string[] interactionTags = new string[] {"Word","Chest","Npc","Pass","Pot"};
+    [NonSerialized] public static bool autoLoad = false;
     [NonSerialized] public static bool modeWithoutEG = true;
+
+//experience
+    [NonSerialized] public static float expForWord = 1f; //expForNewWord = 10f, 
+    [NonSerialized] public static float expForEnemyKill = 5f;
+    [NonSerialized] public static float expForWordLearn = 50f;
+    [NonSerialized] public static float expForPotionCreate = 15f;
+
+//
+    public enum atackType {none, ice, fire};
+
+    // artifacts
+    [NonSerialized] public static bool canMeleeAttack = false;
 }

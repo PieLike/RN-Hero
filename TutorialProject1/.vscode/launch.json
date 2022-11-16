@@ -5,6 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Android Player",
+            "type": "unity",
+            "request": "launch"
+        },
+    {
+        "name": "Windows Player",
+        "type": "unity",
+        "request": "launch"
+    },
+        
+        {
+            "name": "Unity Editor",
+            "type": "unity",
+            "path": "${workspaceFolder}/Library/EditorInstance.json",
+            "request": "launch"
+        },
+        {
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}"
             ],

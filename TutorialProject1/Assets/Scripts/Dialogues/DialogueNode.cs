@@ -1,7 +1,6 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 public class DialogueNode : Node
@@ -67,3 +66,4 @@ public class DialogueNode : Node
     }
 
 }
+#endif

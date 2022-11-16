@@ -9,12 +9,13 @@ public class Pass : MonoBehaviour
     private GameObject objFinalPoint;//, prefabFinalPoint;
     private bool contactPointIsFound, top, right;
     BoxCollider2D boxSize;
-    Vector3 contactPoint, centerPoint;
+    Vector3 contactPoint, centerPoint; Vector2 direction; float speed = 300f;
+    Rigidbody2D rigidBody;
 
     private void Start() 
     {
-        //находим префабы в ресурсах
-        //prefabFinalPoint = Resources.Load<GameObject>("3d_prefabs/FinalPoint2D");
+        //находим префабы в ресурсах        
+        rigidBody = FindObjectOfType<HeroMove>().gameObject.GetComponent<Rigidbody2D>();
         objFinalPoint = GameObject.Find("FinalPoint2D");
 
         boxSize = GetComponent<BoxCollider2D>(); 
@@ -30,11 +31,12 @@ public class Pass : MonoBehaviour
         }        
     }*/
     private void OnTriggerStay2D(Collider2D other) 
-    {
-        FindContactPoint(other);
-
-        if (other.gameObject.tag == "Hero" && contactPointIsFound == true)
+    {     
+        if (other.gameObject.tag == "Hero")
         {
+            FindContactPoint(other);
+            //if (contactPointIsFound == false) return;
+
             if (passType == PassType.vertical)
             {
                 if (top)
@@ -74,7 +76,14 @@ public class Pass : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Hero")
+        {
+            if (MainVariables.isPassing)
+            {
+                MainVariables.isPassing = false;
+                MainVariables.inMovement = false;
+            }
             contactPointIsFound = false;
+        }
     }
 
     private void FindContactPoint(Collider2D other)
@@ -87,50 +96,52 @@ public class Pass : MonoBehaviour
 
         contactPointIsFound = true;         
     }
+    public void FindContactPoint(Vector2 hero)
+    {
+        right = hero.x < transform.position.x;
+        top = hero.y < transform.position.y; 
+
+        contactPointIsFound = true;         
+    }
 
     public void DoPass()
     {
-        //Debug.Log("pass");
         if (contactPointIsFound == false) return;
-        //FindFinalPoint();
-        
-        if (objFinalPoint != null)
-        {           
-            if (objFinalPoint.activeSelf != true)
-                objFinalPoint.SetActive(true);
-
-            var finalPointTransform = objFinalPoint.GetComponent<Transform>();
 
             if (passType == PassType.vertical)
             {
                 if (top)
                 {                    
-                    finalPointTransform.position = new Vector3(contactPoint.x, contactPoint.y + boxSize.size.y, 0f); 
+                    //finalPointTransform.position = new Vector3(contactPoint.x, contactPoint.y + boxSize.size.y, 0f); 
+                    direction = new Vector2 (0, 1f);
                 }
                 else
-                    finalPointTransform.position = new Vector3(contactPoint.x, contactPoint.y - boxSize.size.y, 0f); 
+                    //finalPointTransform.position = new Vector3(contactPoint.x, contactPoint.y - boxSize.size.y, 0f); 
+                    direction = new Vector2 (0, -1f);
             }
             else
             {
                 if (right)
                 {                    
-                    finalPointTransform.position = new Vector3(contactPoint.x + boxSize.size.x, contactPoint.y, 0f); 
+                    //finalPointTransform.position = new Vector3(contactPoint.x + boxSize.size.x, contactPoint.y, 0f); 
+                    direction = new Vector2 (1f, 0);
                 }
                 else
-                    finalPointTransform.position = new Vector3(contactPoint.x - boxSize.size.x, contactPoint.y, 0f); 
+                    //finalPointTransform.position = new Vector3(contactPoint.x - boxSize.size.x, contactPoint.y, 0f); 
+                    direction = new Vector2 (-1f, 0);
             }
                
             MainVariables.inMovement = true; 
-            MainVariables.forceNewMovementLockWhenMove = true;  
-        }  
+            MainVariables.isPassing = true;  
+            MainVariables.allowMovement = false;
     }
 
-    /*private void FindFinalPoint()
+    private void FixedUpdate() 
     {
-        if (objFinalPoint == null)
-            objFinalPoint = GameObject.Find("FinalPoint2D(Clone)");
-        //if (objFinalPoint == null)
-        //    objFinalPoint = Instantiate(prefabFinalPoint);
-    } */
+        if (MainVariables.isPassing && direction != Vector2.zero)
+        {         
+            rigidBody.velocity = direction * speed * Time.fixedDeltaTime;
+        }  
+    }
 
 }

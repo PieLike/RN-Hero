@@ -1,67 +1,47 @@
 using System.Collections;
-//using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Data;
+using System;
 
 public class LootDroping : MonoBehaviour
 {    
-    private string[] words = new string[20];
+    public List<Loot> loots;
     private GameObject itemType;
     public float force = 10f;
     public float dropSpeed = 0.2f;
-    public string parent = "";
+    //public string parent = "";
+    //private DictionaryManager dictionaryManager;
  
     private void Start()
     {
+        //dictionaryManager = FindObjectOfType<DictionaryManager>();
         //находим объекты в resourses
-        itemType = Resources.Load<GameObject>("3d_prefabs/WordDrop");           
+        itemType = Resources.Load<GameObject>("3d_prefabs/WordDrop"); 
+
+        //words = new List<Loot>();         
     }
 
     public void Drop()
     {
-        if (parent == "")
+        if (loots != null && loots.Count > 0)
         {
-            Debug.LogError("Не заполнено поле parent у объекта, выбрасывающего лут");
-            return;
-        }
-
-        if (gameObject.tag == "Enemy")
-            FillWords(gameObject.name);
-        else if (gameObject.tag == "Chest")
-            FillWords(parent);
-
-        StartCoroutine(DropCoroutine());           
+            StartCoroutine(DropCoroutine());   
+        }    
+        else
+            DoAfterLootIsDroped();    
     }
-
-    private void FillWords(string parent)
-    {
-        //заполняем массив слов словами из общей базы данных по parent = имея объекта
-        string wordsDataBaseName = "vocabularyGeneral.bytes";
-        string query = ($"SELECT eng FROM words WHERE parent = '{parent.ToLower()}';");
-        DataTable wordsDataTable = WorkWithDataBase.GetTable(query, wordsDataBaseName);   
-
-        for(int row = 0; row < wordsDataTable.Rows.Count; row++)
-        {
-            words[row] = wordsDataTable.Rows[row][0].ToString();    
-        }
-    }
-
+    
     private void Bounce(GameObject item)
     {
         //пружиним объект
         float dirx, diry;
-        dirx = Random.Range(-5f,5f);
-        diry = Random.Range(3f,6f);
+        dirx = UnityEngine.Random.Range(-5f,5f);
+        diry = UnityEngine.Random.Range(3f,6f);
 
         item.GetComponent<Rigidbody2D>().AddForce(new Vector2(dirx*force/50,diry*force/10),ForceMode2D.Impulse); //dirx*force/10,force,dirz*force/10
-    }
-
-    private GameObject ToNameObject(GameObject item, string word)
-    {  
-        item.GetComponent<TMP_Text>().text = word;
-        return item;
-    }
+    }    
 
     private IEnumerator DropCoroutine()
     {
@@ -69,23 +49,26 @@ public class LootDroping : MonoBehaviour
         GameObject newItem;
 
         //если элемент массива заполнен то создаем объект и пружиним его
-        foreach (string word in words)
+        if (loots != null)
         {
-            if (word != null)
+            foreach (Loot loot in loots)
             {
-                yield return new WaitForSeconds(dropSpeed);
-                placeDrop = transform.position;
-                newItem = Instantiate(itemType, placeDrop, Quaternion.Euler(0f,0f,0f));
-                newItem = ToNameObject(newItem, word);
-
-                LootBehavior lootBehavior = newItem.GetComponent<LootBehavior>();
-                if (lootBehavior) 
+                if (loot != null)
                 {
-                    lootBehavior.parentpositionY = gameObject.transform.position.y;
-                    lootBehavior.parentlocalScaleY = gameObject.transform.localScale.y;
-                }
+                    yield return new WaitForSeconds(dropSpeed);
+                    placeDrop = transform.position;
+                    newItem = Instantiate(itemType, placeDrop, Quaternion.Euler(0f,0f,0f));
 
-                Bounce(newItem);                
+                    LootBehavior lootBehavior = newItem.GetComponent<LootBehavior>();
+                    if (lootBehavior) 
+                    {
+                        lootBehavior.parentpositionY = transform.position.y;
+                        lootBehavior.parentlocalScaleY = transform.localScale.y;
+                        lootBehavior.lootData = loot;//new Loot{ word = new Word { word = word.word, pos = word.pos} };
+                    }
+
+                    Bounce(newItem);                
+                }
             }
         }
         DoAfterLootIsDroped();

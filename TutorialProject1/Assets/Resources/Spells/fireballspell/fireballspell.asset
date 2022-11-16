@@ -19,3 +19,6 @@ MonoBehaviour:
   distance: 15
   damage: 5
   bullets: 5
+  selfImpact: 0
+  enemyImpact: 0
+  usingInterval: 1

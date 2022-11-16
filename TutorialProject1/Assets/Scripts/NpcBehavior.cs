@@ -5,13 +5,17 @@ public class NpcBehavior : MonoBehaviour
 {
     public string npcName = "";
     private MyOutline outline; 
-    private GameObject objDialogueSystem; private DialogueSystem dialogueSystem;
+    //private GameObject objDialogueSystem; 
+    private DialogueSystem dialogueSystem;
+    private InterfaceManager interfaceManager;
     void Start()
     {
+        interfaceManager = FindObjectOfType<InterfaceManager>();
+
         outline = GetComponent<MyOutline>();
 
-        objDialogueSystem = GameObject.Find("Interface/DialogueSystem");  
-        dialogueSystem = objDialogueSystem.GetComponent<DialogueSystem>(); 
+        dialogueSystem = interfaceManager.DialogueSystem.GetComponent<DialogueSystem>();
+
 
         if (npcName == "")
             npcName = gameObject.name;   
@@ -20,14 +24,14 @@ public class NpcBehavior : MonoBehaviour
     void Update()
     {
         //добавляем или скрываем обводку в зависимости от того наведен ли крусор на объект
-        if (Interaction.supposedInteractionObject == gameObject)
+        /*if (MousePosition2D.supposedInteractionObject == gameObject)
         {
             outline.SetOutline(MyOutline.Color.blue);
         }    
         else
         {
             outline.RemoveOutline();  
-        }   
+        }   */
     }
     public void Interact()
     {        

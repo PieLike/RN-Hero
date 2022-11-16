@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class SpellBehavior : MonoBehaviour
 {
-    public BookOfSpells.spell spell;
+    public bool frendly;
+    public ScriptableObjSpell spell;
     public Vector2 startPosition;
     ScriptableObjSpell.SpellType behaviorType;
     private double roundAbsStartRelativePointY;
 
-    public void NonPhysicProjectile(BookOfSpells.spell newSpell, bool rotated, Vector2 position)
+    public void NonPhysicProjectile(ScriptableObjSpell newSpell, bool rotated, Vector2 position)     //BookOfSpells.spell
     {
         spell = newSpell;
         startPosition = position; 
@@ -58,14 +59,15 @@ public class SpellBehavior : MonoBehaviour
             }    
     }
 
-
-
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.gameObject.tag != "Hero" && other.gameObject.tag != "Loot" && other.gameObject.tag != "Spell")
+        if (other.gameObject.tag != "Loot" && other.gameObject.tag != "Spell" && other.gameObject.tag != "EnemyAttackArea") 
         {
-            if(other.gameObject.GetComponent<SpriteRenderer>() != null)
-                OnDead();
+            if ((other.gameObject.tag != "Hero" && frendly) || (other.gameObject.tag != "Enemy" && frendly == false))
+            {
+                if(other.gameObject.GetComponent<SpriteRenderer>() != null)
+                    OnDead();
+            }
         }
     }
 

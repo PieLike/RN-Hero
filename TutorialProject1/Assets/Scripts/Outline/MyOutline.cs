@@ -4,17 +4,41 @@ using UnityEngine;
 
 public class MyOutline : MonoBehaviour
 {
-    public enum Color{red, blue, yellow}
+    public enum Color{red, blue, yellow}    public Color col;
     OutlineAddition outlineAddition;
     SpriteRenderer spriteRenderer;
     Transform transformOutline;
-    public bool outlineSet;
+    private bool outlineSet;
+    public bool outlineParent;  GameObject parent;
+    public bool fat;
 
     void Start()
     {        
         outlineAddition = FindObjectOfType<OutlineAddition>();
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>(); 
-        transformOutline = gameObject.GetComponent<Transform>(); 
+        if (outlineParent == false)
+        {
+            spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            transformOutline = gameObject.GetComponent<Transform>(); 
+        }
+        else
+        {
+            parent = transform.parent.gameObject;
+            spriteRenderer = parent.GetComponent<SpriteRenderer>();
+            transformOutline = parent.GetComponent<Transform>(); 
+        }         
+    }
+
+    private void Update() 
+    {        
+        if (MousePosition2D.supposedInteractionObject == gameObject || (outlineParent && MousePosition2D.supposedInteractionObject == parent))
+        {
+            //если уже стоит то не будет делать
+            SetOutline(col);
+        }    
+        else
+        {
+            RemoveOutline();  
+        } 
     }
 
     // Update is called once per frame
@@ -27,14 +51,17 @@ public class MyOutline : MonoBehaviour
                 spriteRenderer.material = outlineAddition.outlineMaterialRed;
                 break;
             case (Color.blue):
-                spriteRenderer.material = outlineAddition.outlineMaterialBlue;
+                if (fat)
+                    spriteRenderer.material = outlineAddition.outlineMaterialFatBlue;
+                else
+                    spriteRenderer.material = outlineAddition.outlineMaterialBlue;
                 break;
             case (Color.yellow):
                 spriteRenderer.material = outlineAddition.outlineMaterialYellow;
                 break;
             }
  
-            transformOutline.localScale = transform.localScale * 1.0625f;
+            transformOutline.localScale = transformOutline.localScale * 1.0625f;
             outlineSet = true;
         }
     }
@@ -43,8 +70,13 @@ public class MyOutline : MonoBehaviour
         if (outlineSet == true)
         {
             spriteRenderer.material = outlineAddition.defaultSprite;  
-            transformOutline.localScale = transform.localScale / 1.0625f;
+            transformOutline.localScale = transformOutline.localScale / 1.0625f;
             outlineSet = false;
         }
+    }
+
+    private void OnDisable() 
+    {
+        RemoveOutline();
     }
 }

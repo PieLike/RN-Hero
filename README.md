@@ -1,4 +1,4 @@
-# RN-Hero
+# RN-Hero (prototype)
 
 Управление: 
   ЛКМ - атака;

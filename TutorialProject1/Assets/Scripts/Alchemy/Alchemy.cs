@@ -74,10 +74,10 @@ public class Alchemy : MonoBehaviour
 
     private int[] ChoseAllIngredients()
     {
-        if (allIngredientsCount > 0 && dictionaryManager.words.Count > 0 && dictionaryManager.words.Count >= allIngredientsCount)
+        if (allIngredientsCount > 0 && dictionaryManager.words.Count > 0)   //&& dictionaryManager.words.Count >= allIngredientsCount
         {
-            int[] randomIndex = new int[allIngredientsCount];
-            randomIndex = GetRandomMultiply(0, dictionaryManager.words.Count, allIngredientsCount);
+            int[] randomIndex = new int[(dictionaryManager.words.Count >= allIngredientsCount) ? allIngredientsCount : dictionaryManager.words.Count];//new int[allIngredientsCount];
+            randomIndex = GetRandomMultiply(0, dictionaryManager.words.Count, randomIndex.Length); //(0, dictionaryManager.words.Count, allIngredientsCount);
 
             foreach (int index in randomIndex)
             {
@@ -86,13 +86,16 @@ public class Alchemy : MonoBehaviour
                     allIngredients.Add(word);
             } 
             return randomIndex;
-        }      
+        } 
+        else
+        {
+
+        }     
         return null;  
     }
 
     public void AddToProps(Word word)
     {
-        Debug.Log("AddToProps(Word word)");
         if(rightIngredients.Contains(word) == false)
         {
             WrongIngredient();
@@ -263,6 +266,8 @@ public class Alchemy : MonoBehaviour
 
     public void OpenAlcGame()
     {       
+        OnGameStartAndUpdate.CloseInterface();
+
         interfaceManager.AlcPanel.SetActive(true);
         interfaceManager.AlcPotionPanel.SetActive(true); 
         
@@ -270,19 +275,24 @@ public class Alchemy : MonoBehaviour
         animatorPotions.Play("WindowStayCenter");
         animatorPot.Play("WindowStayRight");
 
-
-        MainVariables.inInterface = true;
+        //MainVariables.inInterface = true;
+        Time.timeScale = 0f; 
         //ResetAlcGame();
+
+        OnGameStartAndUpdate.OnInterfaceClose += CloseAlcGame;
     }
     private void CloseAlcGame()
     {        
         potionsScroll.ClearScroll();
         interfaceManager.AlcPanel.SetActive(false);
         interfaceManager.AlcPotionPanel.SetActive(false); 
-        MainVariables.inInterface = false;
+        //MainVariables.inInterface = false;
+        Time.timeScale = 1f;
 
         progressLine.fillAmount = 0;
         canClose = false;
+
+        OnGameStartAndUpdate.OnInterfaceClose -= CloseAlcGame;
     }
 
     public void AlchemyButton()
@@ -327,12 +337,12 @@ public class Alchemy : MonoBehaviour
             float hpUpdate = propIngredients.Count / rightIngredients.Count;
             if (progressLine.fillAmount != hpUpdate)
             {
-                float smoothUpdate = Mathf.SmoothDamp(progressLine.fillAmount, hpUpdate, ref Velocity, smoothTime);   
+                float smoothUpdate = Mathf.SmoothDamp(progressLine.fillAmount, hpUpdate, ref Velocity, smoothTime,100,Time.unscaledDeltaTime);   
                 progressLine.fillAmount = smoothUpdate;
             }
         }
         
         if (progressLine.fillAmount > 0.95f && canClose)
             CloseAlcGame();
-    }
+    }    
 }

@@ -6,16 +6,17 @@ using System;
 public class EnemyBehavior : MonoBehaviour
 {
     //[NonSerialized]public Vector2 finalPoint;
-    [NonSerialized] public bool isDead, inImpacting, waitAfterAttack;//beenCollide, 
+    [NonSerialized] public bool isDead, inImpacting, waitAfterAttack; 
     [NonSerialized] public GameObject shield;     
     private Rigidbody2D rigidBody; Sound walkingSound;  //AudioManager audioManager; 
-    [NonSerialized] public EnemyData enemyData;  public EnemyAI enemyAI;
+    [NonSerialized] public EnemyData enemyData;  public EnemyAI enemyAI; EnemyView enemyView;
     [NonSerialized] public bool lootDropIsDone;
 
     public virtual void Start() 
     {
         enemyData = gameObject.GetComponent<EnemyData>();
         enemyAI = gameObject.GetComponent<EnemyAI>();
+        enemyView = gameObject.GetComponent<EnemyView>();
         //находим дочерние объекты
         shield = transform.Find("Shield").gameObject;           
 
@@ -31,7 +32,7 @@ public class EnemyBehavior : MonoBehaviour
             sound.source.volume = sound.volume;
             sound.source.pitch = sound.pitch;
             sound.source.loop = sound.loop;
-        }
+        }   
     }    
     
     public virtual void Update()
@@ -39,7 +40,7 @@ public class EnemyBehavior : MonoBehaviour
         if (isDead == false)
         {
             if (enemyData.currentHP <= 0.0f)
-            {
+            {                
                 //вызываем функцию дропа лута у активного объекта (врага)
                 CallLootDrop();                
                 //делаем его компоненты неактивными (потом нужно будет исправить чтобы полностью удалять)
@@ -50,7 +51,8 @@ public class EnemyBehavior : MonoBehaviour
         {
             if (lootDropIsDone)
             {
-                Destroy(gameObject);  Debug.Log("destroy " + gameObject.name); 
+                enemyView.DoParticleSystemDamage();
+                Destroy(gameObject);//  Debug.Log("destroy " + gameObject.name); 
                 EnemyDeadRegistration();
                 Experience.AddExp(MainVariables.expForEnemyKill);
             }
@@ -129,7 +131,7 @@ public class EnemyBehavior : MonoBehaviour
         }
         else
         {
-            Debug.Log("не найден аудиоклип в объекте " + gameObject.name + ": " + soundName);
+            //Debug.Log("не найден аудиоклип в объекте " + gameObject.name + ": " + soundName);
             return null;
         }
     }
@@ -144,41 +146,29 @@ public class EnemyBehavior : MonoBehaviour
         yield return new WaitForSeconds(_sound.clip.length);
         _sound.playing = false; 
     }
-    /*public AudioClip FindAnimation (Animator _animator, string name) 
-    {
-        foreach (AudioClip clip in _animator.runtimeAnimatorController.animationClips)
-        {
-            if (clip.name == name)
-            {
-                return clip;
-            }
-        }
-
-        return null;
-    }*/
-    
+        
     /*private IEnumerator DeadCoroutine()
     {
         float duration = 5.0f;
         yield return new WaitForSeconds(duration); 
         Destroy(gameObject);       
     }*/
-
-    /*private void OnCollisionEnter2D(Collision2D other) 
-    {
-        if (other.gameObject.tag != "Floor")// && other.gameObject.tag != "Hero")
+    
+    public void RemoveSpells()
+    {        
+        foreach (Transform child in transform.parent)
         {
-            if (beenCollide == false)
-            {
-                finalPoint = new Vector2(transform.position.x*2 - finalPoint.x, transform.position.y*2 - finalPoint.y);
-                RotateObject(); //поворачивем если необходимо 
-                beenCollide = true;
-            }
-            else
-            {
-                if (inMovement == true)
-                    inMovement = false; 
-            }  
-        }
-    }*/
+            if (child.tag == "Spell")
+                Destroy(child.gameObject);
+        }        
+    }
+
+    public void RemoveDrops()
+    {
+        foreach (Transform child in transform.parent)
+        {
+            if (child.tag == "Word")
+                Destroy(child.gameObject);
+        }        
+    }
 }

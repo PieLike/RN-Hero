@@ -3,7 +3,7 @@ using System;
 
 public class MainVariables
 {
-    [NonSerialized] public static bool inMovement, isPassing, allowMovement, isWalkingByKeys, isDashing;
+    [NonSerialized] public static bool inMovement, isPassing, allowMovement, isWalkingByKeys, isDashing, isDead;
     [NonSerialized] public static bool allowAttack;
     [NonSerialized] public static bool inImpacting;
     [NonSerialized] public static bool inSpelling;

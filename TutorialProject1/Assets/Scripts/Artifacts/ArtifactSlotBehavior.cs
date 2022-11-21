@@ -46,7 +46,7 @@ public class ArtifactSlotBehavior : MonoBehaviour, IPointerEnterHandler, IPointe
 
     private IEnumerator MouseOverCoroutine()
     {
-        yield return new WaitForSeconds(infoDelay); 
+        yield return new WaitForSecondsRealtime(infoDelay); 
         infoWindow.ActivateWindow(artifactData.data.artName, artifactData.data.info);      
     }
 }

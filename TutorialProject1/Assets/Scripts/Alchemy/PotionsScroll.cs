@@ -8,7 +8,7 @@ public class PotionsScroll : MonoBehaviour
 {
     private GameObject scrollViewContent;
     private GameObject potionPrefab, SlotPrefab; List<Slot> prefabList;
-    private InterfaceManager interfaceManager;  PotionManager potionManager;
+    private InterfaceManager interfaceManager;  [HideInInspector] public PotionManager potionManager;
 
     public class Slot
     {
@@ -29,11 +29,13 @@ public class PotionsScroll : MonoBehaviour
 
     public void FillScroll() 
     {
-        if (potionManager.potions == null) return;
-        foreach (var item in potionManager.potions)
+        if (potionManager.potions != null)
         {
-            if (item != null)
-                AddScrollElement(item);
+            foreach (var item in potionManager.potions)
+            {
+                if (item != null)
+                    AddScrollElement(item);
+            }
         }
     }
 

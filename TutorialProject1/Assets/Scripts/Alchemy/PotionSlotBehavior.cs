@@ -58,7 +58,7 @@ public class PotionSlotBehavior : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     private IEnumerator MouseOverCoroutine()
     {
-        yield return new WaitForSeconds(infoDelay); 
+        yield return new WaitForSecondsRealtime(infoDelay); 
         infoWindow.ActivateWindow(potionData.data.potionName, potionData.data.info);      
     }
 }

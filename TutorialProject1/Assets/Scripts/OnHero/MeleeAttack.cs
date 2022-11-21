@@ -35,11 +35,9 @@ public class MeleeAttack : MonoBehaviour
     }
     private void Update() 
     {
+        transform.localPosition = ((Vector2)(cam.ScreenToWorldPoint(Input.mousePosition) - heroTransform.position)).normalized;// * 0.5f; 
         if (MainVariables.canMeleeAttack && MainVariables.allowAttack && MousePosition2D.supposedInteractionObject == null && waitAfterAttack == false)
         {         
-            //UpdateRadius(); //убрать потом   
-            transform.localPosition = ((Vector2)(cam.ScreenToWorldPoint(Input.mousePosition) - heroTransform.position)).normalized;// * 0.5f;            
-
             if (Input.GetMouseButtonDown(0) && UIClick.OnMouseDown())
             {
                 if (MainVariables.inSpelling == false || propEnemy.Count > 0 || propWalls.Count > 0)

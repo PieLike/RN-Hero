@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class AutoTakeUp : MonoBehaviour
@@ -27,14 +29,15 @@ public class AutoTakeUp : MonoBehaviour
                 //Debug.Log("dictionaryManager.CheckExisting(lootBehavior.lootData.word) != null " + (dictionaryManager.CheckExisting(lootBehavior.lootData.word) != null).ToString());
                 if (lootBehavior != null && dictionaryManager.CheckExisting(lootBehavior.lootData.word) != (-1))
                 {
-                    TakeUpTo(other.gameObject); 
+                    StartCoroutine(TakeUpToCoroutine(other.gameObject)); 
                 }
             }    
         }    
     }
 
-    private void TakeUpTo(GameObject DraggingToObject)
+    private IEnumerator TakeUpToCoroutine(GameObject DraggingToObject)
     {
+        yield return new WaitForSeconds(1f);
         //Debug.Log("TakeUpTo");
         lootItemRigidBody = lootItem.GetComponent<Rigidbody2D>();
         inDragging = true;
@@ -45,7 +48,6 @@ public class AutoTakeUp : MonoBehaviour
     {
         if (inDragging == true)
         {
-            Debug.Log("inDragging");
             //проверяем притянули ли объект к герою
             if (MyMathCalculations.CheckReachToPoint(lootItem.transform.position, finalPoint))
             {

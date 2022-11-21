@@ -15,6 +15,7 @@ public class RespawnHero : MonoBehaviour
             
     public void Respawn()
     {
+        MainVariables.isDead = false;
         transform.position = startPosition;
         potionManager.ClearActivePotions();
         HeroMainData.currentHP = HeroMainData.buffMaxHP + HeroMainData.plainMaxHP;

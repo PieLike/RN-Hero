@@ -26,18 +26,25 @@ public class SkillWindow : MonoBehaviour
 
     public void OpenSkillWindow()
     {       
+        OnGameStartAndUpdate.CloseInterface();
         interfaceManager.SkillsPanel.SetActive(true);
-        MainVariables.inInterface = true;
+        //MainVariables.inInterface = true;
+        Time.timeScale = 0f;
 
         skillScroll.FillScroll();
         pointText.text = "У вас " + HeroMainData.skillPoints.ToString() + " очков прокачки";
+
+        OnGameStartAndUpdate.OnInterfaceClose += CloseSkillWindow;
     }
     private void CloseSkillWindow()
     {        
         skillScroll.ClearScroll();
 
         interfaceManager.SkillsPanel.SetActive(false);        
-        MainVariables.inInterface = false;
+        //MainVariables.inInterface = false;
+        Time.timeScale = 1f;
+
+        OnGameStartAndUpdate.OnInterfaceClose -= CloseSkillWindow;
     }
     public void SkillButton()
     {

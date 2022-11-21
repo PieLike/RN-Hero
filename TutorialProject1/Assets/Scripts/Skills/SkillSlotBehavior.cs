@@ -32,14 +32,14 @@ public class SkillSlotBehavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
             animator.SetBool("bigSize", true);
         }
 
-            StartCoroutine(MouseOverCoroutine());
+            //StartCoroutine(MouseOverCoroutine());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         animator.SetBool("bigSize", false);
 
-        StopAllCoroutines();
+        //StopAllCoroutines();
         infoWindow.HideWindow();
     }
 
@@ -67,7 +67,7 @@ public class SkillSlotBehavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private IEnumerator MouseOverCoroutine()
     {
-        yield return new WaitForSeconds(infoDelay); 
+        yield return new WaitForSecondsRealtime(infoDelay); 
         infoWindow.ActivateWindow(skillData.data.skillName, skillData.data.info);      
     }
 }

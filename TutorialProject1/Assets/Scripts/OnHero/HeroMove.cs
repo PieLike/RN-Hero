@@ -9,7 +9,7 @@ public class HeroMove : MonoBehaviour
     public enum TargetObject { interactionObject, finalPoint, none }; public TargetObject targetObject = TargetObject.none;
     public bool isReached = false;
     public float nextWaypointDistance = 2f;  
-    private Rigidbody2D rigidBody;
+    private Rigidbody2D rigidBody;  Vector2 direction;
     private GameObject objFinalPoint;        
         private Seeker seeker; Path path; Vector2 prevFP, prevIO, prevH; public GameObject interactionObject;
         private int currentWaypoint;// bool reachedEndOfPath;
@@ -34,12 +34,12 @@ public class HeroMove : MonoBehaviour
     {
         if (MainVariables.allowMovement == true)
         { 
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+            direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+            if (direction != Vector2.zero)
             {
-                Vector2 direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-                //Vector2 force = direction * HeroMainData.speed * Time.fixedDeltaTime;
+                //Vector2 force = direction * (HeroMainData.plainSpeed + HeroMainData.buffSpeed) * Time.fixedDeltaTime;
                 //rigidBody.AddForce(force);
-                rigidBody.velocity = direction * (HeroMainData.plainSpeed + HeroMainData.buffSpeed);
+                rigidBody.velocity = direction * (HeroMainData.plainSpeed + HeroMainData.buffSpeed);// * Time.fixedDeltaTime;
 
                 if (objFinalPoint!= null && objFinalPoint.activeSelf == true) 
                     objFinalPoint.SetActive(false);
@@ -53,8 +53,6 @@ public class HeroMove : MonoBehaviour
             }
             else if(targetObject == TargetObject.none && MainVariables.inMovement == true)
             {
-                //rigidBody.velocity = Vector2.zero;
-                //rigidBody.Sleep();
                 MainVariables.inMovement = false;   
             }
         }
@@ -91,9 +89,6 @@ public class HeroMove : MonoBehaviour
     }
     private void Stop()
     {
-        //rigidBody.velocity = Vector2.zero;
-        //rigidBody.Sleep();
-
         if (targetObject == TargetObject.interactionObject)
             isReached = true;
 
@@ -211,7 +206,7 @@ public class HeroMove : MonoBehaviour
     }
     private void OpenChest(GameObject chest)
     {        
-        Debug.Log("open chest");
+        //Debug.Log("open chest");
         try
         {
             chest.GetComponent<ChestBehavior>().Open();

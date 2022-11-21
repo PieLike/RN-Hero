@@ -7,10 +7,11 @@ public class LootBehavior : MonoBehaviour
 {
     //public GameObject parent;
     private float downBoard = 0.0f;
-    new Transform transform;    GameObject objectOutline; private MyOutline outline;    SpriteRenderer spriteRenderer; Color originalColor;
-    new Rigidbody2D rigidbody2D;
+    GameObject objectOutline; private MyOutline outline; SpriteRenderer spriteRenderer; Color originalColor;
+    new Rigidbody2D rigidbody2D; new Transform transform;
     [NonSerialized] public float parentpositionY = 0.0f, parentlocalScaleY = 0.0f;
-    public Loot lootData;
+    public Loot lootData;   private Transform hero;
+    private bool canTakeUp;
     
     private void Start() 
     {
@@ -53,15 +54,48 @@ public class LootBehavior : MonoBehaviour
     {
         if (MousePosition2D.supposedInteractionObject == objectOutline)
         {
-            if (spriteRenderer.color != Color.yellow)
+            if (spriteRenderer.color != Color.blue)
             {
                 originalColor = spriteRenderer.color;
-                spriteRenderer.color = Color.yellow;
+                spriteRenderer.color = Color.blue;
             }
         }    
         else if (spriteRenderer.color != originalColor && originalColor != new Color(0f,0f,0f,0f))
         {
             spriteRenderer.color = originalColor;
         } 
+
+        /*if (canTakeUp && Input.GetKeyDown(KeyCode.E) && MainVariables.inInterface == false)
+        {
+            var takeUp = hero.GetComponent<TakeUp>();
+            takeUp.TakeUpWord(this.gameObject);
+        }*/
+    }
+
+    private void OnTriggerStay2D(Collider2D other) 
+    {
+        if (other.tag == "HeroUse" && canTakeUp == false)
+        {
+            hero = other.transform.parent;
+            //interactionAnimator.SetBool("Show", true);
+            canTakeUp = true;
+            OnGameStartAndUpdate.AddInteraction(TakeUp);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other) 
+    {
+        if (other.tag == "HeroUse" && canTakeUp)
+        {
+            //interactionAnimator.SetBool("Show", false);
+            canTakeUp = false;
+            OnGameStartAndUpdate.RemoveInteraction(TakeUp);
+        }
+    }
+
+    public void TakeUp()
+    {
+        var takeUp = hero.GetComponent<TakeUp>();
+        takeUp.TakeUpWord(this.gameObject);
+        canTakeUp = false;
     }
 }

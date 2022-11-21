@@ -19,7 +19,7 @@ public class PickerWheelPotions : PickerWheelMy
     {
         base.Update();
 
-        if (Input.GetMouseButtonDown(0) && wheelPieces[indicatorIndex].potion.script != "")
+        if (Input.GetMouseButtonDown(0) && wheelPieces[indicatorIndex] != null && wheelPieces[indicatorIndex].potion.script != "")
 		{
             UsePotion();
 		}

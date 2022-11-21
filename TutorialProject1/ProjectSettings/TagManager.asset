@@ -18,11 +18,12 @@ TagManager:
   - Quest
   - Npc
   - Pass
-  - Branch
   - EnemyAttackArea
   - SpawnPoint
   - Pot
   - Tree
+  - MelleAttack
+  - HeroUse
   layers:
   - Default
   - TransparentFX

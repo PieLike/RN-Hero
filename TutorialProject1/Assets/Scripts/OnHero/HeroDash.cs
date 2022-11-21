@@ -44,12 +44,13 @@ public class HeroDash : MonoBehaviour
             MainVariables.isDashing = true;
             MainVariables.allowMovement = false;
 
-            Vector2 direction;
+            /*Vector2 direction;
             if (Input.GetAxis("Horizontal") != 0 && Input.GetAxis("Vertical") != 0)
                 direction = new Vector2(Input.GetAxisRaw("Horizontal") / 2, Input.GetAxisRaw("Vertical") / 2);
             else
-                direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+                direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));*/
 
+            Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
             rigidBody.velocity = direction * dashPower;
 
             StopCoroutine(MoveStopCoroutine(0.2f, 0.5f));

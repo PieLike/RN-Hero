@@ -83,6 +83,8 @@ public class SpawnPoint : MonoBehaviour
                 if (spawnedEnemy.enemyObj != null)
                 {
                     spawnedEnemy.enemyAI.allowToMove = false;
+                    spawnedEnemy.enemyBehavior.RemoveSpells();
+                    spawnedEnemy.enemyBehavior.RemoveDrops();
                 }
             }
         }

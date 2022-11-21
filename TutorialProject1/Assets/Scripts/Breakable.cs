@@ -7,6 +7,7 @@ public class Breakable : MonoBehaviour
 {   
     string areaName; Vector3Int positionOnTileMap;
     Transform tileLayer; Tilemap tilemap; TileBase tileBase;
+    ParticleSystem particleSystemDamage; Transform particleSys;
     private void Start() 
     {
         try
@@ -27,10 +28,17 @@ public class Breakable : MonoBehaviour
         {            
             Debug.LogError(e + ", немозможно найти родителя с названием зоны для объекта, метод Breakable не будет активирован");
         }
+
+        particleSys = transform.Find("Particles");
+        if (particleSys != null)
+        {
+            particleSystemDamage = particleSys.GetComponent<ParticleSystem>();  
+        }
         
     }
     public void DoBroke()
     {
+        DoParticleSystemDamage();
         gameObject.SetActive(false);  
         
         tilemap.SetTile(positionOnTileMap, null);    
@@ -53,5 +61,21 @@ public class Breakable : MonoBehaviour
             if (tileBase != null)
                 tilemap.SetTile(positionOnTileMap, tileBase);           
         }
+    }
+
+    public void DoParticleSystemDamage()//Vector2 impactPosition)
+    {
+        if (particleSystemDamage != null)
+        {
+            particleSys.SetParent(transform.parent);
+            //float angle = MyMathCalculations.CalculateAngle2D(impactPosition, cam.ScreenToWorldPoint(Input.mousePosition), transform.right);
+            //particleSys.localRotation = Quaternion.Euler(angle,90f,0f);
+
+            //if(!particleSystemDamage.isPlaying) 
+            particleSystemDamage.Play();
+            Destroy(particleSys.gameObject, 1f);
+        }
+        else
+            Debug.Log("have no particel syctem");
     }
 }

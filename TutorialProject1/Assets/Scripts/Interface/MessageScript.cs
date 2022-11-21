@@ -105,8 +105,9 @@ public class MessageScript : MonoBehaviour
 
     public void ShowOkMessage(Action buttonAction, string label = "")
     {
+        OnGameStartAndUpdate.CloseInterface();
         interfaceManager.OkMessagePanel.SetActive(true);
-        MainVariables.inInterface = true;
+        //MainVariables.inInterface = true;
         animatorOK.SetBool("Show", true);
 
         if (label != "") interfaceManager.OkLabel.GetComponent<TMP_Text>().text = label;    
@@ -114,12 +115,16 @@ public class MessageScript : MonoBehaviour
         Button okButton = interfaceManager.OkButton.GetComponent<Button>();   
         okButton.onClick.AddListener(() => buttonAction());  
         okButton.onClick.AddListener(() => HideOkMessage()); 
+
+        OnGameStartAndUpdate.OnInterfaceClose += HideOkMessage;
     }
 
     public void HideOkMessage()
     {
         interfaceManager.OkMessagePanel.SetActive(false);
-        MainVariables.inInterface = false;
+        //MainVariables.inInterface = false;
         animatorOK.SetBool("Hide", true);
+
+        OnGameStartAndUpdate.OnInterfaceClose -= HideOkMessage;
     }
 }

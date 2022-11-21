@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using System.Data;
-using System;
 
 public class LootDroping : MonoBehaviour
 {    
@@ -11,20 +8,18 @@ public class LootDroping : MonoBehaviour
     private GameObject itemType;
     public float force = 10f;
     public float dropSpeed = 0.2f;
-    //public string parent = "";
-    //private DictionaryManager dictionaryManager;
+    [HideInInspector] public EnemyData enemyData;
  
     private void Start()
     {
-        //dictionaryManager = FindObjectOfType<DictionaryManager>();
-        //находим объекты в resourses
-        itemType = Resources.Load<GameObject>("3d_prefabs/WordDrop"); 
-
-        //words = new List<Loot>();         
+        itemType = Resources.Load<GameObject>("3d_prefabs/WordDrop");         
     }
 
     public void Drop()
     {
+        if (enemyData != null)
+            loots = enemyData.FillLoots();
+
         if (loots != null && loots.Count > 0)
         {
             StartCoroutine(DropCoroutine());   
@@ -51,13 +46,15 @@ public class LootDroping : MonoBehaviour
         //если элемент массива заполнен то создаем объект и пружиним его
         if (loots != null)
         {
+            CutLoots();
+
             foreach (Loot loot in loots)
             {
-                if (loot != null)
+                if (loot != null && (((HeroMainData.wordAbleCount - HeroMainData.wordActualCount) > 0) || (loot.word.learnCount > 0)) )
                 {
                     yield return new WaitForSeconds(dropSpeed);
                     placeDrop = transform.position;
-                    newItem = Instantiate(itemType, placeDrop, Quaternion.Euler(0f,0f,0f));
+                    newItem = Instantiate(itemType, placeDrop, Quaternion.Euler(0f,0f,0f), transform.parent);
 
                     LootBehavior lootBehavior = newItem.GetComponent<LootBehavior>();
                     if (lootBehavior) 
@@ -78,7 +75,31 @@ public class LootDroping : MonoBehaviour
         if (gameObject.tag == "Enemy")
         {
             EnemyBehavior enemyBehavior = gameObject.GetComponent<EnemyBehavior>();
-            if (enemyBehavior) enemyBehavior.lootDropIsDone = true;
+            if (enemyBehavior != null) enemyBehavior.lootDropIsDone = true;
+        }
+    }
+
+    private void CutLoots()
+    {
+        int wordsCanLearn = HeroMainData.wordAbleCount - HeroMainData.wordActualCount;
+
+        if (wordsCanLearn > 0 && loots.Count > wordsCanLearn)
+        {
+            //for (var i = wordsCanLearn; i < loots.Count; i++)
+            //int i = wordsCanLearn;
+            int i = 0;
+            while (loots.Count > wordsCanLearn && i < loots.Count)
+            {
+                if (loots[i].word.learnCount > 0)
+                {
+                    wordsCanLearn ++;
+                }
+                else
+                {
+                    loots.Remove(loots[i]); //loots[loots.Count-1]
+                }
+                i++;
+            }
         }
     }
 }

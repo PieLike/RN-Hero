@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,7 +12,7 @@ public class DictScroll : MonoBehaviour
     private GameObject prefab; List<GameObject> prefabList;
     private DictionaryManager dictionaryManager;
     private InterfaceManager interfaceManager;
-    private float pointUpToLearn = 10f;
+    private float pointUpToLearn = 5f;  //10
 
     private void Start() 
     {
@@ -40,7 +41,7 @@ public class DictScroll : MonoBehaviour
                     foreach (var tr in item.translate)
                     {
                         if (translateText.text == "")
-                            translateText.text = tr;
+                            translateText.text = "(" + PosToRus(item.pos) + ") " + tr;
                         else    
                             translateText.text += ", " + tr; 
                     }
@@ -52,7 +53,7 @@ public class DictScroll : MonoBehaviour
                 {
                     wordCount.SetActive(false);
                     wordCountLine.SetActive(false);
-                    newWord.transform.Find("Button").gameObject.GetComponent<Button>().onClick.AddListener(() => dictionaryManager.LearnWord(item)); 
+                    newWord.transform.Find("Button").gameObject.GetComponent<Button>().onClick.AddListener(() => LearnWord(newWord, item)); 
                 }
                 else
                     wordCountLine.GetComponent<Image>().fillAmount = (item.learnCount % pointUpToLearn) / pointUpToLearn + 0.01f;
@@ -70,10 +71,30 @@ public class DictScroll : MonoBehaviour
             prefabList.Add(newWord);
         }
     }
-    /*private void LearnWord(Word word)
+
+    private string PosToRus(Word.Pos pos)
+    {
+        switch (pos)
+        {
+            case Word.Pos.Noun: return "Сущ.";
+            case Word.Pos.Verb: return "Гл.";
+            case Word.Pos.Adjective: return "Прил.";
+            case Word.Pos.Pronoun: return "Местоим.";
+            case Word.Pos.Conjunction: return "Союз";
+            case Word.Pos.Adverb: return "Нареч.";
+            case Word.Pos.Article: return "Артикль";
+            case Word.Pos.Preposition: return "Предлог";
+            case Word.Pos.Numeral: return "Числ.";
+            default: return "";
+        }        
+    }
+
+    private void LearnWord(GameObject obj, Word word)
     {
         dictionaryManager.LearnWord(word);
-    }*/    
+        prefabList.Remove(obj);
+        Destroy(obj);
+    }    
 
     public void ClearScroll()
     {

@@ -43,16 +43,23 @@ public class LootManager : MonoBehaviour
 
     public void WriteEnemyLoot(Enemy _enemy, List<Loot> loots)
     {
-        EnemyLoot enemyLoot = enemyLoots.Find( delegate(EnemyLoot enemyLoot){ return enemyLoot.enemy == _enemy; } );
+        int numberEnemyLoot = enemyLoots.FindIndex( delegate(EnemyLoot enemyLoot){ return enemyLoot.enemy.fullName == _enemy.fullName; } );        
 
-        if (enemyLoot == null)
+        if (numberEnemyLoot == (-1))
         {
-            enemyLoot = new EnemyLoot{ enemy = _enemy };
+            EnemyLoot enemyLoot = new EnemyLoot{ enemy = _enemy };
+            enemyLoot.loots = loots;
+            enemyLoots.Add(enemyLoot);
         }
         else
         {
-            enemyLoot.loots.Clear();
+            enemyLoots[numberEnemyLoot].loots.Clear();
+            enemyLoots[numberEnemyLoot].loots = loots;
         }
-        enemyLoot.loots = loots;
+    }
+
+    private void Update() 
+    {
+        //Debug.Log("wordAbleCount = " + HeroMainData.wordAbleCount.ToString() + "wordActualCount = " + HeroMainData.wordActualCount.ToString()); 
     }
 }

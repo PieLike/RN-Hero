@@ -16,21 +16,23 @@ public class EnemyData : MonoBehaviour
         lootManager = FindObjectOfType<LootManager>();
         dictionaryManager = FindObjectOfType<DictionaryManager>();
         lootDroping = GetComponent<LootDroping>();
+            lootDroping.enemyData = this;
 
         currentSP = data.sp;
         currentHP = data.hp; 
 
         if (currentSP > 0)
-            haveShield = true;
-
-        if (lootDroping != null)
-            lootDroping.loots = FillLoots(); //FillLoots(lootDroping.loots);
+            haveShield = true;        
     }
 
-    public List<Loot> FillLoots()   //FillLoots(List<Loot> loots)
+    public List<Loot> FillLoots()
     {
-        List<Loot> lootsFromManager = FillLootFromManager();  //FillLootFromManager(loots)
-        List<Loot> lootsForDrop = lootsFromManager;
+        List<Loot> lootsFromManager = FillLootFromManager();
+        List<Loot> lootsForDrop = new List<Loot>();
+        foreach (var item in lootsFromManager)
+        {
+            lootsForDrop.Add(item);
+        }
 
         if (lootsForDrop.Count < data.enemyWordsCount)  //мы загрузили текущий список лута из менеджера, но он там может быть пустым и еще не заполненным, в этом случае переходим к заполнение
                                                         //этап первый: заполнение из стартовых слов врага                                                        
@@ -38,7 +40,7 @@ public class EnemyData : MonoBehaviour
             foreach (string stringWord in data.startWords)
             {
                 Word word = new Word{ word = stringWord };
-                if (CheckIfWordAlreadyInLoot(word, lootsForDrop) == false && CheckIfWordAreadlyLearned(word) == false)
+                if (CheckIfWordAlreadyInLoot(word, lootsForDrop) == false && word.learned == false)
                 {
                     Loot newLoot = new Loot();
                     newLoot.word = word;
@@ -50,13 +52,30 @@ public class EnemyData : MonoBehaviour
                     break;
             }
 
-            if (lootsForDrop.Count < data.enemyWordsCount)  //этап второй: заполнение из дефолтных слов по полулярности
+            if (lootsForDrop.Count < data.enemyWordsCount)  //этап второй: заполнение ис словаря
+            {
+                foreach (Word wordFormDict in dictionaryManager.words)
+                {
+                    if (CheckIfWordAlreadyInLoot(wordFormDict, lootsForDrop) == false && wordFormDict.learned == false)
+                    {
+                        Loot newLoot = new Loot();
+                        newLoot.word = wordFormDict;
+                        //FillWordData(newWord);
+                        lootsForDrop.Add(newLoot);
+                    }
+                    
+                    if (lootsForDrop.Count >= data.enemyWordsCount)
+                        break;
+                }
+            }
+
+            if (lootsForDrop.Count < data.enemyWordsCount)  //этап третий: заполнение из дефолтных слов по полулярности
             {
                 List<Word> wordsFromDataBase = DictDataBaseRequests.GetWordsByLevel();
 
                 foreach (var wordFromDB in wordsFromDataBase)
                 {
-                    if (CheckIfWordAlreadyInLoot(wordFromDB, lootsForDrop) == false && CheckIfWordAreadlyLearned(wordFromDB) == false)
+                    if (CheckIfWordAlreadyInLoot(wordFromDB, lootsForDrop) == false && wordFromDB.learned == false)    //CheckIfWordAreadlyLearned(wordFromDB) == false
                     {
                         Loot newLoot = new Loot();
                         newLoot.word = wordFromDB;
@@ -64,8 +83,8 @@ public class EnemyData : MonoBehaviour
                         lootsForDrop.Add(newLoot);
                     }
 
-                if (lootsForDrop.Count >= data.enemyWordsCount)
-                    break;
+                    if (lootsForDrop.Count >= data.enemyWordsCount)
+                        break;
                 }
             }
 
@@ -86,13 +105,14 @@ public class EnemyData : MonoBehaviour
         }
         return false;
     }   
-    private bool CheckIfWordAreadlyLearned(Word word)
+    /*private bool CheckIfWordAreadlyLearned(Word word)
     {
-        if (dictionaryManager.CheckExisting(word) != (-1))
+        //if (dictionaryManager.CheckExisting(word) != (-1))
+        if (word.learned == true)
             return true;
         else
             return false;
-    }
+    }*/
 
     public List<Loot> FillLootFromManager() //FillLootFromManager(List<Loot> loots)
     {

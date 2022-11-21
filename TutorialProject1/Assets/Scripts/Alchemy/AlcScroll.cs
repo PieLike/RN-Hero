@@ -34,6 +34,7 @@ public class AlcScroll : MonoBehaviour
 
     public void FillScroll() 
     {
+        Shuffle(alchemy.allIngredients);
         foreach (var item in alchemy.allIngredients)
         {
             if (item != null && item.word != "")
@@ -63,32 +64,19 @@ public class AlcScroll : MonoBehaviour
         Destroy(objWord);
     }
 
-    /*private void SetIcon(Sprite sprite, string word)
-    {
-        string url = "https://img.icons8.com/100/color/" + word;
-        string url2 = "https://img.icons8.com/100/emoji/" + word;
-        string url3 = "https://img.icons8.com/100/" + word;
-        StartCoroutine(IEnumeratorIcon(sprite, url, url2));
+    //private static Random rng = new Random();
+    public static void Shuffle<T>(IList<T> list)  
+    {  
+        System.Random rnd = new System.Random();
+        int n = list.Count;  
+        while (n > 1) {  
+            n--;  
+            int k = rnd.Next(n + 1);  
+            T value = list[k];  
+            list[k] = list[n];  
+            list[n] = value;  
+        }  
     }
-    IEnumerator IEnumeratorIcon(Sprite sprite, string url, string url2 = "", string url3 = "") 
-    {
-        UnityWebRequest reader = UnityWebRequestTexture.GetTexture(url);
-        yield return reader.SendWebRequest();
-        if (reader.result == UnityWebRequest.Result.Success)
-        {
-            Texture2D myTexture = ((DownloadHandlerTexture) reader.downloadHandler).texture;
-            sprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0, 0));
-        }
-        else
-        {
-            if (url2 != "")
-            {
-                IEnumeratorIcon(sprite, url2, url3); 
-            }
-            else
-                Debug.Log("Не удалось подгрузить иконку :" + url);
-        }            
-    }*/
 
     public void ClearScroll()   //выполнять на выходе
     {

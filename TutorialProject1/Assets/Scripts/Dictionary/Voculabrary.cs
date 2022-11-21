@@ -15,7 +15,7 @@ public class Voculabrary : MonoBehaviour
         //находим дочерние объекты        
         VIPanel = interfaceManager.VoculabraryInterfacePanel;         
         VIExit = interfaceManager.VIExit;
-            VIExit.GetComponent<Button>().onClick.AddListener(Close); 
+            VIExit.GetComponent<Button>().onClick.AddListener(CloseDict); 
         
         dictionaryManager = FindObjectOfType<DictionaryManager>();
     }
@@ -25,20 +25,28 @@ public class Voculabrary : MonoBehaviour
         //вызываем окно словаря по нажатию кнопки
         if(VIPanel.activeSelf == false)
         {
-            VIPanel.SetActive(true);
-            gameObject.GetComponent<DictScroll>().FillScroll();
+            OpenDict();
         }
         else
-        {
-            gameObject.GetComponent<DictScroll>().ClearScroll();
-            VIPanel.SetActive(false);
-        }
+            CloseDict();
     }
 
-    public void Close()
+    private void OpenDict()
+    {
+        OnGameStartAndUpdate.CloseInterface();
+        VIPanel.SetActive(true);
+        gameObject.GetComponent<DictScroll>().FillScroll();
+        MainVariables.inInterface = true;
+        Time.timeScale = 0f;   
+        OnGameStartAndUpdate.OnInterfaceClose += CloseDict;
+    }   
+    private void CloseDict()
     {
         gameObject.GetComponent<DictScroll>().ClearScroll();
-        VIPanel.SetActive(false);    
+        VIPanel.SetActive(false); 
+        MainVariables.inInterface = false;
+        Time.timeScale = 1f;   
+        OnGameStartAndUpdate.OnInterfaceClose -= CloseDict;
     }   
 
     public static bool AddWordInDataBase(Loot word)
@@ -54,6 +62,11 @@ public class Voculabrary : MonoBehaviour
 
     public static void ReCountWordActualCount()
     {
-        HeroMainData.wordActualCount = dictionaryManager.words.Count;
+        int count = 0;
+        foreach (var item in dictionaryManager.words)
+        {
+            if (item.learned == false) count++;
+        }
+        HeroMainData.wordActualCount = count;
     }
 }

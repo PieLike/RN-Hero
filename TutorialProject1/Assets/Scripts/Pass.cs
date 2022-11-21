@@ -20,17 +20,8 @@ public class Pass : MonoBehaviour
 
         boxSize = GetComponent<BoxCollider2D>(); 
     }
-
-    /*private void OnTriggerEnter2D(Collider2D other) 
-    {
-        if (other.gameObject.tag == "Hero")
-        { 
-            FindContactPoint(other);
-            if (contactPointIsFound)
-                DoPass();  
-        }        
-    }*/
-    private void OnTriggerStay2D(Collider2D other) 
+    
+    private void OnTriggerEnter2D(Collider2D other) 
     {     
         if (other.gameObject.tag == "Hero")
         {

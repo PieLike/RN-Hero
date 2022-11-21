@@ -7,10 +7,11 @@ using System.Collections.Generic;
 public class ChestBehavior : MonoBehaviour
 {
     private MyOutline outline; 
-    [NonSerialized] public bool looted = false;
+    [NonSerialized] public bool looted;
     [SerializeField] public List<Artifact> items;
     [NonSerialized] public InterfaceManager interfaceManager;  ArtifactManager artifactManager; 
     private Animator animator;
+    [NonSerialized] public bool canUse; Animator interactionAnimator;
 
     private void Start() 
     {
@@ -20,6 +21,9 @@ public class ChestBehavior : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
 
         artifactManager = FindObjectOfType<ArtifactManager>();
+
+        Transform interactButton = transform.Find("InteractButton");
+        interactionAnimator = interactButton.GetComponent<Animator>();
     }
 
     void Update()
@@ -28,6 +32,11 @@ public class ChestBehavior : MonoBehaviour
         {
             outline.enabled = false;
         }  
+
+        /*if (canUse && Input.GetKeyDown(KeyCode.E) && MainVariables.inInterface == false)
+        {
+            Open();
+        }*/
     }  
 
     public void Open() 
@@ -42,14 +51,33 @@ public class ChestBehavior : MonoBehaviour
         if (items != null && items.Count > 0)
             interfaceManager.newItemMessageScript.ShowItemsMessege(items);*/
 
+        interactionAnimator.SetBool("Show", false);
+        canUse = false;
         looted = true;
     }
 
     private void TakeItem(Artifact artifact)
     {
         artifactManager.AddArtifact(artifact, true);
-        //CloseAlcGame();
         interfaceManager.messageScript.NewMessage("Успех!", "Вы нашли " + artifact.artName);
+    }
 
+    private void OnTriggerStay2D(Collider2D other) 
+    {
+        if (other.tag == "HeroUse" && canUse == false && looted == false)
+        {
+            interactionAnimator.SetBool("Show", true);
+            OnGameStartAndUpdate.AddInteraction(Open);
+            canUse = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other) 
+    {
+        if (other.tag == "HeroUse" && canUse && looted == false)
+        {
+            interactionAnimator.SetBool("Show", false);
+            OnGameStartAndUpdate.AddInteraction(Open);
+            canUse = false;
+        }
     }
 }

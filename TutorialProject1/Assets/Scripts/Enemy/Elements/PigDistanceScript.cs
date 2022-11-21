@@ -24,7 +24,7 @@ public class PigDistanceScript : EnemyBehavior
     {
         base.Update();
         
-        if (enemyAI.allowToMove && enemyData.data.isAgressive)
+        if (enemyAI.allowToMove && enemyData.data.isAgressive && MainVariables.isDead == false)
         {
             if(heroDistance.blocked || heroDistance.haveHero == false)
             {
@@ -64,8 +64,8 @@ public class PigDistanceScript : EnemyBehavior
         enemyAnimator.SetBool("Attacking", true);
 
         float angle = MyMathCalculations.CalculateAngle2D(transform.position, heroTransform.position, transform.up);
-        GameObject newSpellObject = Instantiate(projectile, transform.position, transform.rotation * Quaternion.Euler(0f,0f,angle*(-1)));//Quaternion.Euler(Math.Abs(angle),angle,-90)
-
+        GameObject newSpellObject = Instantiate(projectile, transform.position, transform.rotation * Quaternion.Euler(0f,0f,angle*(-1)), transform.parent);//Quaternion.Euler(Math.Abs(angle),angle,-90)
+        
         SpellBehavior newSpellBehavior = newSpellObject.GetComponent<SpellBehavior>(); 
         Vector2 startPosition = new Vector2(heroTransform.position.x - gameObject.transform.position.x, heroTransform.position.y - gameObject.transform.position.y);
         newSpellBehavior.NonPhysicProjectile(activeSpell, true, startPosition); 

@@ -16,7 +16,7 @@ public class PigMeleeScript : EnemyBehavior
     {
         base.Update();
 
-        if (enemyAI.allowToMove && enemyData.data.isAgressive)
+        if (enemyAI.allowToMove && enemyData.data.isAgressive && MainVariables.isDead == false)
         {
             if (meleeAttack.propHero.Count > 0 && enemyData.isAttacking == false)
             {

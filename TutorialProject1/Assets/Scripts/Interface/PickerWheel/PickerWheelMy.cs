@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -127,25 +128,35 @@ public class PickerWheelMy : MonoBehaviour
 
 	public virtual void Update() 
 	{
-		float angle = MyMathCalculations.CalculateAngle2D(transform.position, cam.ScreenToWorldPoint(Input.mousePosition), transform.up) * (-1);
-		//Vector2.Lerp(Vector2.zero, cam.ScreenToWorldPoint(Input.mousePosition), 0.5f);
-		indicator.transform.rotation = Quaternion.Slerp(indicator.transform.rotation, Quaternion.Euler(0f,0f,angle+180), 1f);
-
-		var corAngle = angle - pieceAngle/2f;
-		if (corAngle >= 0 && wheelPieces != null)
+		Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+		Vector2 lenght = mousePos - transform.position;
+		if (Math.Abs(lenght.x) > 1 || Math.Abs(lenght.y) > 1)
 		{
-			indicatorIndex = (int) (wheelPieces.Count - (corAngle / pieceAngle));
-		}
-		else
-			indicatorIndex = (int) ((corAngle / pieceAngle) * (-1));
+			//indicator.SetActive(true);
 
-		
-		//Debug.Log(wheelPieces[indicatorIndex].text);
-		/*if (Input.GetMouseButtonDown(0) && englishGameInput != null)
-		{
+			float angle = MyMathCalculations.CalculateAngle2D(transform.position, mousePos, transform.up) * (-1);
+			//Debug.Log((mousePos - transform.position).ToString());
+			//Vector2.Lerp(Vector2.zero, cam.ScreenToWorldPoint(Input.mousePosition), 0.5f);
+			indicator.transform.rotation = Quaternion.Slerp(indicator.transform.rotation, Quaternion.Euler(0f,0f,angle+180), 1f);
+
+			var corAngle = angle - pieceAngle/2f;
+			if (corAngle >= 0 && wheelPieces != null)
+			{
+				indicatorIndex = (int) (wheelPieces.Count - (corAngle / pieceAngle));
+			}
+			else
+				indicatorIndex = (int) ((corAngle / pieceAngle) * (-1));
+
+			
 			//Debug.Log(wheelPieces[indicatorIndex].text);
-			//wheelPieces[indicatorIndex].button.onClick.Invoke();
-			englishGameInput.TypeLetter(wheelPieces[indicatorIndex].text);
-		}*/
+			/*if (Input.GetMouseButtonDown(0) && englishGameInput != null)
+			{
+				//Debug.Log(wheelPieces[indicatorIndex].text);
+				//wheelPieces[indicatorIndex].button.onClick.Invoke();
+				englishGameInput.TypeLetter(wheelPieces[indicatorIndex].text);
+			}*/
+		}
+		//else
+			//indicator.SetActive(false);
 	}	
 }

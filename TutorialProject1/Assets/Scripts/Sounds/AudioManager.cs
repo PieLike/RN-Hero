@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("не найден аудиоклип в менеджере " + soundName);
+            //Debug.Log("не найден аудиоклип в менеджере " + soundName);
             return null;
         }
     }

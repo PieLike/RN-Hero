@@ -34,11 +34,15 @@ public class SpawnChecker : MonoBehaviour
         QuestEvents.OnEnemyKilled += WhenEnemyKilled; 
     }
 
-    private void OnEnable() 
+    /*private void OnEnable() 
     {
         ReDoSpawnAll();
-    }
-    private void OnDisable() 
+    }*/
+    /*private void OnDisable() 
+    {
+
+    }*/
+    public void RemoveAllEnemies() 
     {
         if (spawnPoints != null)
         {
@@ -48,7 +52,7 @@ public class SpawnChecker : MonoBehaviour
             }
         }
     }
-    private void ReDoSpawnAll()
+    public void ReDoSpawnAll()
     {
         if (spawnPoints != null)
         {
@@ -68,7 +72,7 @@ public class SpawnChecker : MonoBehaviour
                 spawn.spawnPoint.StopSpawnEnemies();
             }
 
-
+            StopAllCoroutines();
             WavesCounter.Clear();
             WavesCounter.Hide();
         }

@@ -30,7 +30,7 @@ public class DictDataBaseRequests : MonoBehaviour
 
     static List<Word> GetWordsByFrequency(int intMin, int intMax, int count)
     {
-        List<Word> newWords = new List<Word>();
+        List<Word> words = new List<Word>();
 
         //заполняем массив слов словами из общей базы данных по parent = имея объекта
         string wordsDataBaseName = "Dictionary.bytes";
@@ -39,22 +39,26 @@ public class DictDataBaseRequests : MonoBehaviour
 
         foreach (DataRow row in sonsDataTable.Rows)
         {
-            if (newWords.Count >= count) 
+            if (words.Count >= count) 
                 break;
 
             Word newWord = new Word();
             newWord.word = row["Text"].ToString(); 
 
             if (dictionaryManager == null ) dictionaryManager = FindObjectOfType<DictionaryManager>();
-            if (dictionaryManager.CheckExisting(newWord) != (-1))
-                break;
+            int numberWord = dictionaryManager.CheckExisting(newWord);
+            if (numberWord != (-1))
+            {
+                words.Add(dictionaryManager.words[numberWord]);  //break;
+                continue;
+            }
 
             newWord.pos = (Word.Pos) Enum.Parse(typeof(Word.Pos), row["Pos"].ToString()); 
             newWord.frequency = Convert.ToInt32(row["Frequency"]);
-            newWords.Add(newWord);  
+            words.Add(newWord);  
         }
 
-        return newWords;
+        return words;
     }
 
 }

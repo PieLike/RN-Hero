@@ -8,12 +8,12 @@ public class InterfaceManager : MonoBehaviour
 {
     public static InterfaceManager instance;
     public GameObject Interface;
-    public GameObject MainInterface, Voculabrary, UsingSpell, EnglishGame, Menu, DialogueSystem, YouGotMessage,  Alchemy, Inventory, PotionChoice, InfoWindow;    //Interface
+    public GameObject MainInterface, Voculabrary, UsingSpell, EnglishGame, PauseMenu, DialogueSystem, YouGotMessage,  Alchemy, Inventory, PotionChoice, InfoWindow;    //Interface
     public GameObject VoculabraryButton, PickSpell, ActiveQuestPanel, AQText, Experience, RulesButton, AlchemyButton, InventoryButton, HeroState, HpPanel, HpLine, HpNumber, MpPanel, MpLine, MpNumber, ArtifactButton, Waves, SkillButton;   //MainInterface
     public GameObject VoculabraryInterfacePanel, VIList, VIExit, VIViewport, VIContent; //Voculabrary
     public GameObject UsingSpellPanel, USName, USCount; //UsingSpell
     public GameObject EnglishGamePanel, EGOriginalWord, EGExit, EGInputPanel, EGCheckmark, PickerWheelEnglshType;  //EnglishGame
-    public GameObject SaveButton, LoadButton;   //Menu
+    public GameObject PauseMenuPanel, SaveButton, LoadButton;   //Menu
     public GameObject DialogueChoicePanel, DChoice1, DChoice2, DChoice3, DialoguePanel2, DialogueContinue, DialogueName;   //DialogueSystem
     public GameObject YGPanel, YGName, YGText; //DialogueSystem
     public GameObject ExperiencePanel, ExpLine, OkMessagePanel, OkLabel, OkButton; //YouGotMessage
@@ -83,9 +83,10 @@ public class InterfaceManager : MonoBehaviour
                 EGCheckmark         = EnglishGamePanel.transform.Find("EGCheckmark").gameObject;
                 PickerWheelEnglshType         = EnglishGamePanel.transform.Find("PickerWheel").gameObject;
 
-        Menu                = Interface.transform.Find("Menu").gameObject;
-            SaveButton          = Menu.transform.Find("SaveButton").gameObject;
-            LoadButton          = Menu.transform.Find("LoadButton").gameObject;
+        PauseMenu                = Interface.transform.Find("PauseMenu").gameObject;
+            PauseMenuPanel           = PauseMenu.transform.Find("PauseMenuPanel").gameObject;
+                SaveButton          = PauseMenuPanel.transform.Find("SaveButton").gameObject;
+                LoadButton          = PauseMenuPanel.transform.Find("LoadButton").gameObject;
 
         DialogueSystem      = Interface.transform.Find("DialogueSystem").gameObject;
             DialogueChoicePanel = DialogueSystem.transform.Find("DialogueChoicePanel").gameObject;
@@ -163,15 +164,18 @@ public class InterfaceManager : MonoBehaviour
         Voculabrary.GetComponent<Canvas>().worldCamera = mainCamera;
         UsingSpell.GetComponent<Canvas>().worldCamera = mainCamera;
         EnglishGame.GetComponent<Canvas>().worldCamera = mainCamera;
-        Menu.GetComponent<Canvas>().worldCamera = mainCamera;
+        PauseMenu.GetComponent<Canvas>().worldCamera = mainCamera;
         YouGotMessage.GetComponent<Canvas>().worldCamera = mainCamera;
         Alchemy.GetComponent<Canvas>().worldCamera = mainCamera;
         Inventory.GetComponent<Canvas>().worldCamera = mainCamera;
+        PotionChoice.GetComponent<Canvas>().worldCamera = mainCamera;
+        InfoWindow.GetComponent<Canvas>().worldCamera = mainCamera;
+        Skills.GetComponent<Canvas>().worldCamera = mainCamera;
     }
 
-    private void Update() 
+    private void LateUpdate() 
     {
-        if( VoculabraryInterfacePanel.activeSelf || EnglishGamePanel.activeSelf || AlcPanel.activeSelf)
+        if( VoculabraryInterfacePanel.activeSelf || EnglishGamePanel.activeSelf || AlcPanel.activeSelf || AlcPotionPanel.activeSelf || ArtifactsPanel.activeSelf || SkillsPanel.activeSelf || OkMessagePanel.activeSelf)
         {
             if (MainVariables.inInterface == false)
                 MainVariables.inInterface = true;  

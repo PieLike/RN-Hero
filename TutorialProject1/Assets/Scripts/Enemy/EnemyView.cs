@@ -34,7 +34,7 @@ public class EnemyView : MonoBehaviour
 
         animator = GetComponent<Animator>();    
 
-        particleSys = transform.Find("ParticleSystem");
+        particleSys = transform.Find("Particles");//ParticleSystem
         if (particleSys != null)
         {
             particleSystemDamage = particleSys.GetComponent<ParticleSystem>();  
@@ -131,15 +131,18 @@ public class EnemyView : MonoBehaviour
         }
     }
 
-    public void DoParticleSystemDamage(Vector2 impactPosition)
+    public void DoParticleSystemDamage()//Vector2 impactPosition)
     {
         if (particleSystemDamage != null)
         {
-            float angle = MyMathCalculations.CalculateAngle2D(impactPosition, cam.ScreenToWorldPoint(Input.mousePosition), transform.right);
-            particleSys.localRotation = Quaternion.Euler(angle,90f,0f);
+            particleSys.SetParent(transform.parent);
+
+            //float angle = MyMathCalculations.CalculateAngle2D(impactPosition, cam.ScreenToWorldPoint(Input.mousePosition), transform.right);
+            //particleSys.localRotation = Quaternion.Euler(angle,90f,0f);
 
             //if(!particleSystemDamage.isPlaying) 
             particleSystemDamage.Play();
+            Destroy(particleSys.gameObject, 1f);
         }
         else
             Debug.Log("have no particel syctem");

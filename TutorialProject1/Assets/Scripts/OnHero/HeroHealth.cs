@@ -36,7 +36,7 @@ public class HeroHealth : MonoBehaviour
     }*/
     public void TakeDamage(float damage)
     {
-        Debug.Log("TakeDamage " + damage);
+        //Debug.Log("TakeDamage " + damage);
         HeroMainData.currentHP -= damage;
         //UpdateHp();
 
@@ -50,6 +50,7 @@ public class HeroHealth : MonoBehaviour
         {                
             //Debug.Log("у героя закончились жизни");
             interfaceManager.messageScript.ShowOkMessage(respawnHero.Respawn, "Герой погиб в край...");
+            MainVariables.isDead = true;
         }
     }
     public void HealHP (float points)

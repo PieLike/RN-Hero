@@ -2,6 +2,7 @@ using UnityEngine;
 using Pathfinding;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
 public class AreaChanger : MonoBehaviour
 {
@@ -11,8 +12,7 @@ public class AreaChanger : MonoBehaviour
     [SerializeField] public List<Area> activeAreas;
     private GameObject cameraBoards;
     private FollowCamera mainCameraFollow;
-    //bool readyToLeave; 
-    GameObject potentialArea;
+    List<string> potentialAreas;
     LayerMask wallsLayer;
     Transform worldTransform;
 
@@ -41,40 +41,36 @@ public class AreaChanger : MonoBehaviour
 
         wallsLayer = LayerMask.GetMask("Walls");
 
+        potentialAreas = new();
+        InvokeRepeating("UpdateActiveArea", 0f, 0.3f);
         //DeactivateAreas();
-    }
-    /*private void OnTriggerEnter2D(Collider2D other) 
+    }    
+
+    private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.gameObject.tag == "Area")
         {
-            potentialArea = other.gameObject; 
-            readyToLeave = true;
-        }    
-    }
-
-    private void OnTriggerExit2D(Collider2D other) 
-    {
-        if(other.gameObject.tag == "Area" && readyToLeave && potentialArea != null)
-        {
-            //получаем имя parent 
-            areaName = potentialArea.name; 
-            activeAreas[0] = potentialArea.transform.Find("Area").gameObject;
-
-            readyToLeave = false; 
-        }     
-    }*/
-    private void OnTriggerEnter2D(Collider2D other) 
-    {
-        if(other.gameObject.tag == "Area")// && gameObject.tag == "Hero")
-        {
-            potentialArea = other.gameObject;
-            if(areaName != potentialArea.name)
+            if(areaName != other.gameObject.name)
             {                
-                //получаем имя parent       
-                areaName = potentialArea.name; 
-                //readyToLeave = false;                  
+                areaName = other.gameObject.name; 
             }  
         }        
+    }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "Area")
+        {
+            int potentialArea = potentialAreas.FindIndex( delegate (string area) { return area == other.gameObject.name; } ); 
+            if (potentialArea == (-1))
+                potentialAreas.Add(other.gameObject.name);               
+        }         
+    }
+    private void UpdateActiveArea()
+    {
+        if (potentialAreas.Count == 1)
+            areaName = potentialAreas[0];
+
+        potentialAreas.Clear();
     }
 
     private void SetActiveForActiveAreas()
@@ -194,9 +190,15 @@ public class AreaChanger : MonoBehaviour
             if (area.spawn != null)
             {
                 if (area.type == AreaType.main)
+                {
+                    area.spawn.ReDoSpawnAll();
                     area.spawn.StartAllSpawnEnemies();
+                }
                 else
+                {
                     area.spawn.StopAllSpawnEnemies();
+                    area.spawn.RemoveAllEnemies();
+                }
             }    
         }
     }

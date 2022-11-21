@@ -61,7 +61,8 @@ public class SpellBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.gameObject.tag != "Loot" && other.gameObject.tag != "Spell" && other.gameObject.tag != "EnemyAttackArea") 
+        //if (other.gameObject.tag != "Loot" && other.gameObject.tag != "Spell" && other.gameObject.tag != "EnemyAttackArea") 
+        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Hero" || other.gameObject.tag == "Enemy") 
         {
             if ((other.gameObject.tag != "Hero" && frendly) || (other.gameObject.tag != "Enemy" && frendly == false))
             {

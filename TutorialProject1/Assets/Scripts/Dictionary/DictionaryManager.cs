@@ -166,7 +166,7 @@ public class DictionaryManager : MonoBehaviour
         //Debug.Log(word.word + ", " + word.pos);
         DataTable saveVocabulary;
         string data = "words.Text as Text, words.Pos as Pos, translations.Text as Translation, words.Frequency as Frequency, words.Colloq as Colloq, translations.Fr as TranslationFrequency"; 
-        saveVocabulary = WorkWithDataBase.GetTable($"SELECT {data} FROM words LEFT JOIN translations ON words.Id = translations.ParentWord WHERE words.Text = '{word.word}' AND translations.Pos = '{word.pos.ToString()}'", "Dictionary.bytes");
+        saveVocabulary = WorkWithDataBase.GetTable($"SELECT {data} FROM words LEFT JOIN translations ON words.Id = translations.ParentWord WHERE words.Text = '{word.word}' AND translations.Pos = '{word.pos.ToString()}' order by translations.fr DESC", "Dictionary.bytes");
 
         if(saveVocabulary.Rows.Count > 0)
         {
@@ -175,11 +175,12 @@ public class DictionaryManager : MonoBehaviour
             word.addictionTranslate2 = new List<string>();
             for (int i = 0; i < saveVocabulary.Rows.Count; i++)
             {
-                string translationFrequency = saveVocabulary.Rows[i]["TranslationFrequency"].ToString();
-                if (translationFrequency == "10")
+                //string translationFrequency = saveVocabulary.Rows[i]["TranslationFrequency"].ToString();
+                int translationFrequency = Convert.ToInt32(saveVocabulary.Rows[i]["TranslationFrequency"]);
+                if (translationFrequency == 10 || (translationFrequency == 5 && word.translate.Count == 0) || (translationFrequency == 1 && word.translate.Count == 0))
                     //word.translate[i] = saveVocabulary.Rows[i]["Translation"].ToString();  
                     word.translate.Add(saveVocabulary.Rows[i]["Translation"].ToString());
-                else if(translationFrequency == "5")
+                else if(translationFrequency == 5 || (translationFrequency == 1 && word.addictionTranslate.Count == 0))
                     //word.addictionTranslate[i] = saveVocabulary.Rows[i]["Translation"].ToString();  
                     word.addictionTranslate.Add(saveVocabulary.Rows[i]["Translation"].ToString());
                 else// if (translationFrequency == "1")  
@@ -250,7 +251,9 @@ public class DictionaryManager : MonoBehaviour
                 words[numberWord].learned = true;
                 //words.Remove(foundedWord);
                 Experience.AddExp(MainVariables.expForWordLearn);
+
+                Voculabrary.ReCountWordActualCount(); 
             }
-        }        
+        }               
     }
 }
